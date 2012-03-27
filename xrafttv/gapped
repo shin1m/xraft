@@ -1,0 +1,494 @@
+#ifndef XRAFT__GAPPED
+#define XRAFT__GAPPED
+
+#include <algorithm>
+#include <functional>
+#include <iterator>
+#include <memory>
+
+#ifdef index
+#undef index
+#endif
+
+namespace xraft
+{
+
+template<typename E, size_t SIZE = 1024, typename A = std::allocator<E> >
+class gapped
+{
+public:
+	typedef A allocator_type;
+	typedef typename allocator_type::size_type size_type;
+//	typedef typename allocator_type::difference_type difference_type;
+	typedef int difference_type;
+	typedef typename allocator_type::pointer pointer;
+	typedef typename allocator_type::const_pointer const_pointer;
+	typedef typename allocator_type::reference reference;
+	typedef typename allocator_type::const_reference const_reference;
+	typedef typename allocator_type::value_type value_type;
+
+protected:
+	struct block_type
+	{
+		value_type elements[SIZE];
+		pointer first;
+		pointer last;
+		int index;
+		gapped<E, SIZE, A>* buffer;
+
+		block_type* next() const
+		{
+			return *((index < 0 ? buffer->_block_last : buffer->_block_first) + index + 1);
+		}
+		block_type* previous() const
+		{
+			return *((index < 0 ? buffer->_block_last : buffer->_block_first) + index - 1);
+		}
+	};
+	friend struct block_type;
+
+public:
+	class const_iterator : public std::iterator<std::random_access_iterator_tag, typename allocator_type::value_type, int>
+	{
+		friend class gapped<E, SIZE, A>;
+
+	public:
+		typedef int difference_type;
+		typedef typename allocator_type::pointer pointer;
+		typedef typename allocator_type::const_reference reference;
+
+	private:
+		const block_type* _block;
+		const_pointer _p;
+
+		const_iterator(const block_type* b, const_pointer p) : _block(b), _p(p)
+		{
+		}
+		size_type index() const
+		{
+			return _p - _block->elements;
+		}
+		size_type position() const
+		{
+			if (_block->index < 0) {
+				return _block->buffer->internal_size() + _block->index * SIZE + index();
+			} else {
+				return _block->index * SIZE + index();
+			}
+		}
+
+	public:
+		const_iterator() : _block(0), _p(pointer())
+		{
+		}
+		const_iterator(const const_iterator& x) : _block(x._block), _p(x._p)
+		{
+		}
+		const_iterator& operator=(const const_iterator& x)
+		{
+			_block = x._block;
+			_p = x._p;
+			return *this;
+		}
+		const_reference operator*() const
+		{
+			return *_p;
+		}
+		const_pointer operator->() const
+		{
+			return _p;
+		}
+		const_iterator& operator++()
+		{
+			if (++_p == _block->last) {
+				if (_block == _block->buffer->_gap_head_block) {
+					_block = _block->buffer->_gap_tail_block;
+					_p = _block->buffer->_gap_tail_p;
+				} else {
+					_block = _block->next();
+					_p = _block->first;
+					if (_p == _block->buffer->_gap_head_p) {
+						_block = _block->buffer->_gap_tail_block;
+						_p = _block->buffer->_gap_tail_p;
+					}
+				}
+			}
+			return *this;
+		}
+		const_iterator operator++(int)
+		{
+			const_iterator x = *this;
+			operator++();
+			return x;
+		}
+		const_iterator& operator--()
+		{
+			if (_p == _block->first) {
+				if (_block == _block->buffer->_gap_tail_block) {
+					_block = _block->buffer->_gap_head_block;
+					_p = _block->buffer->_gap_head_p;
+					if (_p == _block->first) {
+						_block = _block->previous();
+						_p = _block->last;
+					}
+				} else {
+					_block = _block->previous();
+					_p = _block->last;
+				}
+			}
+			--_p;
+			return *this;
+		}
+		const_iterator operator--(int)
+		{
+			const_iterator x = *this;
+			operator--();
+			return x;
+		}
+		const_iterator& operator+=(difference_type n)
+		{
+			size_type p = position() + n;
+			if (p < _block->buffer->gap_index()) {
+				_block = *(_block->buffer->_block_first + p / SIZE);
+				_p = _block->elements + p % SIZE;
+			} else {
+				p = _block->buffer->internal_size() - p;
+				_block = *(_block->buffer->_block_last - 1 - (p - 1) / SIZE);
+				_p = _block->elements + (SIZE - p) % SIZE;
+			}
+			return *this;
+		}
+		const_iterator& operator-=(difference_type n)
+		{
+			return *this += -n;
+		}
+		const_iterator operator+(difference_type n) const
+		{
+			const_iterator x = *this;
+			return x += n;
+		}
+		const_iterator operator-(difference_type n) const
+		{
+			const_iterator x = *this;
+			return x -= n;
+		}
+		difference_type operator-(const const_iterator& x) const
+		{
+			return position() - x.position();
+		}
+		const_reference operator[](difference_type n) const
+		{
+			return *(*this + n);
+		}
+		bool operator==(const const_iterator& x) const
+		{
+			return _p == x._p;
+		}
+		bool operator!=(const const_iterator& x) const
+		{
+			return !(*this == x);
+		}
+		bool operator<(const const_iterator& x) const
+		{
+			return position() < x.position();
+		}
+		bool operator<=(const const_iterator& x) const
+		{
+			return !(x < *this);
+		}
+		bool operator>(const const_iterator& x) const
+		{
+			return x < *this;
+		}
+		bool operator>=(const const_iterator& x) const
+		{
+			return !(*this < x);
+		}
+	};
+	friend class const_iterator;
+
+	struct identical : public std::unary_function<value_type, value_type>
+	{
+		const value_type& operator()(const value_type& x) const
+		{
+			return x;
+		}
+	};
+
+protected:
+	allocator_type _allocator;
+	block_type** _block_first;
+	block_type** _block_last;
+	block_type* _gap_head_block;
+	pointer _gap_head_p;
+	block_type* _gap_tail_block;
+	pointer _gap_tail_p;
+
+	size_type gap_head_index() const
+	{
+		return _gap_head_p - _gap_head_block->elements;
+	}
+	size_type gap_tail_index() const
+	{
+		return _gap_tail_p - _gap_tail_block->elements;
+	}
+	size_type internal_size() const
+	{
+		return (_gap_head_block->index - _gap_tail_block->index) * SIZE + gap_head_index() - gap_tail_index();
+	}
+	pointer pointer_at(size_type p) const
+	{
+		if (p < gap_index()) {
+			return (*(_block_first + p / SIZE))->elements + p % SIZE;
+		} else {
+			p = internal_size() - p;
+			return (*(_block_last - 1 - (p - 1) / SIZE))->elements + (SIZE - p) % SIZE;
+		}
+	}
+	template<typename P>
+	void move(pointer s, pointer d, size_type n, P p)
+	{
+		while (n > 0) {
+			new(d) E(p(*s));
+			s->~E();
+			++s;
+			++d;
+			--n;
+		}
+	}
+	void grow()
+	{
+		block_type** f = new block_type*[_block_last - _block_first + 1];
+		block_type** p = _block_first + _gap_head_block->index + 1;
+		block_type** l = std::copy(_block_first, p, f);
+		*l = new block_type();
+		(*l)->buffer = this;
+		l = std::copy(p, _block_last, ++l);
+		delete _block_first;
+		_block_first = f;
+		_block_last = l;
+	}
+	void shrink()
+	{
+		block_type** f = new block_type*[_block_last - _block_first - 1];
+		block_type** p = _block_first + _gap_head_block->index + 1;
+		block_type** l = std::copy(_block_first, p, f);
+		delete *p;
+		l = std::copy(++p, _block_last, l);
+		delete _block_first;
+		_block_first = f;
+		_block_last = l;
+	}
+
+public:
+	gapped() : _block_first(new block_type*[2]), _block_last(_block_first + 1)
+	{
+		*_block_first = new block_type();
+		(*_block_first)->buffer = this;
+		(*_block_first)->index = 0;
+		(*_block_first)->first = (*_block_first)->last = (*_block_first)->elements;
+		*_block_last = new block_type();
+		(*_block_last)->buffer = this;
+		(*_block_last)->index = -1;
+		(*_block_last)->first = (*_block_last)->elements + SIZE - 1;
+		(*_block_last)->last = (*_block_last)->elements + SIZE;
+		_gap_head_block = *_block_first;
+		_gap_head_p = (*_block_first)->last;
+		_gap_tail_block = *_block_last;
+		_gap_tail_p = (*_block_last)->first;
+		++_block_last;
+	}
+	~gapped()
+	{
+		clear();
+		for (block_type** p = _block_first; p != _block_last; ++p) delete *p;
+		delete _block_first;
+	}
+	const_iterator begin() const
+	{
+		return _gap_head_p == (*_block_first)->elements ? gap() : const_iterator(*_block_first, (*_block_first)->elements);
+	}
+	const_iterator end() const
+	{
+		return const_iterator(*(_block_last - 1), (*(_block_last - 1))->elements + SIZE - 1);
+	}
+	size_type size() const
+	{
+		return internal_size() - 1;
+	}
+	size_type max_size() const
+	{
+		return _allocator.max_size();
+	}
+	bool empty() const
+	{
+		return size() == 0;
+	}
+	void clear()
+	{
+		erase_backward(gap_index());
+		erase_forward(size());
+	}
+	const_reference operator[](size_type p) const
+	{
+		return *pointer_at(p);
+	}
+	reference operator[](size_type p)
+	{
+		return *pointer_at(p);
+	}
+	A get_allocator() const
+	{
+		return _allocator;
+	}
+	const_iterator gap() const
+	{
+		return const_iterator(_gap_tail_block, _gap_tail_p);
+	}
+	size_type gap_index() const
+	{
+		return _gap_head_block->index * SIZE + gap_head_index();
+	}
+	void move_forward(size_type n)
+	{
+		move_forward(n, identical());
+	}
+	template<typename P>
+	void move_forward(size_type n, P p)
+	{
+		while (n > 0) {
+			size_type m = std::min(std::min(n, SIZE - gap_head_index()), SIZE - gap_tail_index());
+			move(_gap_tail_p, _gap_head_p, m, p);
+			_gap_head_p += m;
+			_gap_tail_p += m;
+			n -= m;
+			if (gap_head_index() >= SIZE) {
+				_gap_head_block->last = _gap_head_block->elements + SIZE;
+				int index = _gap_head_block->index;
+				_gap_head_block = _gap_head_block->next();
+				_gap_head_block->first = _gap_head_p = _gap_head_block->elements;
+				_gap_head_block->index = index + 1;
+			}
+			if (gap_tail_index() >= SIZE) {
+				_gap_tail_block = _gap_tail_block->next();
+				_gap_tail_p = _gap_tail_block->elements;
+			}
+		}
+		_gap_head_block->last = _gap_head_p;
+		_gap_tail_block->first = _gap_tail_p;
+	}
+	void move_backward(size_type n)
+	{
+		move_backward(n, identical());
+	}
+	template<typename P>
+	void move_backward(size_type n, P p)
+	{
+		while (n > 0) {
+			if (gap_head_index() <= 0) {
+				_gap_head_block = _gap_head_block->previous();
+				_gap_head_p = _gap_head_block->elements + SIZE;
+			}
+			if (gap_tail_index() <= 0) {
+				_gap_tail_block->first = _gap_tail_block->elements;
+				int index = _gap_tail_block->index;
+				_gap_tail_block = _gap_tail_block->previous();
+				_gap_tail_block->last = _gap_tail_p = _gap_tail_block->elements + SIZE;
+				_gap_tail_block->index = index - 1;
+			}
+			size_type m = std::min(std::min(n, gap_head_index()), gap_tail_index());
+			_gap_head_p -= m;
+			_gap_tail_p -= m;
+			n -= m;
+			move(_gap_head_p, _gap_tail_p, m, p);
+		}
+		_gap_head_block->last = _gap_head_p;
+		_gap_tail_block->first = _gap_tail_p;
+	}
+	void insert_forward(const E& v)
+	{
+		insert_forward(&v, &v + 1);
+	}
+	template<typename I>
+	void insert_forward(I first, I last)
+	{
+		while (first != last) {
+			new(_gap_head_p) E(*first);
+			++_gap_head_p;
+			++first;
+			if (_gap_head_p == _gap_head_block->elements + SIZE) {
+				if (_gap_head_block->next() == _gap_tail_block) grow();
+				_gap_head_block->last = _gap_head_p;
+				int index = _gap_head_block->index;
+				_gap_head_block = _gap_head_block->next();
+				_gap_head_block->first = _gap_head_p = _gap_head_block->elements;
+				_gap_head_block->index = index + 1;
+			}
+		}
+		if (_gap_head_block->next() == _gap_tail_block
+			/*&& gap_head_index() > gap_tail_index()*/) grow();
+		_gap_head_block->last = _gap_head_p;
+	}
+	void insert_backward(const E& v)
+	{
+		insert_backward(&v, &v + 1);
+	}
+	template<typename I>
+	void insert_backward(I first, I last)
+	{
+		while (first != last) {
+			if (_gap_tail_p == _gap_tail_block->elements) {
+				if (_gap_head_block->next() == _gap_tail_block) grow();
+				_gap_tail_block->first = _gap_tail_p;
+				int index = _gap_tail_block->index;
+				_gap_tail_block = _gap_tail_block->previous();
+				_gap_tail_block->last = _gap_tail_p = _gap_tail_block->elements + SIZE;
+				_gap_tail_block->index = index - 1;
+			}
+			--_gap_tail_p;
+			--last;
+			new(_gap_tail_p) E(*last);
+		}
+		if (_gap_head_block->next() == _gap_tail_block
+			/*&& gap_head_index() > gap_tail_index()*/) grow();
+		_gap_tail_block->first = _gap_tail_p;
+	}
+	void erase_forward(size_type n)
+	{
+		while (n > 0) {
+			size_type m = std::min(n, SIZE - gap_tail_index());
+			n -= m;
+			do {
+				_gap_tail_p->~E();
+				++_gap_tail_p;
+			} while (--m > 0);
+			if (_gap_tail_p == _gap_tail_block->elements + SIZE) {
+				_gap_tail_block = _gap_tail_block->next();
+				_gap_tail_p = _gap_tail_block->elements;
+				if (_block_last + _gap_tail_block->index - _block_first - _gap_head_block->index > 2) shrink();
+			}
+		}
+		_gap_tail_block->first = _gap_tail_p;
+	}
+	void erase_backward(size_type n)
+	{
+		while (n > 0) {
+			if (_gap_head_p == _gap_head_block->elements) {
+				_gap_head_block = _gap_head_block->previous();
+				_gap_head_p = _gap_head_block->elements + SIZE;
+				if (_block_last + _gap_tail_block->index - _block_first - _gap_head_block->index > 2) shrink();
+			}
+			size_type m = std::min(n, gap_head_index());
+			n -= m;
+			do {
+				--_gap_head_p;
+				_gap_head_p->~E();
+			} while (--m > 0);
+		}
+		_gap_head_block->last = _gap_head_p;
+	}
+};
+
+}
+
+#endif

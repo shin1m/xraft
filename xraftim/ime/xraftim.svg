@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<svg xml:space="preserve"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ version="1.1"
+ width="64px" height="64px" viewBox="0 0 64 64">
+	<defs>
+		<path id="x" d="
+M 8 56
+l 8 -24 -8 -24
+h 48
+l -8 24 8 24
+z
+" />
+		<filter id="Shine" filterUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+			<feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur0"/>
+			<feSpecularLighting in="blur0" surfaceScale="10" specularConstant="8" specularExponent="4" lighting-color="#0022CC" result="specOut">
+				<fePointLight x="-100" y="-100" z="200"/>
+			</feSpecularLighting>
+			<feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+			<feComposite in="SourceAlpha" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+
+			<feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="blur1"/>
+			<feSpecularLighting in="blur1" surfaceScale="10" specularConstant="1" specularExponent="5" lighting-color="#88AACC" result="specOut1">
+				<fePointLight x="-1000" y="-1000" z="20"/>
+			</feSpecularLighting>
+			<feComposite in="specOut1" in2="SourceAlpha" operator="in" result="specOut1"/>
+			<feComposite in="litPaint" in2="specOut1" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+
+			<feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur2"/>
+			<feOffset in="blur2" dx="2" dy="2" result="offsetBlur"/>
+
+			<feMerge>
+				<feMergeNode in="offsetBlur"/>
+				<feMergeNode in="litPaint"/>
+			</feMerge>
+		</filter>
+	</defs>
+	<g style="filter:url(#Shine)">
+		<use xlink:href="#x" fill="black" />
+	</g>
+</svg>

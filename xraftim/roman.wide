@@ -1,0 +1,1806 @@
+struct t_roman_table
+{
+	static const t_engine::t_map v_default;
+	static const t_engine::t_action* const v_default_children[];
+
+	static const t_engine::t_action_reduce v_2c;
+
+	static const t_engine::t_action_reduce v_2d;
+
+	static const t_engine::t_action_reduce v_2e;
+
+	static const t_engine::t_action_reduce v_61;
+
+	static const t_engine::t_action_push v_62;
+	static const t_engine::t_action* const v_62_children[];
+
+	static const t_engine::t_action_reduce v_62_61;
+
+	static const t_engine::t_action_reduce v_62_62;
+
+	static const t_engine::t_action_reduce v_62_65;
+
+	static const t_engine::t_action_reduce v_62_69;
+
+	static const t_engine::t_action_reduce v_62_6f;
+
+	static const t_engine::t_action_reduce v_62_75;
+
+	static const t_engine::t_action_push v_62_79;
+	static const t_engine::t_action* const v_62_79_children[];
+
+	static const t_engine::t_action_reduce v_62_79_61;
+
+	static const t_engine::t_action_reduce v_62_79_65;
+
+	static const t_engine::t_action_reduce v_62_79_69;
+
+	static const t_engine::t_action_reduce v_62_79_6f;
+
+	static const t_engine::t_action_reduce v_62_79_75;
+
+	static const t_engine::t_action_push v_63;
+	static const t_engine::t_action* const v_63_children[];
+
+	static const t_engine::t_action_reduce v_63_63;
+
+	static const t_engine::t_action_push v_63_68;
+	static const t_engine::t_action* const v_63_68_children[];
+
+	static const t_engine::t_action_reduce v_63_68_61;
+
+	static const t_engine::t_action_reduce v_63_68_65;
+
+	static const t_engine::t_action_reduce v_63_68_69;
+
+	static const t_engine::t_action_reduce v_63_68_6f;
+
+	static const t_engine::t_action_reduce v_63_68_75;
+
+	static const t_engine::t_action_push v_63_79;
+	static const t_engine::t_action* const v_63_79_children[];
+
+	static const t_engine::t_action_reduce v_63_79_61;
+
+	static const t_engine::t_action_reduce v_63_79_65;
+
+	static const t_engine::t_action_reduce v_63_79_69;
+
+	static const t_engine::t_action_reduce v_63_79_6f;
+
+	static const t_engine::t_action_reduce v_63_79_75;
+
+	static const t_engine::t_action_push v_64;
+	static const t_engine::t_action* const v_64_children[];
+
+	static const t_engine::t_action_reduce v_64_61;
+
+	static const t_engine::t_action_reduce v_64_64;
+
+	static const t_engine::t_action_reduce v_64_65;
+
+	static const t_engine::t_action_push v_64_68;
+	static const t_engine::t_action* const v_64_68_children[];
+
+	static const t_engine::t_action_reduce v_64_68_61;
+
+	static const t_engine::t_action_reduce v_64_68_65;
+
+	static const t_engine::t_action_reduce v_64_68_69;
+
+	static const t_engine::t_action_reduce v_64_68_6f;
+
+	static const t_engine::t_action_reduce v_64_68_75;
+
+	static const t_engine::t_action_reduce v_64_69;
+
+	static const t_engine::t_action_reduce v_64_6f;
+
+	static const t_engine::t_action_reduce v_64_75;
+
+	static const t_engine::t_action_push v_64_77;
+	static const t_engine::t_action* const v_64_77_children[];
+
+	static const t_engine::t_action_reduce v_64_77_61;
+
+	static const t_engine::t_action_reduce v_64_77_65;
+
+	static const t_engine::t_action_reduce v_64_77_69;
+
+	static const t_engine::t_action_reduce v_64_77_6f;
+
+	static const t_engine::t_action_reduce v_64_77_75;
+
+	static const t_engine::t_action_push v_64_79;
+	static const t_engine::t_action* const v_64_79_children[];
+
+	static const t_engine::t_action_reduce v_64_79_61;
+
+	static const t_engine::t_action_reduce v_64_79_65;
+
+	static const t_engine::t_action_reduce v_64_79_69;
+
+	static const t_engine::t_action_reduce v_64_79_6f;
+
+	static const t_engine::t_action_reduce v_64_79_75;
+
+	static const t_engine::t_action_reduce v_65;
+
+	static const t_engine::t_action_push v_66;
+	static const t_engine::t_action* const v_66_children[];
+
+	static const t_engine::t_action_reduce v_66_61;
+
+	static const t_engine::t_action_reduce v_66_65;
+
+	static const t_engine::t_action_reduce v_66_66;
+
+	static const t_engine::t_action_reduce v_66_69;
+
+	static const t_engine::t_action_reduce v_66_6f;
+
+	static const t_engine::t_action_reduce v_66_75;
+
+	static const t_engine::t_action_push v_66_79;
+	static const t_engine::t_action* const v_66_79_children[];
+
+	static const t_engine::t_action_reduce v_66_79_61;
+
+	static const t_engine::t_action_reduce v_66_79_65;
+
+	static const t_engine::t_action_reduce v_66_79_69;
+
+	static const t_engine::t_action_reduce v_66_79_6f;
+
+	static const t_engine::t_action_reduce v_66_79_75;
+
+	static const t_engine::t_action_push v_67;
+	static const t_engine::t_action* const v_67_children[];
+
+	static const t_engine::t_action_reduce v_67_61;
+
+	static const t_engine::t_action_reduce v_67_65;
+
+	static const t_engine::t_action_reduce v_67_67;
+
+	static const t_engine::t_action_reduce v_67_69;
+
+	static const t_engine::t_action_reduce v_67_6f;
+
+	static const t_engine::t_action_reduce v_67_75;
+
+	static const t_engine::t_action_push v_67_79;
+	static const t_engine::t_action* const v_67_79_children[];
+
+	static const t_engine::t_action_reduce v_67_79_61;
+
+	static const t_engine::t_action_reduce v_67_79_65;
+
+	static const t_engine::t_action_reduce v_67_79_69;
+
+	static const t_engine::t_action_reduce v_67_79_6f;
+
+	static const t_engine::t_action_reduce v_67_79_75;
+
+	static const t_engine::t_action_push v_68;
+	static const t_engine::t_action* const v_68_children[];
+
+	static const t_engine::t_action_reduce v_68_61;
+
+	static const t_engine::t_action_reduce v_68_65;
+
+	static const t_engine::t_action_reduce v_68_68;
+
+	static const t_engine::t_action_reduce v_68_69;
+
+	static const t_engine::t_action_reduce v_68_6f;
+
+	static const t_engine::t_action_reduce v_68_75;
+
+	static const t_engine::t_action_push v_68_79;
+	static const t_engine::t_action* const v_68_79_children[];
+
+	static const t_engine::t_action_reduce v_68_79_61;
+
+	static const t_engine::t_action_reduce v_68_79_65;
+
+	static const t_engine::t_action_reduce v_68_79_69;
+
+	static const t_engine::t_action_reduce v_68_79_6f;
+
+	static const t_engine::t_action_reduce v_68_79_75;
+
+	static const t_engine::t_action_reduce v_69;
+
+	static const t_engine::t_action_push v_6a;
+	static const t_engine::t_action* const v_6a_children[];
+
+	static const t_engine::t_action_reduce v_6a_61;
+
+	static const t_engine::t_action_reduce v_6a_65;
+
+	static const t_engine::t_action_reduce v_6a_69;
+
+	static const t_engine::t_action_reduce v_6a_6a;
+
+	static const t_engine::t_action_reduce v_6a_6f;
+
+	static const t_engine::t_action_reduce v_6a_75;
+
+	static const t_engine::t_action_push v_6a_79;
+	static const t_engine::t_action* const v_6a_79_children[];
+
+	static const t_engine::t_action_reduce v_6a_79_61;
+
+	static const t_engine::t_action_reduce v_6a_79_65;
+
+	static const t_engine::t_action_reduce v_6a_79_69;
+
+	static const t_engine::t_action_reduce v_6a_79_6f;
+
+	static const t_engine::t_action_reduce v_6a_79_75;
+
+	static const t_engine::t_action_push v_6b;
+	static const t_engine::t_action* const v_6b_children[];
+
+	static const t_engine::t_action_reduce v_6b_61;
+
+	static const t_engine::t_action_reduce v_6b_65;
+
+	static const t_engine::t_action_reduce v_6b_69;
+
+	static const t_engine::t_action_reduce v_6b_6b;
+
+	static const t_engine::t_action_reduce v_6b_6f;
+
+	static const t_engine::t_action_reduce v_6b_75;
+
+	static const t_engine::t_action_push v_6b_79;
+	static const t_engine::t_action* const v_6b_79_children[];
+
+	static const t_engine::t_action_reduce v_6b_79_61;
+
+	static const t_engine::t_action_reduce v_6b_79_65;
+
+	static const t_engine::t_action_reduce v_6b_79_69;
+
+	static const t_engine::t_action_reduce v_6b_79_6f;
+
+	static const t_engine::t_action_reduce v_6b_79_75;
+
+	static const t_engine::t_action_push v_6d;
+	static const t_engine::t_action* const v_6d_children[];
+
+	static const t_engine::t_action_reduce v_6d_61;
+
+	static const t_engine::t_action_reduce v_6d_65;
+
+	static const t_engine::t_action_reduce v_6d_69;
+
+	static const t_engine::t_action_reduce v_6d_6f;
+
+	static const t_engine::t_action_reduce v_6d_75;
+
+	static const t_engine::t_action_push v_6d_79;
+	static const t_engine::t_action* const v_6d_79_children[];
+
+	static const t_engine::t_action_reduce v_6d_79_61;
+
+	static const t_engine::t_action_reduce v_6d_79_65;
+
+	static const t_engine::t_action_reduce v_6d_79_69;
+
+	static const t_engine::t_action_reduce v_6d_79_6f;
+
+	static const t_engine::t_action_reduce v_6d_79_75;
+
+	static const t_engine::t_action_push v_6e;
+	static const t_engine::t_action* const v_6e_children[];
+
+	static const t_engine::t_action_reduce v_6e_61;
+
+	static const t_engine::t_action_reduce v_6e_65;
+
+	static const t_engine::t_action_reduce v_6e_69;
+
+	static const t_engine::t_action_reduce v_6e_6e;
+
+	static const t_engine::t_action_reduce v_6e_6f;
+
+	static const t_engine::t_action_reduce v_6e_75;
+
+	static const t_engine::t_action_push v_6e_79;
+	static const t_engine::t_action* const v_6e_79_children[];
+
+	static const t_engine::t_action_reduce v_6e_79_61;
+
+	static const t_engine::t_action_reduce v_6e_79_65;
+
+	static const t_engine::t_action_reduce v_6e_79_69;
+
+	static const t_engine::t_action_reduce v_6e_79_6f;
+
+	static const t_engine::t_action_reduce v_6e_79_75;
+
+	static const t_engine::t_action_reduce v_6f;
+
+	static const t_engine::t_action_push v_70;
+	static const t_engine::t_action* const v_70_children[];
+
+	static const t_engine::t_action_reduce v_70_61;
+
+	static const t_engine::t_action_reduce v_70_65;
+
+	static const t_engine::t_action_reduce v_70_69;
+
+	static const t_engine::t_action_reduce v_70_6f;
+
+	static const t_engine::t_action_reduce v_70_70;
+
+	static const t_engine::t_action_reduce v_70_75;
+
+	static const t_engine::t_action_push v_70_79;
+	static const t_engine::t_action* const v_70_79_children[];
+
+	static const t_engine::t_action_reduce v_70_79_61;
+
+	static const t_engine::t_action_reduce v_70_79_65;
+
+	static const t_engine::t_action_reduce v_70_79_69;
+
+	static const t_engine::t_action_reduce v_70_79_6f;
+
+	static const t_engine::t_action_reduce v_70_79_75;
+
+	static const t_engine::t_action_push v_72;
+	static const t_engine::t_action* const v_72_children[];
+
+	static const t_engine::t_action_reduce v_72_61;
+
+	static const t_engine::t_action_reduce v_72_65;
+
+	static const t_engine::t_action_reduce v_72_69;
+
+	static const t_engine::t_action_reduce v_72_6f;
+
+	static const t_engine::t_action_reduce v_72_72;
+
+	static const t_engine::t_action_reduce v_72_75;
+
+	static const t_engine::t_action_push v_72_79;
+	static const t_engine::t_action* const v_72_79_children[];
+
+	static const t_engine::t_action_reduce v_72_79_61;
+
+	static const t_engine::t_action_reduce v_72_79_65;
+
+	static const t_engine::t_action_reduce v_72_79_69;
+
+	static const t_engine::t_action_reduce v_72_79_6f;
+
+	static const t_engine::t_action_reduce v_72_79_75;
+
+	static const t_engine::t_action_push v_73;
+	static const t_engine::t_action* const v_73_children[];
+
+	static const t_engine::t_action_reduce v_73_61;
+
+	static const t_engine::t_action_reduce v_73_65;
+
+	static const t_engine::t_action_push v_73_68;
+	static const t_engine::t_action* const v_73_68_children[];
+
+	static const t_engine::t_action_reduce v_73_68_61;
+
+	static const t_engine::t_action_reduce v_73_68_65;
+
+	static const t_engine::t_action_reduce v_73_68_69;
+
+	static const t_engine::t_action_reduce v_73_68_6f;
+
+	static const t_engine::t_action_reduce v_73_68_75;
+
+	static const t_engine::t_action_reduce v_73_69;
+
+	static const t_engine::t_action_reduce v_73_6f;
+
+	static const t_engine::t_action_reduce v_73_73;
+
+	static const t_engine::t_action_reduce v_73_75;
+
+	static const t_engine::t_action_push v_73_79;
+	static const t_engine::t_action* const v_73_79_children[];
+
+	static const t_engine::t_action_reduce v_73_79_61;
+
+	static const t_engine::t_action_reduce v_73_79_65;
+
+	static const t_engine::t_action_reduce v_73_79_69;
+
+	static const t_engine::t_action_reduce v_73_79_6f;
+
+	static const t_engine::t_action_reduce v_73_79_75;
+
+	static const t_engine::t_action_push v_74;
+	static const t_engine::t_action* const v_74_children[];
+
+	static const t_engine::t_action_reduce v_74_61;
+
+	static const t_engine::t_action_reduce v_74_65;
+
+	static const t_engine::t_action_push v_74_68;
+	static const t_engine::t_action* const v_74_68_children[];
+
+	static const t_engine::t_action_reduce v_74_68_61;
+
+	static const t_engine::t_action_reduce v_74_68_65;
+
+	static const t_engine::t_action_reduce v_74_68_69;
+
+	static const t_engine::t_action_reduce v_74_68_6f;
+
+	static const t_engine::t_action_reduce v_74_68_75;
+
+	static const t_engine::t_action_reduce v_74_69;
+
+	static const t_engine::t_action_reduce v_74_6f;
+
+	static const t_engine::t_action_push v_74_73;
+	static const t_engine::t_action* const v_74_73_children[];
+
+	static const t_engine::t_action_reduce v_74_73_75;
+
+	static const t_engine::t_action_reduce v_74_74;
+
+	static const t_engine::t_action_reduce v_74_75;
+
+	static const t_engine::t_action_push v_74_79;
+	static const t_engine::t_action* const v_74_79_children[];
+
+	static const t_engine::t_action_reduce v_74_79_61;
+
+	static const t_engine::t_action_reduce v_74_79_65;
+
+	static const t_engine::t_action_reduce v_74_79_69;
+
+	static const t_engine::t_action_reduce v_74_79_6f;
+
+	static const t_engine::t_action_reduce v_74_79_75;
+
+	static const t_engine::t_action_reduce v_75;
+
+	static const t_engine::t_action_push v_76;
+	static const t_engine::t_action* const v_76_children[];
+
+	static const t_engine::t_action_reduce v_76_61;
+
+	static const t_engine::t_action_reduce v_76_65;
+
+	static const t_engine::t_action_reduce v_76_69;
+
+	static const t_engine::t_action_reduce v_76_6f;
+
+	static const t_engine::t_action_reduce v_76_75;
+
+	static const t_engine::t_action_reduce v_76_76;
+
+	static const t_engine::t_action_push v_77;
+	static const t_engine::t_action* const v_77_children[];
+
+	static const t_engine::t_action_reduce v_77_61;
+
+	static const t_engine::t_action_reduce v_77_65;
+
+	static const t_engine::t_action_push v_77_68;
+	static const t_engine::t_action* const v_77_68_children[];
+
+	static const t_engine::t_action_reduce v_77_68_61;
+
+	static const t_engine::t_action_reduce v_77_68_65;
+
+	static const t_engine::t_action_reduce v_77_68_69;
+
+	static const t_engine::t_action_reduce v_77_68_6f;
+
+	static const t_engine::t_action_reduce v_77_68_75;
+
+	static const t_engine::t_action_reduce v_77_69;
+
+	static const t_engine::t_action_reduce v_77_6f;
+
+	static const t_engine::t_action_reduce v_77_75;
+
+	static const t_engine::t_action_reduce v_77_77;
+
+	static const t_engine::t_action_push v_78;
+	static const t_engine::t_action* const v_78_children[];
+
+	static const t_engine::t_action_reduce v_78_2c;
+
+	static const t_engine::t_action_reduce v_78_2e;
+
+	static const t_engine::t_action_reduce v_78_2f;
+
+	static const t_engine::t_action_reduce v_78_61;
+
+	static const t_engine::t_action_reduce v_78_65;
+
+	static const t_engine::t_action_reduce v_78_69;
+
+	static const t_engine::t_action_push v_78_6b;
+	static const t_engine::t_action* const v_78_6b_children[];
+
+	static const t_engine::t_action_reduce v_78_6b_61;
+
+	static const t_engine::t_action_reduce v_78_6b_65;
+
+	static const t_engine::t_action_reduce v_78_6f;
+
+	static const t_engine::t_action_push v_78_74;
+	static const t_engine::t_action* const v_78_74_children[];
+
+	static const t_engine::t_action_push v_78_74_73;
+	static const t_engine::t_action* const v_78_74_73_children[];
+
+	static const t_engine::t_action_reduce v_78_74_73_75;
+
+	static const t_engine::t_action_reduce v_78_74_75;
+
+	static const t_engine::t_action_reduce v_78_75;
+
+	static const t_engine::t_action_push v_78_77;
+	static const t_engine::t_action* const v_78_77_children[];
+
+	static const t_engine::t_action_reduce v_78_77_61;
+
+	static const t_engine::t_action_reduce v_78_77_65;
+
+	static const t_engine::t_action_reduce v_78_77_69;
+
+	static const t_engine::t_action_reduce v_78_78;
+
+	static const t_engine::t_action_push v_78_79;
+	static const t_engine::t_action* const v_78_79_children[];
+
+	static const t_engine::t_action_reduce v_78_79_61;
+
+	static const t_engine::t_action_reduce v_78_79_6f;
+
+	static const t_engine::t_action_reduce v_78_79_75;
+
+	static const t_engine::t_action_push v_79;
+	static const t_engine::t_action* const v_79_children[];
+
+	static const t_engine::t_action_reduce v_79_61;
+
+	static const t_engine::t_action_reduce v_79_65;
+
+	static const t_engine::t_action_reduce v_79_6f;
+
+	static const t_engine::t_action_reduce v_79_75;
+
+	static const t_engine::t_action_reduce v_79_79;
+
+	static const t_engine::t_action_push v_7a;
+	static const t_engine::t_action* const v_7a_children[];
+
+	static const t_engine::t_action_reduce v_7a_21;
+
+	static const t_engine::t_action_reduce v_7a_22;
+
+	static const t_engine::t_action_reduce v_7a_23;
+
+	static const t_engine::t_action_reduce v_7a_24;
+
+	static const t_engine::t_action_reduce v_7a_25;
+
+	static const t_engine::t_action_reduce v_7a_26;
+
+	static const t_engine::t_action_reduce v_7a_27;
+
+	static const t_engine::t_action_reduce v_7a_28;
+
+	static const t_engine::t_action_reduce v_7a_29;
+
+	static const t_engine::t_action_reduce v_7a_2a;
+
+	static const t_engine::t_action_reduce v_7a_2b;
+
+	static const t_engine::t_action_reduce v_7a_2c;
+
+	static const t_engine::t_action_reduce v_7a_2d;
+
+	static const t_engine::t_action_reduce v_7a_2e;
+
+	static const t_engine::t_action_reduce v_7a_2f;
+
+	static const t_engine::t_action_reduce v_7a_30;
+
+	static const t_engine::t_action_reduce v_7a_31;
+
+	static const t_engine::t_action_reduce v_7a_32;
+
+	static const t_engine::t_action_reduce v_7a_33;
+
+	static const t_engine::t_action_reduce v_7a_34;
+
+	static const t_engine::t_action_reduce v_7a_35;
+
+	static const t_engine::t_action_reduce v_7a_36;
+
+	static const t_engine::t_action_reduce v_7a_37;
+
+	static const t_engine::t_action_reduce v_7a_38;
+
+	static const t_engine::t_action_reduce v_7a_39;
+
+	static const t_engine::t_action_reduce v_7a_3a;
+
+	static const t_engine::t_action_reduce v_7a_3b;
+
+	static const t_engine::t_action_reduce v_7a_3c;
+
+	static const t_engine::t_action_reduce v_7a_3d;
+
+	static const t_engine::t_action_reduce v_7a_3e;
+
+	static const t_engine::t_action_reduce v_7a_3f;
+
+	static const t_engine::t_action_reduce v_7a_40;
+
+	static const t_engine::t_action_reduce v_7a_5b;
+
+	static const t_engine::t_action_reduce v_7a_5c;
+
+	static const t_engine::t_action_reduce v_7a_5d;
+
+	static const t_engine::t_action_reduce v_7a_5e;
+
+	static const t_engine::t_action_reduce v_7a_5f;
+
+	static const t_engine::t_action_reduce v_7a_60;
+
+	static const t_engine::t_action_reduce v_7a_61;
+
+	static const t_engine::t_action_reduce v_7a_65;
+
+	static const t_engine::t_action_reduce v_7a_69;
+
+	static const t_engine::t_action_reduce v_7a_6f;
+
+	static const t_engine::t_action_reduce v_7a_75;
+
+	static const t_engine::t_action_push v_7a_79;
+	static const t_engine::t_action* const v_7a_79_children[];
+
+	static const t_engine::t_action_reduce v_7a_79_61;
+
+	static const t_engine::t_action_reduce v_7a_79_65;
+
+	static const t_engine::t_action_reduce v_7a_79_69;
+
+	static const t_engine::t_action_reduce v_7a_79_6f;
+
+	static const t_engine::t_action_reduce v_7a_79_75;
+
+	static const t_engine::t_action_reduce v_7a_7a;
+
+	static const t_engine::t_action_reduce v_7a_7b;
+
+	static const t_engine::t_action_reduce v_7a_7c;
+
+	static const t_engine::t_action_reduce v_7a_7d;
+
+	static const t_engine::t_action_reduce v_7a_7e;
+
+};
+
+const t_engine::t_map t_roman_table::v_default(t_roman_table::v_default_children, t_roman_table::v_default_children + 27);
+const t_engine::t_action* const t_roman_table::v_default_children[] = {
+	&t_roman_table::v_2c,
+	&t_roman_table::v_2d,
+	&t_roman_table::v_2e,
+	&t_roman_table::v_61,
+	&t_roman_table::v_62,
+	&t_roman_table::v_63,
+	&t_roman_table::v_64,
+	&t_roman_table::v_65,
+	&t_roman_table::v_66,
+	&t_roman_table::v_67,
+	&t_roman_table::v_68,
+	&t_roman_table::v_69,
+	&t_roman_table::v_6a,
+	&t_roman_table::v_6b,
+	&t_roman_table::v_6d,
+	&t_roman_table::v_6e,
+	&t_roman_table::v_6f,
+	&t_roman_table::v_70,
+	&t_roman_table::v_72,
+	&t_roman_table::v_73,
+	&t_roman_table::v_74,
+	&t_roman_table::v_75,
+	&t_roman_table::v_76,
+	&t_roman_table::v_77,
+	&t_roman_table::v_78,
+	&t_roman_table::v_79,
+	&t_roman_table::v_7a
+};
+
+const t_engine::t_action_reduce t_roman_table::v_2c(',', L"\u3001", L"\u3001");
+
+const t_engine::t_action_reduce t_roman_table::v_2d('-', L"\u30fc", L"\u30fc");
+
+const t_engine::t_action_reduce t_roman_table::v_2e('.', L"\u3002", L"\u3002");
+
+const t_engine::t_action_reduce t_roman_table::v_61('a', L"\u3042", L"\u30a2");
+
+const t_engine::t_action_push t_roman_table::v_62('b', v_62_children, v_62_children + 7);
+const t_engine::t_action* const t_roman_table::v_62_children[] = {
+	&t_roman_table::v_62_61,
+	&t_roman_table::v_62_62,
+	&t_roman_table::v_62_65,
+	&t_roman_table::v_62_69,
+	&t_roman_table::v_62_6f,
+	&t_roman_table::v_62_75,
+	&t_roman_table::v_62_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_62_61('a', L"\u3070", L"\u30d0");
+
+const t_engine::t_action_reduce t_roman_table::v_62_62('b', L"\u3063", L"\u30c3", &v_62);
+
+const t_engine::t_action_reduce t_roman_table::v_62_65('e', L"\u3079", L"\u30d9");
+
+const t_engine::t_action_reduce t_roman_table::v_62_69('i', L"\u3073", L"\u30d3");
+
+const t_engine::t_action_reduce t_roman_table::v_62_6f('o', L"\u307c", L"\u30dc");
+
+const t_engine::t_action_reduce t_roman_table::v_62_75('u', L"\u3076", L"\u30d6");
+
+const t_engine::t_action_push t_roman_table::v_62_79('y', v_62_79_children, v_62_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_62_79_children[] = {
+	&t_roman_table::v_62_79_61,
+	&t_roman_table::v_62_79_65,
+	&t_roman_table::v_62_79_69,
+	&t_roman_table::v_62_79_6f,
+	&t_roman_table::v_62_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_62_79_61('a', L"\u3073\u3083", L"\u30d3\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_62_79_65('e', L"\u3073\u3047", L"\u30d3\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_62_79_69('i', L"\u3073\u3043", L"\u30d3\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_62_79_6f('o', L"\u3073\u3087", L"\u30d3\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_62_79_75('u', L"\u3073\u3085", L"\u30d3\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_63('c', v_63_children, v_63_children + 3);
+const t_engine::t_action* const t_roman_table::v_63_children[] = {
+	&t_roman_table::v_63_63,
+	&t_roman_table::v_63_68,
+	&t_roman_table::v_63_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_63_63('c', L"\u3063", L"\u30c3", &v_63);
+
+const t_engine::t_action_push t_roman_table::v_63_68('h', v_63_68_children, v_63_68_children + 5);
+const t_engine::t_action* const t_roman_table::v_63_68_children[] = {
+	&t_roman_table::v_63_68_61,
+	&t_roman_table::v_63_68_65,
+	&t_roman_table::v_63_68_69,
+	&t_roman_table::v_63_68_6f,
+	&t_roman_table::v_63_68_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_63_68_61('a', L"\u3061\u3083", L"\u30c1\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_63_68_65('e', L"\u3061\u3047", L"\u30c1\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_63_68_69('i', L"\u3061", L"\u30c1");
+
+const t_engine::t_action_reduce t_roman_table::v_63_68_6f('o', L"\u3061\u3087", L"\u30c1\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_63_68_75('u', L"\u3061\u3085", L"\u30c1\u30e5");
+
+
+const t_engine::t_action_push t_roman_table::v_63_79('y', v_63_79_children, v_63_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_63_79_children[] = {
+	&t_roman_table::v_63_79_61,
+	&t_roman_table::v_63_79_65,
+	&t_roman_table::v_63_79_69,
+	&t_roman_table::v_63_79_6f,
+	&t_roman_table::v_63_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_63_79_61('a', L"\u3061\u3083", L"\u30c1\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_63_79_65('e', L"\u3061\u3047", L"\u30c1\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_63_79_69('i', L"\u3061\u3043", L"\u30c1\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_63_79_6f('o', L"\u3061\u3087", L"\u30c1\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_63_79_75('u', L"\u3061\u3085", L"\u30c1\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_64('d', v_64_children, v_64_children + 9);
+const t_engine::t_action* const t_roman_table::v_64_children[] = {
+	&t_roman_table::v_64_61,
+	&t_roman_table::v_64_64,
+	&t_roman_table::v_64_65,
+	&t_roman_table::v_64_68,
+	&t_roman_table::v_64_69,
+	&t_roman_table::v_64_6f,
+	&t_roman_table::v_64_75,
+	&t_roman_table::v_64_77,
+	&t_roman_table::v_64_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_64_61('a', L"\u3060", L"\u30c0");
+
+const t_engine::t_action_reduce t_roman_table::v_64_64('d', L"\u3063", L"\u30c3", &v_64);
+
+const t_engine::t_action_reduce t_roman_table::v_64_65('e', L"\u3067", L"\u30c7");
+
+const t_engine::t_action_push t_roman_table::v_64_68('h', v_64_68_children, v_64_68_children + 5);
+const t_engine::t_action* const t_roman_table::v_64_68_children[] = {
+	&t_roman_table::v_64_68_61,
+	&t_roman_table::v_64_68_65,
+	&t_roman_table::v_64_68_69,
+	&t_roman_table::v_64_68_6f,
+	&t_roman_table::v_64_68_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_64_68_61('a', L"\u3067\u3083", L"\u30c7\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_64_68_65('e', L"\u3067\u3047", L"\u30c7\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_64_68_69('i', L"\u3067\u3043", L"\u30c7\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_64_68_6f('o', L"\u3067\u3087", L"\u30c7\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_64_68_75('u', L"\u3067\u3085", L"\u30c7\u30e5");
+
+
+const t_engine::t_action_reduce t_roman_table::v_64_69('i', L"\u3062", L"\u30c2");
+
+const t_engine::t_action_reduce t_roman_table::v_64_6f('o', L"\u3069", L"\u30c9");
+
+const t_engine::t_action_reduce t_roman_table::v_64_75('u', L"\u3065", L"\u30c5");
+
+const t_engine::t_action_push t_roman_table::v_64_77('w', v_64_77_children, v_64_77_children + 5);
+const t_engine::t_action* const t_roman_table::v_64_77_children[] = {
+	&t_roman_table::v_64_77_61,
+	&t_roman_table::v_64_77_65,
+	&t_roman_table::v_64_77_69,
+	&t_roman_table::v_64_77_6f,
+	&t_roman_table::v_64_77_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_64_77_61('a', L"\u3069\u3041", L"\u30c9\u30a1");
+
+const t_engine::t_action_reduce t_roman_table::v_64_77_65('e', L"\u3069\u3047", L"\u30c9\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_64_77_69('i', L"\u3069\u3043", L"\u30c9\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_64_77_6f('o', L"\u3069\u3049", L"\u30c9\u30a9");
+
+const t_engine::t_action_reduce t_roman_table::v_64_77_75('u', L"\u3069\u3045", L"\u30c9\u30a5");
+
+
+const t_engine::t_action_push t_roman_table::v_64_79('y', v_64_79_children, v_64_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_64_79_children[] = {
+	&t_roman_table::v_64_79_61,
+	&t_roman_table::v_64_79_65,
+	&t_roman_table::v_64_79_69,
+	&t_roman_table::v_64_79_6f,
+	&t_roman_table::v_64_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_64_79_61('a', L"\u3062\u3083", L"\u30c2\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_64_79_65('e', L"\u3062\u3047", L"\u30c2\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_64_79_69('i', L"\u3062\u3043", L"\u30c2\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_64_79_6f('o', L"\u3062\u3087", L"\u30c2\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_64_79_75('u', L"\u3062\u3085", L"\u30c2\u30e5");
+
+
+
+const t_engine::t_action_reduce t_roman_table::v_65('e', L"\u3048", L"\u30a8");
+
+const t_engine::t_action_push t_roman_table::v_66('f', v_66_children, v_66_children + 7);
+const t_engine::t_action* const t_roman_table::v_66_children[] = {
+	&t_roman_table::v_66_61,
+	&t_roman_table::v_66_65,
+	&t_roman_table::v_66_66,
+	&t_roman_table::v_66_69,
+	&t_roman_table::v_66_6f,
+	&t_roman_table::v_66_75,
+	&t_roman_table::v_66_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_66_61('a', L"\u3075\u3041", L"\u30d5\u30a1");
+
+const t_engine::t_action_reduce t_roman_table::v_66_65('e', L"\u3075\u3047", L"\u30d5\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_66_66('f', L"\u3063", L"\u30c3", &v_66);
+
+const t_engine::t_action_reduce t_roman_table::v_66_69('i', L"\u3075\u3043", L"\u30d5\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_66_6f('o', L"\u3075\u3049", L"\u30d5\u30a9");
+
+const t_engine::t_action_reduce t_roman_table::v_66_75('u', L"\u3075", L"\u30d5");
+
+const t_engine::t_action_push t_roman_table::v_66_79('y', v_66_79_children, v_66_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_66_79_children[] = {
+	&t_roman_table::v_66_79_61,
+	&t_roman_table::v_66_79_65,
+	&t_roman_table::v_66_79_69,
+	&t_roman_table::v_66_79_6f,
+	&t_roman_table::v_66_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_66_79_61('a', L"\u3075\u3083", L"\u30d5\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_66_79_65('e', L"\u3075\u3047", L"\u30d5\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_66_79_69('i', L"\u3075\u3043", L"\u30d5\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_66_79_6f('o', L"\u3075\u3087", L"\u30d5\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_66_79_75('u', L"\u3075\u3085", L"\u30d5\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_67('g', v_67_children, v_67_children + 7);
+const t_engine::t_action* const t_roman_table::v_67_children[] = {
+	&t_roman_table::v_67_61,
+	&t_roman_table::v_67_65,
+	&t_roman_table::v_67_67,
+	&t_roman_table::v_67_69,
+	&t_roman_table::v_67_6f,
+	&t_roman_table::v_67_75,
+	&t_roman_table::v_67_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_67_61('a', L"\u304c", L"\u30ac");
+
+const t_engine::t_action_reduce t_roman_table::v_67_65('e', L"\u3052", L"\u30b2");
+
+const t_engine::t_action_reduce t_roman_table::v_67_67('g', L"\u3063", L"\u30c3", &v_67);
+
+const t_engine::t_action_reduce t_roman_table::v_67_69('i', L"\u304e", L"\u30ae");
+
+const t_engine::t_action_reduce t_roman_table::v_67_6f('o', L"\u3054", L"\u30b4");
+
+const t_engine::t_action_reduce t_roman_table::v_67_75('u', L"\u3050", L"\u30b0");
+
+const t_engine::t_action_push t_roman_table::v_67_79('y', v_67_79_children, v_67_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_67_79_children[] = {
+	&t_roman_table::v_67_79_61,
+	&t_roman_table::v_67_79_65,
+	&t_roman_table::v_67_79_69,
+	&t_roman_table::v_67_79_6f,
+	&t_roman_table::v_67_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_67_79_61('a', L"\u304e\u3083", L"\u30ae\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_67_79_65('e', L"\u304e\u3047", L"\u30ae\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_67_79_69('i', L"\u304e\u3043", L"\u30ae\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_67_79_6f('o', L"\u304e\u3087", L"\u30ae\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_67_79_75('u', L"\u304e\u3085", L"\u30ae\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_68('h', v_68_children, v_68_children + 7);
+const t_engine::t_action* const t_roman_table::v_68_children[] = {
+	&t_roman_table::v_68_61,
+	&t_roman_table::v_68_65,
+	&t_roman_table::v_68_68,
+	&t_roman_table::v_68_69,
+	&t_roman_table::v_68_6f,
+	&t_roman_table::v_68_75,
+	&t_roman_table::v_68_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_68_61('a', L"\u306f", L"\u30cf");
+
+const t_engine::t_action_reduce t_roman_table::v_68_65('e', L"\u3078", L"\u30d8");
+
+const t_engine::t_action_reduce t_roman_table::v_68_68('h', L"\u3063", L"\u30c3", &v_68);
+
+const t_engine::t_action_reduce t_roman_table::v_68_69('i', L"\u3072", L"\u30d2");
+
+const t_engine::t_action_reduce t_roman_table::v_68_6f('o', L"\u307b", L"\u30db");
+
+const t_engine::t_action_reduce t_roman_table::v_68_75('u', L"\u3075", L"\u30d5");
+
+const t_engine::t_action_push t_roman_table::v_68_79('y', v_68_79_children, v_68_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_68_79_children[] = {
+	&t_roman_table::v_68_79_61,
+	&t_roman_table::v_68_79_65,
+	&t_roman_table::v_68_79_69,
+	&t_roman_table::v_68_79_6f,
+	&t_roman_table::v_68_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_68_79_61('a', L"\u3072\u3083", L"\u30d2\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_68_79_65('e', L"\u3072\u3047", L"\u30d2\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_68_79_69('i', L"\u3072\u3043", L"\u30d2\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_68_79_6f('o', L"\u3072\u3087", L"\u30d2\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_68_79_75('u', L"\u3072\u3085", L"\u30d2\u30e5");
+
+
+
+const t_engine::t_action_reduce t_roman_table::v_69('i', L"\u3044", L"\u30a4");
+
+const t_engine::t_action_push t_roman_table::v_6a('j', v_6a_children, v_6a_children + 7);
+const t_engine::t_action* const t_roman_table::v_6a_children[] = {
+	&t_roman_table::v_6a_61,
+	&t_roman_table::v_6a_65,
+	&t_roman_table::v_6a_69,
+	&t_roman_table::v_6a_6a,
+	&t_roman_table::v_6a_6f,
+	&t_roman_table::v_6a_75,
+	&t_roman_table::v_6a_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6a_61('a', L"\u3058\u3083", L"\u30b8\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_65('e', L"\u3058\u3047", L"\u30b8\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_69('i', L"\u3058", L"\u30b8");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_6a('j', L"\u3063", L"\u30c3", &v_6a);
+
+const t_engine::t_action_reduce t_roman_table::v_6a_6f('o', L"\u3058\u3087", L"\u30b8\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_75('u', L"\u3058\u3085", L"\u30b8\u30e5");
+
+const t_engine::t_action_push t_roman_table::v_6a_79('y', v_6a_79_children, v_6a_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_6a_79_children[] = {
+	&t_roman_table::v_6a_79_61,
+	&t_roman_table::v_6a_79_65,
+	&t_roman_table::v_6a_79_69,
+	&t_roman_table::v_6a_79_6f,
+	&t_roman_table::v_6a_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6a_79_61('a', L"\u3058\u3083", L"\u30b8\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_79_65('e', L"\u3058\u3047", L"\u30b8\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_79_69('i', L"\u3058\u3043", L"\u30b8\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_79_6f('o', L"\u3058\u3087", L"\u30b8\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_6a_79_75('u', L"\u3058\u3085", L"\u30b8\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_6b('k', v_6b_children, v_6b_children + 7);
+const t_engine::t_action* const t_roman_table::v_6b_children[] = {
+	&t_roman_table::v_6b_61,
+	&t_roman_table::v_6b_65,
+	&t_roman_table::v_6b_69,
+	&t_roman_table::v_6b_6b,
+	&t_roman_table::v_6b_6f,
+	&t_roman_table::v_6b_75,
+	&t_roman_table::v_6b_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6b_61('a', L"\u304b", L"\u30ab");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_65('e', L"\u3051", L"\u30b1");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_69('i', L"\u304d", L"\u30ad");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_6b('k', L"\u3063", L"\u30c3", &v_6b);
+
+const t_engine::t_action_reduce t_roman_table::v_6b_6f('o', L"\u3053", L"\u30b3");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_75('u', L"\u304f", L"\u30af");
+
+const t_engine::t_action_push t_roman_table::v_6b_79('y', v_6b_79_children, v_6b_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_6b_79_children[] = {
+	&t_roman_table::v_6b_79_61,
+	&t_roman_table::v_6b_79_65,
+	&t_roman_table::v_6b_79_69,
+	&t_roman_table::v_6b_79_6f,
+	&t_roman_table::v_6b_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6b_79_61('a', L"\u304d\u3083", L"\u30ad\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_79_65('e', L"\u304d\u3047", L"\u30ad\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_79_69('i', L"\u304d\u3043", L"\u30ad\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_79_6f('o', L"\u304d\u3087", L"\u30ad\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_6b_79_75('u', L"\u304d\u3085", L"\u30ad\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_6d('m', v_6d_children, v_6d_children + 6);
+const t_engine::t_action* const t_roman_table::v_6d_children[] = {
+	&t_roman_table::v_6d_61,
+	&t_roman_table::v_6d_65,
+	&t_roman_table::v_6d_69,
+	&t_roman_table::v_6d_6f,
+	&t_roman_table::v_6d_75,
+	&t_roman_table::v_6d_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6d_61('a', L"\u307e", L"\u30de");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_65('e', L"\u3081", L"\u30e1");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_69('i', L"\u307f", L"\u30df");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_6f('o', L"\u3082", L"\u30e2");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_75('u', L"\u3080", L"\u30e0");
+
+const t_engine::t_action_push t_roman_table::v_6d_79('y', v_6d_79_children, v_6d_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_6d_79_children[] = {
+	&t_roman_table::v_6d_79_61,
+	&t_roman_table::v_6d_79_65,
+	&t_roman_table::v_6d_79_69,
+	&t_roman_table::v_6d_79_6f,
+	&t_roman_table::v_6d_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6d_79_61('a', L"\u307f\u3083", L"\u30df\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_79_65('e', L"\u307f\u3047", L"\u30df\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_79_69('i', L"\u307f\u3043", L"\u30df\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_79_6f('o', L"\u307f\u3087", L"\u30df\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_6d_79_75('u', L"\u307f\u3085", L"\u30df\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_6e('n', v_6e_children, v_6e_children + 7);
+const t_engine::t_action* const t_roman_table::v_6e_children[] = {
+	&t_roman_table::v_6e_61,
+	&t_roman_table::v_6e_65,
+	&t_roman_table::v_6e_69,
+	&t_roman_table::v_6e_6e,
+	&t_roman_table::v_6e_6f,
+	&t_roman_table::v_6e_75,
+	&t_roman_table::v_6e_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6e_61('a', L"\u306a", L"\u30ca");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_65('e', L"\u306d", L"\u30cd");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_69('i', L"\u306b", L"\u30cb");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_6e('n', L"\u3093", L"\u30f3");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_6f('o', L"\u306e", L"\u30ce");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_75('u', L"\u306c", L"\u30cc");
+
+const t_engine::t_action_push t_roman_table::v_6e_79('y', v_6e_79_children, v_6e_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_6e_79_children[] = {
+	&t_roman_table::v_6e_79_61,
+	&t_roman_table::v_6e_79_65,
+	&t_roman_table::v_6e_79_69,
+	&t_roman_table::v_6e_79_6f,
+	&t_roman_table::v_6e_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_6e_79_61('a', L"\u306b\u3083", L"\u30cb\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_79_65('e', L"\u306b\u3047", L"\u30cb\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_79_69('i', L"\u306b\u3043", L"\u30cb\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_79_6f('o', L"\u306b\u3087", L"\u30cb\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_6e_79_75('u', L"\u306b\u3085", L"\u30cb\u30e5");
+
+
+
+const t_engine::t_action_reduce t_roman_table::v_6f('o', L"\u304a", L"\u30aa");
+
+const t_engine::t_action_push t_roman_table::v_70('p', v_70_children, v_70_children + 7);
+const t_engine::t_action* const t_roman_table::v_70_children[] = {
+	&t_roman_table::v_70_61,
+	&t_roman_table::v_70_65,
+	&t_roman_table::v_70_69,
+	&t_roman_table::v_70_6f,
+	&t_roman_table::v_70_70,
+	&t_roman_table::v_70_75,
+	&t_roman_table::v_70_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_70_61('a', L"\u3071", L"\u30d1");
+
+const t_engine::t_action_reduce t_roman_table::v_70_65('e', L"\u307a", L"\u30da");
+
+const t_engine::t_action_reduce t_roman_table::v_70_69('i', L"\u3074", L"\u30d4");
+
+const t_engine::t_action_reduce t_roman_table::v_70_6f('o', L"\u307d", L"\u30dd");
+
+const t_engine::t_action_reduce t_roman_table::v_70_70('p', L"\u3063", L"\u30c3", &v_70);
+
+const t_engine::t_action_reduce t_roman_table::v_70_75('u', L"\u3077", L"\u30d7");
+
+const t_engine::t_action_push t_roman_table::v_70_79('y', v_70_79_children, v_70_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_70_79_children[] = {
+	&t_roman_table::v_70_79_61,
+	&t_roman_table::v_70_79_65,
+	&t_roman_table::v_70_79_69,
+	&t_roman_table::v_70_79_6f,
+	&t_roman_table::v_70_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_70_79_61('a', L"\u3074\u3083", L"\u30d4\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_70_79_65('e', L"\u3074\u3047", L"\u30d4\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_70_79_69('i', L"\u3074\u3043", L"\u30d4\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_70_79_6f('o', L"\u3074\u3087", L"\u30d4\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_70_79_75('u', L"\u3074\u3085", L"\u30d4\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_72('r', v_72_children, v_72_children + 7);
+const t_engine::t_action* const t_roman_table::v_72_children[] = {
+	&t_roman_table::v_72_61,
+	&t_roman_table::v_72_65,
+	&t_roman_table::v_72_69,
+	&t_roman_table::v_72_6f,
+	&t_roman_table::v_72_72,
+	&t_roman_table::v_72_75,
+	&t_roman_table::v_72_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_72_61('a', L"\u3089", L"\u30e9");
+
+const t_engine::t_action_reduce t_roman_table::v_72_65('e', L"\u308c", L"\u30ec");
+
+const t_engine::t_action_reduce t_roman_table::v_72_69('i', L"\u308a", L"\u30ea");
+
+const t_engine::t_action_reduce t_roman_table::v_72_6f('o', L"\u308d", L"\u30ed");
+
+const t_engine::t_action_reduce t_roman_table::v_72_72('r', L"\u3063", L"\u30c3", &v_72);
+
+const t_engine::t_action_reduce t_roman_table::v_72_75('u', L"\u308b", L"\u30eb");
+
+const t_engine::t_action_push t_roman_table::v_72_79('y', v_72_79_children, v_72_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_72_79_children[] = {
+	&t_roman_table::v_72_79_61,
+	&t_roman_table::v_72_79_65,
+	&t_roman_table::v_72_79_69,
+	&t_roman_table::v_72_79_6f,
+	&t_roman_table::v_72_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_72_79_61('a', L"\u308a\u3083", L"\u30ea\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_72_79_65('e', L"\u308a\u3047", L"\u30ea\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_72_79_69('i', L"\u308a\u3043", L"\u30ea\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_72_79_6f('o', L"\u308a\u3087", L"\u30ea\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_72_79_75('u', L"\u308a\u3085", L"\u30ea\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_73('s', v_73_children, v_73_children + 8);
+const t_engine::t_action* const t_roman_table::v_73_children[] = {
+	&t_roman_table::v_73_61,
+	&t_roman_table::v_73_65,
+	&t_roman_table::v_73_68,
+	&t_roman_table::v_73_69,
+	&t_roman_table::v_73_6f,
+	&t_roman_table::v_73_73,
+	&t_roman_table::v_73_75,
+	&t_roman_table::v_73_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_73_61('a', L"\u3055", L"\u30b5");
+
+const t_engine::t_action_reduce t_roman_table::v_73_65('e', L"\u305b", L"\u30bb");
+
+const t_engine::t_action_push t_roman_table::v_73_68('h', v_73_68_children, v_73_68_children + 5);
+const t_engine::t_action* const t_roman_table::v_73_68_children[] = {
+	&t_roman_table::v_73_68_61,
+	&t_roman_table::v_73_68_65,
+	&t_roman_table::v_73_68_69,
+	&t_roman_table::v_73_68_6f,
+	&t_roman_table::v_73_68_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_73_68_61('a', L"\u3057\u3083", L"\u30b7\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_73_68_65('e', L"\u3057\u3047", L"\u30b7\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_73_68_69('i', L"\u3057", L"\u30b7");
+
+const t_engine::t_action_reduce t_roman_table::v_73_68_6f('o', L"\u3057\u3087", L"\u30b7\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_73_68_75('u', L"\u3057\u3085", L"\u30b7\u30e5");
+
+
+const t_engine::t_action_reduce t_roman_table::v_73_69('i', L"\u3057", L"\u30b7");
+
+const t_engine::t_action_reduce t_roman_table::v_73_6f('o', L"\u305d", L"\u30bd");
+
+const t_engine::t_action_reduce t_roman_table::v_73_73('s', L"\u3063", L"\u30c3", &v_73);
+
+const t_engine::t_action_reduce t_roman_table::v_73_75('u', L"\u3059", L"\u30b9");
+
+const t_engine::t_action_push t_roman_table::v_73_79('y', v_73_79_children, v_73_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_73_79_children[] = {
+	&t_roman_table::v_73_79_61,
+	&t_roman_table::v_73_79_65,
+	&t_roman_table::v_73_79_69,
+	&t_roman_table::v_73_79_6f,
+	&t_roman_table::v_73_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_73_79_61('a', L"\u3057\u3083", L"\u30b7\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_73_79_65('e', L"\u3057\u3047", L"\u30b7\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_73_79_69('i', L"\u3057\u3043", L"\u30b7\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_73_79_6f('o', L"\u3057\u3087", L"\u30b7\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_73_79_75('u', L"\u3057\u3085", L"\u30b7\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_74('t', v_74_children, v_74_children + 9);
+const t_engine::t_action* const t_roman_table::v_74_children[] = {
+	&t_roman_table::v_74_61,
+	&t_roman_table::v_74_65,
+	&t_roman_table::v_74_68,
+	&t_roman_table::v_74_69,
+	&t_roman_table::v_74_6f,
+	&t_roman_table::v_74_73,
+	&t_roman_table::v_74_74,
+	&t_roman_table::v_74_75,
+	&t_roman_table::v_74_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_74_61('a', L"\u305f", L"\u30bf");
+
+const t_engine::t_action_reduce t_roman_table::v_74_65('e', L"\u3066", L"\u30c6");
+
+const t_engine::t_action_push t_roman_table::v_74_68('h', v_74_68_children, v_74_68_children + 5);
+const t_engine::t_action* const t_roman_table::v_74_68_children[] = {
+	&t_roman_table::v_74_68_61,
+	&t_roman_table::v_74_68_65,
+	&t_roman_table::v_74_68_69,
+	&t_roman_table::v_74_68_6f,
+	&t_roman_table::v_74_68_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_74_68_61('a', L"\u3066\u3041", L"\u30c6\u30a1");
+
+const t_engine::t_action_reduce t_roman_table::v_74_68_65('e', L"\u3066\u3047", L"\u30c6\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_74_68_69('i', L"\u3066\u3043", L"\u30c6\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_74_68_6f('o', L"\u3066\u3087", L"\u30c6\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_74_68_75('u', L"\u3066\u3085", L"\u30c6\u30e5");
+
+
+const t_engine::t_action_reduce t_roman_table::v_74_69('i', L"\u3061", L"\u30c1");
+
+const t_engine::t_action_reduce t_roman_table::v_74_6f('o', L"\u3068", L"\u30c8");
+
+const t_engine::t_action_push t_roman_table::v_74_73('s', v_74_73_children, v_74_73_children + 1);
+const t_engine::t_action* const t_roman_table::v_74_73_children[] = {
+	&t_roman_table::v_74_73_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_74_73_75('u', L"\u3064", L"\u30c4");
+
+
+const t_engine::t_action_reduce t_roman_table::v_74_74('t', L"\u3063", L"\u30c3", &v_74);
+
+const t_engine::t_action_reduce t_roman_table::v_74_75('u', L"\u3064", L"\u30c4");
+
+const t_engine::t_action_push t_roman_table::v_74_79('y', v_74_79_children, v_74_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_74_79_children[] = {
+	&t_roman_table::v_74_79_61,
+	&t_roman_table::v_74_79_65,
+	&t_roman_table::v_74_79_69,
+	&t_roman_table::v_74_79_6f,
+	&t_roman_table::v_74_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_74_79_61('a', L"\u3061\u3083", L"\u30c1\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_74_79_65('e', L"\u3061\u3047", L"\u30c1\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_74_79_69('i', L"\u3061\u3043", L"\u30c1\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_74_79_6f('o', L"\u3061\u3087", L"\u30c1\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_74_79_75('u', L"\u3061\u3085", L"\u30c1\u30e5");
+
+
+
+const t_engine::t_action_reduce t_roman_table::v_75('u', L"\u3046", L"\u30a6");
+
+const t_engine::t_action_push t_roman_table::v_76('v', v_76_children, v_76_children + 6);
+const t_engine::t_action* const t_roman_table::v_76_children[] = {
+	&t_roman_table::v_76_61,
+	&t_roman_table::v_76_65,
+	&t_roman_table::v_76_69,
+	&t_roman_table::v_76_6f,
+	&t_roman_table::v_76_75,
+	&t_roman_table::v_76_76
+};
+
+const t_engine::t_action_reduce t_roman_table::v_76_61('a', L"\u3046\u309b\u3041", L"\u30f4\u30a1");
+
+const t_engine::t_action_reduce t_roman_table::v_76_65('e', L"\u3046\u309b\u3047", L"\u30f4\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_76_69('i', L"\u3046\u309b\u3043", L"\u30f4\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_76_6f('o', L"\u3046\u309b\u3049", L"\u30f4\u30a9");
+
+const t_engine::t_action_reduce t_roman_table::v_76_75('u', L"\u3046\u309b", L"\u30f4");
+
+const t_engine::t_action_reduce t_roman_table::v_76_76('v', L"\u3063", L"\u30c3", &v_76);
+
+
+const t_engine::t_action_push t_roman_table::v_77('w', v_77_children, v_77_children + 7);
+const t_engine::t_action* const t_roman_table::v_77_children[] = {
+	&t_roman_table::v_77_61,
+	&t_roman_table::v_77_65,
+	&t_roman_table::v_77_68,
+	&t_roman_table::v_77_69,
+	&t_roman_table::v_77_6f,
+	&t_roman_table::v_77_75,
+	&t_roman_table::v_77_77
+};
+
+const t_engine::t_action_reduce t_roman_table::v_77_61('a', L"\u308f", L"\u30ef");
+
+const t_engine::t_action_reduce t_roman_table::v_77_65('e', L"\u3046\u3047", L"\u30a6\u30a7");
+
+const t_engine::t_action_push t_roman_table::v_77_68('h', v_77_68_children, v_77_68_children + 5);
+const t_engine::t_action* const t_roman_table::v_77_68_children[] = {
+	&t_roman_table::v_77_68_61,
+	&t_roman_table::v_77_68_65,
+	&t_roman_table::v_77_68_69,
+	&t_roman_table::v_77_68_6f,
+	&t_roman_table::v_77_68_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_77_68_61('a', L"\u3046\u3041", L"\u30a6\u30a1");
+
+const t_engine::t_action_reduce t_roman_table::v_77_68_65('e', L"\u3046\u3047", L"\u30a6\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_77_68_69('i', L"\u3046\u3043", L"\u30a6\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_77_68_6f('o', L"\u3046\u3049", L"\u30a6\u30a9");
+
+const t_engine::t_action_reduce t_roman_table::v_77_68_75('u', L"\u3046\u3045", L"\u30a6\u30a5");
+
+
+const t_engine::t_action_reduce t_roman_table::v_77_69('i', L"\u3046\u3043", L"\u30a6\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_77_6f('o', L"\u3092", L"\u30f2");
+
+const t_engine::t_action_reduce t_roman_table::v_77_75('u', L"\u3046", L"\u30a6");
+
+const t_engine::t_action_reduce t_roman_table::v_77_77('w', L"\u3063", L"\u30c3", &v_77);
+
+
+const t_engine::t_action_push t_roman_table::v_78('x', v_78_children, v_78_children + 13);
+const t_engine::t_action* const t_roman_table::v_78_children[] = {
+	&t_roman_table::v_78_2c,
+	&t_roman_table::v_78_2e,
+	&t_roman_table::v_78_2f,
+	&t_roman_table::v_78_61,
+	&t_roman_table::v_78_65,
+	&t_roman_table::v_78_69,
+	&t_roman_table::v_78_6b,
+	&t_roman_table::v_78_6f,
+	&t_roman_table::v_78_74,
+	&t_roman_table::v_78_75,
+	&t_roman_table::v_78_77,
+	&t_roman_table::v_78_78,
+	&t_roman_table::v_78_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_78_2c(',', L"\uff0c", L"\uff0c");
+
+const t_engine::t_action_reduce t_roman_table::v_78_2e('.', L"\uff0e", L"\uff0e");
+
+const t_engine::t_action_reduce t_roman_table::v_78_2f('/', L"\u30fb", L"\u30fb");
+
+const t_engine::t_action_reduce t_roman_table::v_78_61('a', L"\u3041", L"\u30a1");
+
+const t_engine::t_action_reduce t_roman_table::v_78_65('e', L"\u3047", L"\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_78_69('i', L"\u3043", L"\u30a3");
+
+const t_engine::t_action_push t_roman_table::v_78_6b('k', v_78_6b_children, v_78_6b_children + 2);
+const t_engine::t_action* const t_roman_table::v_78_6b_children[] = {
+	&t_roman_table::v_78_6b_61,
+	&t_roman_table::v_78_6b_65
+};
+
+const t_engine::t_action_reduce t_roman_table::v_78_6b_61('a', L"\u304b", L"\u30f5");
+
+const t_engine::t_action_reduce t_roman_table::v_78_6b_65('e', L"\u3051", L"\u30f6");
+
+
+const t_engine::t_action_reduce t_roman_table::v_78_6f('o', L"\u3049", L"\u30a9");
+
+const t_engine::t_action_push t_roman_table::v_78_74('t', v_78_74_children, v_78_74_children + 2);
+const t_engine::t_action* const t_roman_table::v_78_74_children[] = {
+	&t_roman_table::v_78_74_73,
+	&t_roman_table::v_78_74_75
+};
+
+const t_engine::t_action_push t_roman_table::v_78_74_73('s', v_78_74_73_children, v_78_74_73_children + 1);
+const t_engine::t_action* const t_roman_table::v_78_74_73_children[] = {
+	&t_roman_table::v_78_74_73_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_78_74_73_75('u', L"\u3063", L"\u30c3");
+
+
+const t_engine::t_action_reduce t_roman_table::v_78_74_75('u', L"\u3063", L"\u30c3");
+
+
+const t_engine::t_action_reduce t_roman_table::v_78_75('u', L"\u3045", L"\u30a5");
+
+const t_engine::t_action_push t_roman_table::v_78_77('w', v_78_77_children, v_78_77_children + 3);
+const t_engine::t_action* const t_roman_table::v_78_77_children[] = {
+	&t_roman_table::v_78_77_61,
+	&t_roman_table::v_78_77_65,
+	&t_roman_table::v_78_77_69
+};
+
+const t_engine::t_action_reduce t_roman_table::v_78_77_61('a', L"\u308e", L"\u30ee");
+
+const t_engine::t_action_reduce t_roman_table::v_78_77_65('e', L"\u3091", L"\u30f1");
+
+const t_engine::t_action_reduce t_roman_table::v_78_77_69('i', L"\u3090", L"\u30f0");
+
+
+const t_engine::t_action_reduce t_roman_table::v_78_78('x', L"\u3063", L"\u30c3", &v_78);
+
+const t_engine::t_action_push t_roman_table::v_78_79('y', v_78_79_children, v_78_79_children + 3);
+const t_engine::t_action* const t_roman_table::v_78_79_children[] = {
+	&t_roman_table::v_78_79_61,
+	&t_roman_table::v_78_79_6f,
+	&t_roman_table::v_78_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_78_79_61('a', L"\u3083", L"\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_78_79_6f('o', L"\u3087", L"\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_78_79_75('u', L"\u3085", L"\u30e5");
+
+
+
+const t_engine::t_action_push t_roman_table::v_79('y', v_79_children, v_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_79_children[] = {
+	&t_roman_table::v_79_61,
+	&t_roman_table::v_79_65,
+	&t_roman_table::v_79_6f,
+	&t_roman_table::v_79_75,
+	&t_roman_table::v_79_79
+};
+
+const t_engine::t_action_reduce t_roman_table::v_79_61('a', L"\u3084", L"\u30e4");
+
+const t_engine::t_action_reduce t_roman_table::v_79_65('e', L"\u3044\u3047", L"\u30a4\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_79_6f('o', L"\u3088", L"\u30e8");
+
+const t_engine::t_action_reduce t_roman_table::v_79_75('u', L"\u3086", L"\u30e6");
+
+const t_engine::t_action_reduce t_roman_table::v_79_79('y', L"\u3063", L"\u30c3", &v_79);
+
+
+const t_engine::t_action_push t_roman_table::v_7a('z', v_7a_children, v_7a_children + 49);
+const t_engine::t_action* const t_roman_table::v_7a_children[] = {
+	&t_roman_table::v_7a_21,
+	&t_roman_table::v_7a_22,
+	&t_roman_table::v_7a_23,
+	&t_roman_table::v_7a_24,
+	&t_roman_table::v_7a_25,
+	&t_roman_table::v_7a_26,
+	&t_roman_table::v_7a_27,
+	&t_roman_table::v_7a_28,
+	&t_roman_table::v_7a_29,
+	&t_roman_table::v_7a_2a,
+	&t_roman_table::v_7a_2b,
+	&t_roman_table::v_7a_2c,
+	&t_roman_table::v_7a_2d,
+	&t_roman_table::v_7a_2e,
+	&t_roman_table::v_7a_2f,
+	&t_roman_table::v_7a_30,
+	&t_roman_table::v_7a_31,
+	&t_roman_table::v_7a_32,
+	&t_roman_table::v_7a_33,
+	&t_roman_table::v_7a_34,
+	&t_roman_table::v_7a_35,
+	&t_roman_table::v_7a_36,
+	&t_roman_table::v_7a_37,
+	&t_roman_table::v_7a_38,
+	&t_roman_table::v_7a_39,
+	&t_roman_table::v_7a_3a,
+	&t_roman_table::v_7a_3b,
+	&t_roman_table::v_7a_3c,
+	&t_roman_table::v_7a_3d,
+	&t_roman_table::v_7a_3e,
+	&t_roman_table::v_7a_3f,
+	&t_roman_table::v_7a_40,
+	&t_roman_table::v_7a_5b,
+	&t_roman_table::v_7a_5c,
+	&t_roman_table::v_7a_5d,
+	&t_roman_table::v_7a_5e,
+	&t_roman_table::v_7a_5f,
+	&t_roman_table::v_7a_60,
+	&t_roman_table::v_7a_61,
+	&t_roman_table::v_7a_65,
+	&t_roman_table::v_7a_69,
+	&t_roman_table::v_7a_6f,
+	&t_roman_table::v_7a_75,
+	&t_roman_table::v_7a_79,
+	&t_roman_table::v_7a_7a,
+	&t_roman_table::v_7a_7b,
+	&t_roman_table::v_7a_7c,
+	&t_roman_table::v_7a_7d,
+	&t_roman_table::v_7a_7e
+};
+
+const t_engine::t_action_reduce t_roman_table::v_7a_21('!', L"\uff01", L"\uff01");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_22('"', L"\u2033", L"\u2033");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_23('#', L"\uff03", L"\uff03");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_24('$', L"\uff04", L"\uff04");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_25('%', L"\uff05", L"\uff05");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_26('&', L"\uff06", L"\uff06");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_27('\'', L"\u2032", L"\u2032");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_28('(', L"\uff08", L"\uff08");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_29(')', L"\uff09", L"\uff09");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_2a('*', L"\uff0a", L"\uff0a");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_2b('+', L"\uff0b", L"\uff0b");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_2c(',', L",", L",");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_2d('-', L"-", L"-");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_2e('.', L".", L".");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_2f('/', L"\uff0f", L"\uff0f");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_30('0', L"\uff10", L"\uff10");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_31('1', L"\uff11", L"\uff11");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_32('2', L"\uff12", L"\uff12");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_33('3', L"\uff13", L"\uff13");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_34('4', L"\uff14", L"\uff14");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_35('5', L"\uff15", L"\uff15");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_36('6', L"\uff16", L"\uff16");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_37('7', L"\uff17", L"\uff17");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_38('8', L"\uff18", L"\uff18");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_39('9', L"\uff19", L"\uff19");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_3a(':', L"\uff1a", L"\uff1a");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_3b(';', L"\uff1b", L"\uff1b");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_3c('<', L"\uff1c", L"\uff1c");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_3d('=', L"\uff1d", L"\uff1d");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_3e('>', L"\uff1e", L"\uff1e");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_3f('?', L"\uff1f", L"\uff1f");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_40('@', L"\uff20", L"\uff20");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_5b('[', L"\u300c", L"\u300c");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_5c('\\', L"\uff3c", L"\uff3c");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_5d(']', L"\u300d", L"\u300d");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_5e('^', L"\u2227", L"\u2227");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_5f('_', L"\uff3f", L"\uff3f");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_60('`', L"\u2018", L"\u2018");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_61('a', L"\u3056", L"\u30b6");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_65('e', L"\u305c", L"\u30bc");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_69('i', L"\u3058", L"\u30b8");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_6f('o', L"\u305e", L"\u30be");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_75('u', L"\u305a", L"\u30ba");
+
+const t_engine::t_action_push t_roman_table::v_7a_79('y', v_7a_79_children, v_7a_79_children + 5);
+const t_engine::t_action* const t_roman_table::v_7a_79_children[] = {
+	&t_roman_table::v_7a_79_61,
+	&t_roman_table::v_7a_79_65,
+	&t_roman_table::v_7a_79_69,
+	&t_roman_table::v_7a_79_6f,
+	&t_roman_table::v_7a_79_75
+};
+
+const t_engine::t_action_reduce t_roman_table::v_7a_79_61('a', L"\u3058\u3083", L"\u30b8\u30e3");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_79_65('e', L"\u3058\u3047", L"\u30b8\u30a7");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_79_69('i', L"\u3058\u3043", L"\u30b8\u30a3");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_79_6f('o', L"\u3058\u3087", L"\u30b8\u30e7");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_79_75('u', L"\u3058\u3085", L"\u30b8\u30e5");
+
+
+const t_engine::t_action_reduce t_roman_table::v_7a_7a('z', L"\u3063", L"\u30c3", &v_7a);
+
+const t_engine::t_action_reduce t_roman_table::v_7a_7b('{', L"\uff5b", L"\uff5b");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_7c('|', L"\uff5c", L"\uff5c");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_7d('}', L"\uff5d", L"\uff5d");
+
+const t_engine::t_action_reduce t_roman_table::v_7a_7e('~', L"\uff5e", L"\uff5e");
+
+
+
