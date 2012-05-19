@@ -101,9 +101,8 @@ inline void f_draw(t_graphics& a_graphics, T_callable a_callable)
 	t_bitmap* bitmap = dynamic_cast<t_bitmap*>(p);
 	if (bitmap) {
 		Display* display = f_application()->f_x11_display();
-		int screen = DefaultScreen(display);
-		Visual* visual = DefaultVisual(display, screen);
-		f_draw(cairo_xlib_surface_create(display, pixmap->f_handle(), visual, bitmap->f_width(), bitmap->f_height()), a_callable);
+		Screen* screen = DefaultScreenOfDisplay(display);
+		f_draw(cairo_xlib_surface_create_for_bitmap(display, pixmap->f_handle(), screen, bitmap->f_width(), bitmap->f_height()), a_callable);
 		return;
 	}
 }
