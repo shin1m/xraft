@@ -32,8 +32,6 @@ t_transfer t_type_of<t_input_context>::f_composition(t_extension* a_extension, t
 void t_type_of<t_input_context>::f_define(t_extension* a_extension)
 {
 	t_define<t_input_context, xraft::t_object>(a_extension, L"InputContext")
-		(L"open", t_member<bool (t_input_context::*)() const, &t_input_context::f_open, t_with_application_thread>())
-		(L"open__", t_member<void (t_input_context::*)(bool), &t_input_context::f_open__, t_with_application_thread>())
 		(L"composition", t_member<t_transfer (*)(t_extension*, t_input_context&), f_composition, t_with_application_thread>())
 	;
 }

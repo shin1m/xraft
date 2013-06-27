@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component>
+	<name>xraft.xraftim</name>
+	<description>XRAFT Input Method</description>
+	<exec>@libexecdir@/xraftim --ibus</exec>
+	<version>@VERSION@</version>
+	<author>Shin-ichi MORITA &lt;shin1morita@gmail.com&gt;</author>
+	<license>MIT</license>
+	<homepage>http://github.com/shin1m/xraft</homepage>
+	<textdomain>xraftim</textdomain>
+	<engines>
+		<engine>
+			<name>xraftim</name>
+			<language>ja</language>
+			<license>MIT</license>
+			<author>Shin-ichi MORITA &lt;shin1morita@gmail.com&gt;</author>
+			<layout>jp</layout>
+			<longname>xraftim</longname>
+			<description>XRAFT Input Method</description>
+                        <icon>ibus-keyboard</icon>
+			<rank>99</rank>
+		</engine>
+	</engines>
+</component>

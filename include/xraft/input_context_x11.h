@@ -43,7 +43,6 @@ class t_input_context : public t_object
 	static void f_negotiate();
 
 	std::string v_context;
-	bool v_enabled;
 	std::vector<wchar_t> v_cs;
 	std::vector<t_input_attribute> v_as;
 
@@ -51,8 +50,6 @@ class t_input_context : public t_object
 	void f_create();
 	void f_on_disconnected();
 	void f_on_commit_text(dbus::t_message& a_message);
-	void f_on_enabled(dbus::t_message& a_message);
-	void f_on_disabled(dbus::t_message& a_message);
 	void f_on_update_preedit_text(dbus::t_message& a_message);
 	dbus::t_reply f_send(const char* a_method, int a_type, ...) const;
 	void f_focus();
@@ -62,14 +59,6 @@ class t_input_context : public t_object
 	void f_preedit();
 
 public:
-	t_input_context() : v_enabled(false)
-	{
-	}
-	bool f_open() const
-	{
-		return v_enabled;
-	}
-	void f_open__(bool a_open);
 	void f_composition(std::vector<wchar_t>& a_cs, std::vector<t_input_attribute>& a_as)
 	{
 		a_cs = v_cs;

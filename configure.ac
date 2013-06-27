@@ -1,4 +1,4 @@
-AC_INIT([xraft], [201111])
+AC_INIT([xraft], [201306])
 AM_INIT_AUTOMAKE([foreign nostdinc dist-bzip2 no-dist-gzip])
 AC_CONFIG_SRCDIR([src/application_x11.cc])
 

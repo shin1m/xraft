@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include <dirent.h>
 #include <xraft/converter.h>
@@ -81,13 +82,12 @@ class t_ibus_engine : public t_engine
 	static DBusHandlerResult f_message(DBusConnection* a_connection, DBusMessage* a_message, void* a_data);
 
 	std::string v_path;
-	bool v_on;
 	bool v_choosing;
 	std::vector<wchar_t> v_cs;
 	std::vector<t_attribute> v_as;
 	bool v_forwarded;
 
-	t_ibus_engine(t_dictionary& a_dictionary) : t_engine(a_dictionary), v_on(false), v_choosing(false)
+	t_ibus_engine(t_dictionary& a_dictionary) : t_engine(a_dictionary), v_choosing(false)
 	{
 		char path[46];
 		std::sprintf(path, "/org/freedesktop/IBus/Engine/%zx", this);
@@ -121,7 +121,7 @@ class t_ibus_engine : public t_engine
 		return !v_forwarded;
 	}
 	void f_focus_in();
-	void f_on__(bool a_on);
+	void f_hide();
 
 protected:
 	virtual void f_on_forward();
@@ -237,7 +237,7 @@ void t_ibus_engine::f_on_commit(const wchar_t* a_cs, size_t a_n)
 
 void t_ibus_engine::f_on_status()
 {
-	if (!v_on || v_choosing) return;
+	if (v_choosing) return;
 	std::wstring s = f_status();
 	std::vector<wchar_t> cs(s.begin(), s.end());
 	size_t n = f_states().size() - 1;
@@ -312,18 +312,9 @@ void t_ibus_engine::f_focus_in()
 		f_on_status();
 }
 
-void t_ibus_engine::f_on__(bool a_on)
+void t_ibus_engine::f_hide()
 {
-	if (a_on == v_on) return;
-	v_on = a_on;
-	if (v_on) {
-		f_emit("Enabled");
-		f_on_status();
-	} else {
-		f_reset();
-		f_update_auxiliary_text(0, 0, false);
-		f_emit("Disabled");
-	}
+	f_update_auxiliary_text(0, 0, false);
 }
 
 void t_ibus_engine::f_unregister(DBusConnection* a_connection, void* a_data)
@@ -351,11 +342,15 @@ DBusHandlerResult t_ibus_engine::f_message(DBusConnection* a_connection, DBusMes
 		} else if (dbus_message_has_member(a_message, "Reset") != FALSE) {
 			engine->f_reset();
 			return DBUS_HANDLER_RESULT_HANDLED;
-		} else if (dbus_message_has_member(a_message, "Enable") != FALSE) {
-			engine->f_on__(true);
-			return DBUS_HANDLER_RESULT_HANDLED;
-		} else if (dbus_message_has_member(a_message, "Disable") != FALSE) {
-			engine->f_on__(false);
+		} else if (dbus_message_has_member(a_message, "SetCursorLocation") != FALSE) {
+			dbus::t_message method(a_message, dbus::t_own());
+			dbus_int32_t x;
+			dbus_int32_t y;
+			dbus_int32_t w;
+			dbus_int32_t h;
+			method.f_get(DBUS_TYPE_INT32, &x, DBUS_TYPE_INT32, &y, DBUS_TYPE_INT32, &w, DBUS_TYPE_INT32, &h, DBUS_TYPE_INVALID);
+//std::fprintf(stderr, "SetCursorLocation: %d, %d, %d, %d\n", x, y, w, h);
+			if (h <= 0) engine->f_hide();
 			return DBUS_HANDLER_RESULT_HANDLED;
 		}
 	}
@@ -411,12 +406,16 @@ DBusHandlerResult f_factory(DBusConnection* a_connection, DBusMessage* a_message
 
 int main(int argc, char* argv[])
 {
+	bool ibus = argc > 1 && std::strcmp(argv[1], "--ibus") == 0;
 	v_bus.f_open(ibus::f_address().c_str());
 	{
 		DBusObjectPathVTable table = {NULL, f_factory};
 		if (dbus_connection_register_object_path(v_bus, "/org/freedesktop/IBus/Factory", &table, NULL) == FALSE) throw std::runtime_error("dbus_connection_register_object_path failed.");
 	}
-	{
+	if (ibus) {
+		if (dbus_bus_register(v_bus, NULL) != TRUE) throw std::runtime_error("dbus_bus_register failed.");
+		if (dbus_bus_request_name(v_bus, "xraft.xraftim", DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_ALLOW_REPLACEMENT, NULL) == -1) throw std::runtime_error("dbus_bus_request_name failed.");
+	} else {
 		dbus::t_message message = dbus_message_new_method_call("org.freedesktop.IBus", "/org/freedesktop/IBus", "org.freedesktop.IBus", "RegisterComponent");
 		if (!message) throw std::runtime_error("dbus_message_new_method_call failed.");
 		DBusMessageIter i;
@@ -425,15 +424,15 @@ int main(int argc, char* argv[])
 			ibus::t_variant_builder b0(i, "(sa{sv}ssssssssavav)", "IBusComponent");
 			b0 << "xraft.xraftim";
 			b0 << "XRAFT Input Method";
-			b0 << "0.0";
+			b0 << "0.0.0";
 			b0 << "MIT";
 			b0 << "Shin-ichi MORITA <shin1morita@gmail.com>";
-			b0 << "http://";
+			b0 << "http://github.com/shin1m/xraft";
 			b0 << "";
 			b0 << "xraftim";
 			dbus::t_container_builder(b0, DBUS_TYPE_ARRAY, "v");
 			dbus::t_container_builder b1(b0, DBUS_TYPE_ARRAY, "v");
-			ibus::t_variant_builder b2(b1, "(sa{sv}ssssssssuss)", "IBusEngineDesc");
+			ibus::t_variant_builder b2(b1, "(sa{sv}ssssssssussssss)", "IBusEngineDesc");
 			b2 << "xraftim";
 			b2 << "xraftim";
 			b2 << "XRAFT Input Method";
@@ -445,8 +444,14 @@ int main(int argc, char* argv[])
 			b2 << dbus_uint32_t(0);
 			b2 << "";
 			b2 << "";
+			b2 << "";
+			b2 << "";
+			b2 << "";
+			b2 << "";
 		}
 		if (dbus_connection_send(v_bus, message, NULL) == FALSE) throw std::runtime_error("dbus_connection_send failed.");
+		const char* name = "xraftim";
+		v_bus.f_send("org.freedesktop.IBus", "/org/freedesktop/IBus", "org.freedesktop.IBus", "SetGlobalEngine", DBUS_TYPE_STRING, &name, DBUS_TYPE_INVALID);
 	}
 	while (dbus_connection_read_write_dispatch(v_bus, -1) != FALSE);
 	return 0;

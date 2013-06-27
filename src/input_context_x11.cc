@@ -83,7 +83,7 @@ void t_input_context::f_negotiate()
 	f_application()->v_input_negotiating = false;
 	t_pointer<t_input_context> context;
 	if (f_application()->v_focus) context = f_application()->v_focus->v_input_context;
-	if (context && context->v_enabled) {
+	if (context) {
 		context->f_preedit();
 		t_rectangle spot = f_application()->v_focus->f_on_input_spot();
 		t_point point = f_application()->v_focus->f_to_screen(spot);
@@ -102,8 +102,6 @@ t_input_context::~t_input_context()
 	dbus::t_connection& bus = f_application()->f_input_bus();
 	bus.f_remove_disconnected(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disconnected>);
 	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
-	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "Enabled");
-	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "Disabled");
 	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
 	bus.f_send("org.freedesktop.IBus", v_context.c_str(), "org.freedesktop.IBus.Service", "Destroy", DBUS_TYPE_INVALID);
 }
@@ -121,13 +119,7 @@ void t_input_context::f_create()
 //std::fprintf(stderr, "CreateInputContext: %s\n", v_context.c_str());
 	bus.f_add_disconnected(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disconnected>);
 	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_commit_text>, v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
-	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_enabled>, v_context.c_str(), "org.freedesktop.IBus.InputContext", "Enabled");
-	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disabled>, v_context.c_str(), "org.freedesktop.IBus.InputContext", "Disabled");
 	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_update_preedit_text>, v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
-	message = f_send("IsEnabled", DBUS_TYPE_INVALID)();
-	dbus_bool_t enabled;
-	message.f_get(DBUS_TYPE_BOOLEAN, &enabled, DBUS_TYPE_INVALID);
-	v_enabled = enabled != FALSE;
 	dbus_uint32_t capabilities = ibus::e_capability__PREEDIT_TEXT | ibus::e_capability__FOCUS;
 	f_send("SetCapabilities", DBUS_TYPE_UINT32, &capabilities, DBUS_TYPE_INVALID);
 }
@@ -147,18 +139,6 @@ void t_input_context::f_on_commit_text(dbus::t_message& a_message)
 	dbus_message_iter_init(a_message, &i);
 	f_text(i, cs, as);
 	f_application()->v_focus->f_on_input_commit(&cs[0], cs.size());
-}
-
-void t_input_context::f_on_enabled(dbus::t_message& a_message)
-{
-	f_application()->v_input_negotiating = true;
-	v_enabled = true;
-}
-
-void t_input_context::f_on_disabled(dbus::t_message& a_message)
-{
-	f_application()->v_input_negotiating = true;
-	v_enabled = false;
 }
 
 void t_input_context::f_on_update_preedit_text(dbus::t_message& a_message)
@@ -355,12 +335,6 @@ void t_input_context::f_preedit()
 	} else {
 		f_application()->v_input_last->f_hide();
 	}
-}
-
-void t_input_context::f_open__(bool a_open)
-{
-	f_create();
-	f_send(a_open ? "Enable" : "Disable", DBUS_TYPE_INVALID);
 }
 
 }
