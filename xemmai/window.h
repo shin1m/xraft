@@ -16,9 +16,7 @@ struct t_type_of<t_cross_mode> : t_enum_of<t_cross_mode, xraft::xemmai::t_extens
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_base(a_module, a_super)
-	{
-	}
+	using t_base::t_base;
 };
 
 template<>
@@ -26,9 +24,7 @@ struct t_type_of<t_cross_detail> : t_enum_of<t_cross_detail, xraft::xemmai::t_ex
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_base(a_module, a_super)
-	{
-	}
+	using t_base::t_base;
 };
 
 template<>
@@ -46,9 +42,7 @@ struct t_type_of<t_window> : t_type_of<t_drawable>
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<t_drawable>(a_module, a_super)
-	{
-	}
+	using t_type_of<t_drawable>::t_type_of;
 };
 
 template<>
@@ -56,11 +50,9 @@ struct t_type_of<t_widget> : t_type_of<t_window>
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<t_window>(a_module, a_super)
-	{
-	}
+	using t_type_of<t_window>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -68,11 +60,9 @@ struct t_type_of<t_shell> : t_type_of<t_window>
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<t_window>(a_module, a_super)
-	{
-	}
+	using t_type_of<t_window>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -80,11 +70,9 @@ struct t_type_of<t_frame> : t_type_of<t_shell>
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<t_shell>(a_module, a_super)
-	{
-	}
+	using t_type_of<t_shell>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 }

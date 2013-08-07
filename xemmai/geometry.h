@@ -14,9 +14,9 @@ struct t_type_of<t_point> : t_type
 	typedef xraft::xemmai::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_transfer f_transfer(T_extension* a_extension, T a_value)
+	static t_scoped f_transfer(T_extension* a_extension, T a_value)
 	{
-		t_transfer object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
+		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
 		object.f_pointer__(new t_point(a_value));
 		return object;
 	}
@@ -38,12 +38,10 @@ struct t_type_of<t_point> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
-	{
-	}
+	using t_type::t_type;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
 	virtual void f_finalize(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -52,9 +50,9 @@ struct t_type_of<t_extent> : t_type
 	typedef xraft::xemmai::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_transfer f_transfer(T_extension* a_extension, T a_value)
+	static t_scoped f_transfer(T_extension* a_extension, T a_value)
 	{
-		t_transfer object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
+		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
 		object.f_pointer__(new t_extent(a_value));
 		return object;
 	}
@@ -76,12 +74,10 @@ struct t_type_of<t_extent> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
-	{
-	}
+	using t_type::t_type;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
 	virtual void f_finalize(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -90,9 +86,9 @@ struct t_type_of<t_rectangle> : t_type
 	typedef xraft::xemmai::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_transfer f_transfer(T_extension* a_extension, T a_value)
+	static t_scoped f_transfer(T_extension* a_extension, T a_value)
 	{
-		t_transfer object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
+		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
 		object.f_pointer__(new t_rectangle(a_value));
 		return object;
 	}
@@ -130,12 +126,10 @@ struct t_type_of<t_rectangle> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
-	{
-	}
+	using t_type::t_type;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
 	virtual void f_finalize(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 }

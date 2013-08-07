@@ -13,21 +13,17 @@ struct t_type_of<t_input_attribute> : t_enum_of<t_input_attribute, xraft::xemmai
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_base(a_module, a_super)
-	{
-	}
+	using t_base::t_base;
 };
 
 template<>
 struct t_type_of<t_input_context> : t_type_of<xraft::t_object>
 {
-	static t_transfer f_composition(t_extension* a_extension, t_input_context& a_self);
+	static t_scoped f_composition(t_extension* a_extension, t_input_context& a_self);
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	using t_type_of<xraft::t_object>::t_type_of;
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 }

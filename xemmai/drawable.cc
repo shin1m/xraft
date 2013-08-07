@@ -14,9 +14,9 @@ void t_type_of<t_drawable>::f_paint(t_drawable& a_self, const t_value& a_callabl
 	object.f_pointer__(&g);
 	try {
 		a_callable(object);
-		object.f_pointer__(0);
+		object.f_pointer__(nullptr);
 	} catch (...) {
-		object.f_pointer__(0);
+		object.f_pointer__(nullptr);
 		throw;
 	}
 }

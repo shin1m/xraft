@@ -12,7 +12,7 @@ using namespace xraft;
 template<>
 struct t_type_of<t_font> : t_type_of<xraft::t_object>
 {
-	static t_transfer f_construct(::xemmai::t_object* a_class, const std::wstring& a_name)
+	static t_scoped f_construct(::xemmai::t_object* a_class, const std::wstring& a_name)
 	{
 		return xraft::xemmai::t_proxy::f_construct(a_class, new t_font(portable::f_convert(a_name).c_str()));
 	}
@@ -30,10 +30,8 @@ struct t_type_of<t_font> : t_type_of<xraft::t_object>
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	using t_type_of<xraft::t_object>::t_type_of;
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -42,16 +40,16 @@ struct t_type_of<t_color> : t_type
 	typedef xraft::xemmai::t_extension t_extension;
 
 #ifdef XRAFT_X11
-	static t_transfer f_construct(::xemmai::t_object* a_class, const std::wstring& a_name)
+	static t_scoped f_construct(::xemmai::t_object* a_class, const std::wstring& a_name)
 	{
-		t_transfer object = ::xemmai::t_object::f_allocate(a_class);
+		t_scoped object = ::xemmai::t_object::f_allocate(a_class);
 		object.f_pointer__(new t_color(portable::f_convert(a_name).c_str()));
 		return object;
 	}
 #endif
-	static t_transfer f_construct(::xemmai::t_object* a_class, size_t a_red, size_t a_green, size_t a_blue)
+	static t_scoped f_construct(::xemmai::t_object* a_class, size_t a_red, size_t a_green, size_t a_blue)
 	{
-		t_transfer object = ::xemmai::t_object::f_allocate(a_class);
+		t_scoped object = ::xemmai::t_object::f_allocate(a_class);
 		object.f_pointer__(new t_color(a_red, a_green, a_blue));
 		return object;
 	}
@@ -69,12 +67,10 @@ struct t_type_of<t_color> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
-	{
-	}
+	using t_type::t_type;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
 	virtual void f_finalize(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -152,9 +148,7 @@ struct t_type_of<t_graphics> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
-	{
-	}
+	using t_type::t_type;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
 };
 
@@ -163,9 +157,7 @@ struct t_type_of<t_graphics::t_function> : t_enum_of<t_graphics::t_function, xra
 {
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_base(a_module, a_super)
-	{
-	}
+	using t_base::t_base;
 };
 
 }

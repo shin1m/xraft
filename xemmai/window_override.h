@@ -48,9 +48,9 @@
 		object.f_pointer__(&a_g);
 		try {
 			f_self(this)->f_get(extension->v_symbol_on_paint)(object);
-			object.f_pointer__(0);
+			object.f_pointer__(nullptr);
 		} catch (...) {
-			object.f_pointer__(0);
+			object.f_pointer__(nullptr);
 			throw;
 		}
 	}

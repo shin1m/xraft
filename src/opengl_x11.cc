@@ -25,6 +25,7 @@ v_colormap(None)
 	int screen = DefaultScreen(display);
 	VisualID defaultvid = XVisualIDFromVisual(DefaultVisual(display, screen));
 	while (true) {
+//std::fprintf(stderr, "gl: %d, %d, %d, %d, %d, %d\n", a_rgba, a_double_buffer, a_alpha, a_depth, a_stencil, a_accumulation);
 		int attributes[32];
 		size_t n = 0;
 		if (a_rgba) {

@@ -27,7 +27,7 @@ public:
 		t_scoped v_callable;
 
 	public:
-		t_post(const t_transfer& a_callable) : v_callable(a_callable)
+		t_post(t_scoped&& a_callable) : v_callable(std::move(a_callable))
 		{
 		}
 		virtual void operator()();
@@ -94,10 +94,10 @@ struct t_type_of<t_application> : t_type
 	};
 	typedef xraft::xemmai::t_extension t_extension;
 
-	static void f_post(t_application& a_self, const t_transfer& a_callable)
+	static void f_post(t_application& a_self, t_scoped&& a_callable)
 	{
 		t_thread::f_cache_release();
-		a_self.f_post(new xraft::xemmai::t_application::t_post(a_callable));
+		a_self.f_post(new xraft::xemmai::t_application::t_post(std::move(a_callable)));
 	}
 	static void f_add(t_application& a_self, const xraft::t_pointer<t_shell>& a_shell)
 	{
@@ -111,12 +111,12 @@ struct t_type_of<t_application> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
+	t_type_of(t_scoped&& a_module, t_scoped&& a_super) : t_type(std::move(a_module), std::move(a_super))
 	{
 		v_shared = true;
 	}
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 }

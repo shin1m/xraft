@@ -35,7 +35,7 @@ protected:
 	{
 		v_previous->v_next = v_next;
 		v_next->v_previous = v_previous;
-		v_previous = v_next = 0;
+		v_previous = v_next = nullptr;
 	}
 
 public:
@@ -46,10 +46,10 @@ class t_proxy : public t_user, public t_entry
 {
 	t_application* v_application;
 	t_scoped v_object;
-	size_t v_n;
+	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(::xemmai::t_object* a_class, T* a_p) : v_application(f_application()), v_object(::xemmai::t_object::f_allocate(a_class)), v_n(0)
+	t_proxy(::xemmai::t_object* a_class, T* a_p) : v_application(f_application()), v_object(::xemmai::t_object::f_allocate(a_class))
 	{
 		a_p->f_user__(this);
 		v_object.f_pointer__(a_p);
@@ -58,7 +58,7 @@ class t_proxy : public t_user, public t_entry
 
 public:
 	template<typename T>
-	static t_transfer f_wrap(::xemmai::t_object* a_class, T* a_value)
+	static t_scoped f_wrap(::xemmai::t_object* a_class, T* a_value)
 	{
 		if (!a_value) return t_value();
 		t_proxy* proxy = static_cast<t_proxy*>(a_value->f_user());
@@ -66,7 +66,7 @@ public:
 		return proxy->v_object;
 	}
 	template<typename T>
-	static t_transfer f_construct(::xemmai::t_object* a_class, T* a_p)
+	static t_scoped f_construct(::xemmai::t_object* a_class, T* a_p)
 	{
 		t_proxy* proxy = new t_proxy(a_class, a_p);
 		proxy->f_acquire();
@@ -90,7 +90,7 @@ inline ::xemmai::t_object* f_self(const xraft::t_object* a_this)
 template<typename T>
 struct t_wrapper
 {
-	static t_transfer f_construct(::xemmai::t_object* a_class)
+	static t_scoped f_construct(::xemmai::t_object* a_class)
 	{
 		return t_proxy::f_construct(a_class, new T());
 	}
@@ -165,13 +165,13 @@ private:
 	::xemmai::t_object* v_application;
 
 	static void f_main(t_extension* a_extension, const t_value& a_arguments, const t_value& a_callable);
-	static t_transfer f_application(t_extension* a_extension)
+	static t_scoped f_application(t_extension* a_extension)
 	{
 		return a_extension->v_application;
 	}
 
 	template<typename T>
-	void f_type__(const t_transfer& a_type);
+	void f_type__(t_scoped&& a_type);
 
 public:
 	t_extension(xemmai::t_object* a_module);
@@ -187,7 +187,7 @@ public:
 		return f_global()->f_type<T>();
 	}
 	template<typename T>
-	t_transfer f_as(const T& a_value) const
+	t_scoped f_as(const T& a_value) const
 	{
 		typedef t_type_of<typename t_fundamental<T>::t_type> t;
 		return t::f_transfer(f_extension<typename t::t_extension>(), a_value);
@@ -195,171 +195,171 @@ public:
 };
 
 template<>
-inline void t_extension::f_type__<t_application>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_application>(t_scoped&& a_type)
 {
-	v_type_application = a_type;
+	v_type_application = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_point>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_point>(t_scoped&& a_type)
 {
-	v_type_point = a_type;
+	v_type_point = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_extent>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_extent>(t_scoped&& a_type)
 {
-	v_type_extent = a_type;
+	v_type_extent = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_rectangle>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_rectangle>(t_scoped&& a_type)
 {
-	v_type_rectangle = a_type;
+	v_type_rectangle = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<xraft::t_object>(const t_transfer& a_type)
+inline void t_extension::f_type__<xraft::t_object>(t_scoped&& a_type)
 {
-	v_type_object = a_type;
+	v_type_object = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_font>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_font>(t_scoped&& a_type)
 {
-	v_type_font = a_type;
+	v_type_font = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_color>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_color>(t_scoped&& a_type)
 {
-	v_type_color = a_type;
+	v_type_color = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_graphics>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_graphics>(t_scoped&& a_type)
 {
-	v_type_graphics = a_type;
+	v_type_graphics = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_graphics::t_function>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_graphics::t_function>(t_scoped&& a_type)
 {
-	v_type_graphics__function = a_type;
+	v_type_graphics__function = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_input_attribute>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_input_attribute>(t_scoped&& a_type)
 {
-	v_type_input_attribute = a_type;
+	v_type_input_attribute = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_input_context>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_input_context>(t_scoped&& a_type)
 {
-	v_type_input_context = a_type;
+	v_type_input_context = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_drawable>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_drawable>(t_scoped&& a_type)
 {
-	v_type_drawable = a_type;
+	v_type_drawable = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_bitmap>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_bitmap>(t_scoped&& a_type)
 {
-	v_type_bitmap = a_type;
+	v_type_bitmap = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_pixmap>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_pixmap>(t_scoped&& a_type)
 {
-	v_type_pixmap = a_type;
+	v_type_pixmap = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_region>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_region>(t_scoped&& a_type)
 {
-	v_type_region = a_type;
+	v_type_region = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_key>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_key>(t_scoped&& a_type)
 {
-	v_type_key = a_type;
+	v_type_key = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_modifier>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_modifier>(t_scoped&& a_type)
 {
-	v_type_modifier = a_type;
+	v_type_modifier = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_button>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_button>(t_scoped&& a_type)
 {
-	v_type_button = a_type;
+	v_type_button = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_timer>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_timer>(t_scoped&& a_type)
 {
-	v_type_timer = a_type;
+	v_type_timer = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_cross_mode>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_cross_mode>(t_scoped&& a_type)
 {
-	v_type_cross_mode = a_type;
+	v_type_cross_mode = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_cross_detail>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_cross_detail>(t_scoped&& a_type)
 {
-	v_type_cross_detail = a_type;
+	v_type_cross_detail = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_window>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_window>(t_scoped&& a_type)
 {
-	v_type_window = a_type;
+	v_type_window = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_widget>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_widget>(t_scoped&& a_type)
 {
-	v_type_widget = a_type;
+	v_type_widget = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_shell>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_shell>(t_scoped&& a_type)
 {
-	v_type_shell = a_type;
+	v_type_shell = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_frame>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_frame>(t_scoped&& a_type)
 {
-	v_type_frame = a_type;
+	v_type_frame = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_opengl_format>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_opengl_format>(t_scoped&& a_type)
 {
-	v_type_opengl_format = a_type;
+	v_type_opengl_format = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_opengl_widget>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_opengl_widget>(t_scoped&& a_type)
 {
-	v_type_opengl_widget = a_type;
+	v_type_opengl_widget = std::move(a_type);
 }
 
 template<>
-inline void t_extension::f_type__<t_opengl_context>(const t_transfer& a_type)
+inline void t_extension::f_type__<t_opengl_context>(t_scoped&& a_type)
 {
-	v_type_opengl_context = a_type;
+	v_type_opengl_context = std::move(a_type);
 }
 
 template<>

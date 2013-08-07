@@ -19,7 +19,7 @@ struct t_arguments
 		t_scoped size = t_symbol::f_instantiate(L"size");
 		t_scoped shift = t_symbol::f_instantiate(L"shift");
 		while (f_as<size_t>(v_arguments->f_get(size)()) > 0) {
-			t_transfer p = v_arguments->f_get(shift)();
+			t_scoped p = v_arguments->f_get(shift)();
 			f_check<std::wstring>(p, L"argument");
 			v_as.push_back(portable::f_convert(f_as<const std::wstring&>(p)));
 		}
@@ -68,7 +68,7 @@ void t_type_of<t_application>::f_define(t_extension* a_extension)
 	t_define<t_application, ::xemmai::t_object>(a_extension, L"Application")
 		(L"run", t_member<void (t_application::*)(), &t_application::f_run, t_with_application_thread>())
 		(L"exit", t_member<void (t_application::*)(), &t_application::f_exit, t_with_application_thread>())
-		(L"post", t_member<void (*)(t_application&, const t_transfer&), f_post, t_with_lock_for_write>())
+		(L"post", t_member<void (*)(t_application&, t_scoped&&), f_post, t_with_lock_for_write>())
 		(L"active", t_member<xraft::t_pointer<t_shell> (t_application::*)() const, &t_application::f_active, t_with_application_thread>())
 		(L"focus", t_member<xraft::t_pointer<t_window> (t_application::*)() const, &t_application::f_focus, t_with_application_thread>())
 		(L"focus__", t_member<void (t_application::*)(const xraft::t_pointer<t_window>&), &t_application::f_focus__, t_with_application_thread>())
@@ -108,13 +108,12 @@ void t_type_of<t_application>::f_define(t_extension* a_extension)
 
 t_type* t_type_of<t_application>::f_derive(::xemmai::t_object* a_this)
 {
-	return 0;
+	return nullptr;
 }
 
-t_transfer t_type_of<t_application>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_application>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
 	t_throwable::f_throw(L"uninstantiatable.");
-	return t_transfer();
 }
 
 }

@@ -155,9 +155,9 @@ t_type* t_type_of<t_widget>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_transfer t_type_of<t_widget>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_widget>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
-	return t_construct_with<t_transfer (*)(::xemmai::t_object*), xraft::xemmai::t_widget::f_construct>::t_bind<t_widget>::f_do(a_class, a_stack, 0);
+	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_widget::f_construct>::t_bind<t_widget>::f_do(a_class, a_stack, 0);
 }
 
 void t_type_of<t_shell>::f_define(t_extension* a_extension)
@@ -176,9 +176,9 @@ t_type* t_type_of<t_shell>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_transfer t_type_of<t_shell>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_shell>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
-	return t_construct_with<t_transfer (*)(::xemmai::t_object*), xraft::xemmai::t_shell::f_construct>::t_bind<t_shell>::f_do(a_class, a_stack, 0);
+	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_shell::f_construct>::t_bind<t_shell>::f_do(a_class, a_stack, 0);
 }
 
 void t_type_of<t_frame>::f_define(t_extension* a_extension)
@@ -200,9 +200,9 @@ t_type* t_type_of<t_frame>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_transfer t_type_of<t_frame>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_frame>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
-	return t_construct_with<t_transfer (*)(::xemmai::t_object*), xraft::xemmai::t_frame::f_construct>::t_bind<t_frame>::f_do(a_class, a_stack, 0);
+	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_frame::f_construct>::t_bind<t_frame>::f_do(a_class, a_stack, 0);
 }
 
 }

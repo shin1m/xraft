@@ -18,9 +18,7 @@ struct t_type_of<t_drawable> : t_type_of<xraft::t_object>
 	static void f_paint(t_drawable& a_self, const t_value& a_callable, bool a_include);
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
+	using t_type_of<xraft::t_object>::t_type_of;
 };
 
 }

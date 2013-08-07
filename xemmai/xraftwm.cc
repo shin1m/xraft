@@ -8,7 +8,7 @@ namespace xraft
 namespace xemmai
 {
 
-t_xraftwm::t_xraftwm(::xemmai::t_object* a_module, const t_transfer& a_xraft) : ::xemmai::t_extension(a_module), v_module_xraft(a_xraft)
+t_xraftwm::t_xraftwm(::xemmai::t_object* a_module, t_scoped&& a_xraft) : ::xemmai::t_extension(a_module), v_module_xraft(std::move(a_xraft))
 {
 	v_xraft = ::xemmai::f_extension<xraft::xemmai::t_extension>(v_module_xraft);
 	v_symbol_on_move = t_symbol::f_instantiate(L"on_move");
@@ -148,7 +148,7 @@ struct t_root : xraft::t_root, t_wrapper<t_root>
 	virtual t_pointer<xraft::t_client> f_on_client()
 	{
 		t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-		t_transfer p = f_self(this)->f_get(extension->v_symbol_on_client)();
+		t_scoped p = f_self(this)->f_get(extension->v_symbol_on_client)();
 		f_check<xraft::t_client>(p, L"client");
 		t_pointer<xraft::t_client> q = f_as<xraft::t_client*>(p);
 		q->f_release();
@@ -175,19 +175,19 @@ void t_type_of<t_side>::f_define(t_extension* a_extension)
 	;
 }
 
-t_transfer t_type_of<t_client>::f_borders(t_client& a_self)
+t_scoped t_type_of<t_client>::f_borders(t_client& a_self)
 {
 	const unsigned* borders = a_self.f_borders();
-	t_transfer tuple = t_array::f_instantiate();
+	t_scoped tuple = t_array::f_instantiate();
 	for (size_t i = 0; i < 4; ++i) f_as<t_array&>(tuple).f_push(f_global()->f_as(borders[i]));
 	return tuple;
 }
 
-void t_type_of<t_client>::f_borders__(t_client& a_self, const t_transfer& a_borders)
+void t_type_of<t_client>::f_borders__(t_client& a_self, t_scoped&& a_borders)
 {
 	unsigned borders[4];
 	for (size_t i = 0; i < 4; ++i) {
-		t_transfer x = a_borders.f_get_at(f_global()->f_as(i));
+		t_scoped x = a_borders.f_get_at(f_global()->f_as(i));
 		f_check<unsigned>(x, L"border");
 		borders[i] = f_as<unsigned>(x);
 	}
@@ -204,8 +204,8 @@ void t_type_of<t_client>::f_define(t_extension* a_extension)
 		(a_extension->v_symbol_on_deactivate, t_member<void (*)(t_client&), xraft::xemmai::t_client::f_super__on_deactivate, t_with_application_thread>())
 		(a_extension->v_symbol_on_name, t_member<void (*)(t_client&), xraft::xemmai::t_client::f_super__on_name, t_with_application_thread>())
 		(a_extension->v_symbol_on_protocols, t_member<void (*)(t_client&), xraft::xemmai::t_client::f_super__on_protocols, t_with_application_thread>())
-		(L"borders", t_member<t_transfer (*)(t_client&), f_borders, t_with_application_thread>())
-		(L"borders__", t_member<void (*)(t_client&, const t_transfer&), f_borders__, t_with_application_thread>())
+		(L"borders", t_member<t_scoped (*)(t_client&), f_borders, t_with_application_thread>())
+		(L"borders__", t_member<void (*)(t_client&, t_scoped&&), f_borders__, t_with_application_thread>())
 		(L"move", t_member<void (t_client::*)(t_side, int, t_side, int), &t_client::f_move, t_with_application_thread>())
 		(L"show", t_member<void (t_client::*)(), &t_client::f_show, t_with_application_thread>())
 		(L"hide", t_member<void (t_client::*)(), &t_client::f_hide, t_with_application_thread>())
@@ -225,9 +225,9 @@ t_type* t_type_of<t_client>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_transfer t_type_of<t_client>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_client>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
-	return t_construct_with<t_transfer (*)(::xemmai::t_object*), xraft::xemmai::t_client::f_construct>::t_bind<t_client>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_client::f_construct>::t_bind<t_client>::f_do(a_class, a_stack, a_n);
 }
 
 void t_type_of<t_root>::f_define(t_extension* a_extension)
@@ -252,9 +252,9 @@ t_type* t_type_of<t_root>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_transfer t_type_of<t_root>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_root>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
-	return t_construct_with<t_transfer (*)(::xemmai::t_object*), xraft::xemmai::t_root::f_construct>::t_bind<t_root>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_root::f_construct>::t_bind<t_root>::f_do(a_class, a_stack, a_n);
 }
 
 }

@@ -157,11 +157,11 @@ struct t_event
 	t_event() : v_handlers(t_array::f_instantiate())
 	{
 	}
-	void f_add(const t_transfer& a_handler)
+	void f_add(t_scoped&& a_handler)
 	{
-		f_as<t_array&>(v_handlers).f_push(a_handler);
+		f_as<t_array&>(v_handlers).f_push(std::move(a_handler));
 	}
-	void f_remove(const t_transfer& a_handler)
+	void f_remove(t_scoped&& a_handler)
 	{
 		t_array& array = f_as<t_array&>(v_handlers);
 		for (size_t i = 0; i < array.f_size(); ++i) {
@@ -208,29 +208,29 @@ struct t_text_model : t_object, xraft::t_text_model<t_pointer<t_attribute> >, xr
 	{
 		f_add_observer(this);
 	}
-	void f_add_loaded(const t_transfer& a_handler)
+	void f_add_loaded(t_scoped&& a_handler)
 	{
-		v_loaded.f_add(a_handler);
+		v_loaded.f_add(std::move(a_handler));
 	}
-	void f_remove_loaded(const t_transfer& a_handler)
+	void f_remove_loaded(t_scoped&& a_handler)
 	{
-		v_loaded.f_remove(a_handler);
+		v_loaded.f_remove(std::move(a_handler));
 	}
-	void f_add_replacing(const t_transfer& a_handler)
+	void f_add_replacing(t_scoped&& a_handler)
 	{
-		v_replacing.f_add(a_handler);
+		v_replacing.f_add(std::move(a_handler));
 	}
-	void f_remove_replacing(const t_transfer& a_handler)
+	void f_remove_replacing(t_scoped&& a_handler)
 	{
-		v_replacing.f_remove(a_handler);
+		v_replacing.f_remove(std::move(a_handler));
 	}
-	void f_add_replaced(const t_transfer& a_handler)
+	void f_add_replaced(t_scoped&& a_handler)
 	{
-		v_replaced.f_add(a_handler);
+		v_replaced.f_add(std::move(a_handler));
 	}
-	void f_remove_replaced(const t_transfer& a_handler)
+	void f_remove_replaced(t_scoped&& a_handler)
 	{
-		v_replaced.f_remove(a_handler);
+		v_replaced.f_remove(std::move(a_handler));
 	}
 	void f_enable_notification()
 	{
@@ -263,8 +263,8 @@ struct t_text_model : t_object, xraft::t_text_model<t_pointer<t_attribute> >, xr
 		if (a_p >= f_text_size()) t_throwable::f_throw(L"out of range.");
 		return t_base::f_text_to_segment(a_p);
 	}
-	t_transfer f_slice(size_t a_p, size_t a_n) const;
-	void f_replace(size_t a_p, size_t a_n, const t_transfer& a_segments, const std::wstring& a_text);
+	t_scoped f_slice(size_t a_p, size_t a_n) const;
+	void f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, const std::wstring& a_text);
 	void f_attribute(size_t a_p, size_t a_n, const t_pointer<t_attribute>& a_attribute)
 	{
 		size_t n = f_text_size();
@@ -290,29 +290,29 @@ struct t_wrapped_view : t_object, xraft::t_wrapped_view<t_pointer<t_attribute>, 
 	{
 		f_add_observer(this);
 	}
-	void f_add_invalidated(const t_transfer& a_handler)
+	void f_add_invalidated(t_scoped&& a_handler)
 	{
-		v_invalidated.f_add(a_handler);
+		v_invalidated.f_add(std::move(a_handler));
 	}
-	void f_remove_invalidated(const t_transfer& a_handler)
+	void f_remove_invalidated(t_scoped&& a_handler)
 	{
-		v_invalidated.f_remove(a_handler);
+		v_invalidated.f_remove(std::move(a_handler));
 	}
-	void f_add_resized(const t_transfer& a_handler)
+	void f_add_resized(t_scoped&& a_handler)
 	{
-		v_resized.f_add(a_handler);
+		v_resized.f_add(std::move(a_handler));
 	}
-	void f_remove_resized(const t_transfer& a_handler)
+	void f_remove_resized(t_scoped&& a_handler)
 	{
-		v_resized.f_remove(a_handler);
+		v_resized.f_remove(std::move(a_handler));
 	}
-	void f_add_moved(const t_transfer& a_handler)
+	void f_add_moved(t_scoped&& a_handler)
 	{
-		v_moved.f_add(a_handler);
+		v_moved.f_add(std::move(a_handler));
 	}
-	void f_remove_moved(const t_transfer& a_handler)
+	void f_remove_moved(t_scoped&& a_handler)
 	{
-		v_moved.f_remove(a_handler);
+		v_moved.f_remove(std::move(a_handler));
 	}
 	void f_draw(t_graphics& a_g, t_pixel a_end, size_t a_top, size_t a_bottom)
 	{
@@ -448,9 +448,9 @@ struct t_xrafttv : ::xemmai::t_extension
 	t_slot v_type_wrapped_view;
 
 	template<typename T>
-	void f_type__(const t_transfer& a_type);
+	void f_type__(t_scoped&& a_type);
 
-	t_xrafttv(xemmai::t_object* a_module, const t_transfer& a_xraft);
+	t_xrafttv(xemmai::t_object* a_module, t_scoped&& a_xraft);
 	virtual void f_scan(t_scan a_scan);
 	template<typename T>
 	const T* f_extension() const
@@ -463,7 +463,7 @@ struct t_xrafttv : ::xemmai::t_extension
 		return v_xraft->f_type<T>();
 	}
 	template<typename T>
-	t_transfer f_as(const T& a_value) const
+	t_scoped f_as(const T& a_value) const
 	{
 		typedef t_type_of<typename t_fundamental<T>::t_type> t;
 		return t::f_transfer(f_extension<typename t::t_extension>(), a_value);
@@ -471,21 +471,21 @@ struct t_xrafttv : ::xemmai::t_extension
 };
 
 template<>
-inline void t_xrafttv::f_type__<t_attribute>(const t_transfer& a_type)
+inline void t_xrafttv::f_type__<t_attribute>(t_scoped&& a_type)
 {
-	v_type_attribute = a_type;
+	v_type_attribute = std::move(a_type);
 }
 
 template<>
-inline void t_xrafttv::f_type__<t_text_model>(const t_transfer& a_type)
+inline void t_xrafttv::f_type__<t_text_model>(t_scoped&& a_type)
 {
-	v_type_text_model = a_type;
+	v_type_text_model = std::move(a_type);
 }
 
 template<>
-inline void t_xrafttv::f_type__<t_wrapped_view>(const t_transfer& a_type)
+inline void t_xrafttv::f_type__<t_wrapped_view>(t_scoped&& a_type)
 {
-	v_type_wrapped_view = a_type;
+	v_type_wrapped_view = std::move(a_type);
 }
 
 template<>
@@ -529,17 +529,15 @@ struct t_type_of<t_attribute> : t_type_of<xraft::t_object>
 {
 	typedef xraft::xemmai::t_xrafttv t_extension;
 
-	static t_transfer f_construct(::xemmai::t_object* a_class, t_pixel a_foreground, t_pixel a_background)
+	static t_scoped f_construct(::xemmai::t_object* a_class, t_pixel a_foreground, t_pixel a_background)
 	{
 		return xraft::xemmai::t_proxy::f_construct(a_class, new t_attribute(a_foreground, a_background));
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
+	using t_type_of<xraft::t_object>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -547,17 +545,15 @@ struct t_type_of<t_text_model> : t_type_of<xraft::t_object>
 {
 	typedef xraft::xemmai::t_xrafttv t_extension;
 
-	static t_transfer f_construct(::xemmai::t_object* a_class)
+	static t_scoped f_construct(::xemmai::t_object* a_class)
 	{
 		return xraft::xemmai::t_proxy::f_construct(a_class, new t_text_model());
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
+	using t_type_of<xraft::t_object>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 template<>
@@ -565,17 +561,15 @@ struct t_type_of<t_wrapped_view> : t_type_of<xraft::t_object>
 {
 	typedef xraft::xemmai::t_xrafttv t_extension;
 
-	static t_transfer f_construct(::xemmai::t_object* a_class)
+	static t_scoped f_construct(::xemmai::t_object* a_class)
 	{
 		return xraft::xemmai::t_proxy::f_construct(a_class, new t_wrapped_view());
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
+	using t_type_of<xraft::t_object>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 }

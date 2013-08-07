@@ -15,7 +15,6 @@ namespace xemmai
 
 using ::xemmai::t_object;
 using ::xemmai::t_scan;
-using ::xemmai::t_transfer;
 using ::xemmai::t_slot;
 
 class t_xraftcairo : public ::xemmai::t_extension
@@ -26,7 +25,7 @@ class t_xraftcairo : public ::xemmai::t_extension
 	cairo::xemmai::t_extension* v_cairo;
 
 public:
-	t_xraftcairo(t_object* a_module, const t_transfer& a_cairo);
+	t_xraftcairo(t_object* a_module, t_scoped&& a_cairo);
 	virtual void f_scan(t_scan a_scan);
 	template<typename T>
 	t_object* f_type() const
@@ -34,7 +33,7 @@ public:
 		return v_cairo->f_type<T>();
 	}
 	template<typename T>
-	t_transfer f_as(const T& a_value) const
+	t_scoped f_as(const T& a_value) const
 	{
 		return v_cairo->f_as(a_value);
 	}

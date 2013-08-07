@@ -35,7 +35,7 @@ void t_type_of<t_region>::f_finalize(t_object* a_this)
 	delete f_as<t_region*>(a_this);
 }
 
-t_transfer t_type_of<t_region>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_region>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
 	return t_construct<>::t_bind<t_region>::f_do(a_class, a_stack, a_n);
 }

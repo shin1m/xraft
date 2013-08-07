@@ -17,11 +17,9 @@ struct t_type_of<t_timer> : t_type_of<xraft::t_object>
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type_of<xraft::t_object>(a_module, a_super)
-	{
-	}
+	using t_type_of<xraft::t_object>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 
 }

@@ -8,14 +8,14 @@ namespace xemmai
 
 struct t_timer : xraft::t_timer, t_wrapper<t_timer>
 {
-	static t_transfer f_construct(::xemmai::t_object* a_class, const t_transfer& a_callable)
+	static t_scoped f_construct(::xemmai::t_object* a_class, t_scoped&& a_callable)
 	{
-		return t_proxy::f_construct(a_class, new t_timer(a_callable));
+		return t_proxy::f_construct(a_class, new t_timer(std::move(a_callable)));
 	}
 
 	t_scoped v_callable;
 
-	t_timer(const t_transfer& a_callable) : v_callable(a_callable)
+	t_timer(t_scoped&& a_callable) : v_callable(std::move(a_callable))
 	{
 	}
 	virtual void operator()()
@@ -49,9 +49,9 @@ t_type* t_type_of<t_timer>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_transfer t_type_of<t_timer>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_timer>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
 {
-	return t_construct_with<t_transfer (*)(::xemmai::t_object*, const t_transfer&), xraft::xemmai::t_timer::f_construct>::t_bind<t_timer>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped (*)(::xemmai::t_object*, t_scoped&&), xraft::xemmai::t_timer::f_construct>::t_bind<t_timer>::f_do(a_class, a_stack, a_n);
 }
 
 }

@@ -1,5 +1,5 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include -DXRAFT_X11 $(X11_CFLAGS) $(DBUS_CFLAGS)
-AM_CXXFLAGS =
+AM_CXXFLAGS = -std=c++11
 AM_LDFLAGS =
 if DEBUG
 AM_CXXFLAGS += -g

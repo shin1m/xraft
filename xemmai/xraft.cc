@@ -27,7 +27,7 @@ void t_proxy::f_destroy()
 {
 	if (v_previous) f_unlink();
 	if (v_n > 0) f_as<xraft::t_object*>(v_object)->f_release();
-	v_object.f_pointer__(0);
+	v_object.f_pointer__(nullptr);
 	delete this;
 }
 
@@ -48,13 +48,13 @@ void t_extension::f_main(t_extension* a_extension, const t_value& a_arguments, c
 	a_extension->v_application = object;
 	try {
 		a_callable(object);
-		a_extension->v_application = 0;
+		a_extension->v_application = nullptr;
 		t_with_lock_for_write lock(object);
-		object.f_pointer__(0);
+		object.f_pointer__(nullptr);
 	} catch (...) {
-		a_extension->v_application = 0;
+		a_extension->v_application = nullptr;
 		t_with_lock_for_write lock(object);
-		object.f_pointer__(0);
+		object.f_pointer__(nullptr);
 		throw;
 	}
 }
@@ -113,7 +113,7 @@ t_extension::t_extension(::xemmai::t_object* a_module) : ::xemmai::t_extension(a
 	t_type_of<xraft::t_opengl_widget>::f_define(this);
 	t_type_of<xraft::t_opengl_context>::f_define(this);
 	f_define<void (*)(t_extension*, const t_value&, const t_value&), f_main>(this, L"main");
-	f_define<t_transfer (*)(t_extension*), f_application>(this, L"application");
+	f_define<t_scoped (*)(t_extension*), f_application>(this, L"application");
 }
 
 void t_extension::f_scan(t_scan a_scan)

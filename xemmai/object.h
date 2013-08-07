@@ -45,7 +45,7 @@ struct t_type_of<xraft::t_object> : t_type
 
 		static T0* f_call(T1 a_object)
 		{
-			return reinterpret_cast<size_t>(f_object(a_object)) == t_value::e_tag__NULL ? 0 : t_cast<T0, T1>::f_call(a_object);
+			return reinterpret_cast<size_t>(f_object(a_object)) == t_value::e_tag__NULL ? nullptr : t_cast<T0, T1>::f_call(a_object);
 		}
 	};
 	template<typename T0, typename T1>
@@ -65,7 +65,7 @@ struct t_type_of<xraft::t_object> : t_type
 
 		static T0* f_call(T1 a_object)
 		{
-			return reinterpret_cast<size_t>(f_object(a_object)) == t_value::e_tag__NULL ? 0 : t_cast<T0, T1>::f_call(a_object);
+			return reinterpret_cast<size_t>(f_object(a_object)) == t_value::e_tag__NULL ? nullptr : t_cast<T0, T1>::f_call(a_object);
 		}
 	};
 	template<typename T0, typename T1>
@@ -73,7 +73,7 @@ struct t_type_of<xraft::t_object> : t_type
 	{
 		static bool f_call(T1 a_object)
 		{
-			return reinterpret_cast<size_t>(f_object(a_object)) >= t_value::e_tag__OBJECT && dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(f_object(a_object)->f_type())) != 0;
+			return reinterpret_cast<size_t>(f_object(a_object)) >= t_value::e_tag__OBJECT && dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(f_object(a_object)->f_type())) != nullptr;
 		}
 	};
 	template<typename T0, typename T1>
@@ -89,7 +89,7 @@ struct t_type_of<xraft::t_object> : t_type
 			case t_value::e_tag__FLOAT:
 				return false;
 			default:
-				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(f_object(a_object)->f_type())) != 0;
+				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(f_object(a_object)->f_type())) != nullptr;
 			}
 		}
 	};
@@ -106,19 +106,19 @@ struct t_type_of<xraft::t_object> : t_type
 			case t_value::e_tag__FLOAT:
 				return false;
 			default:
-				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(f_object(a_object)->f_type())) != 0;
+				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(f_object(a_object)->f_type())) != nullptr;
 			}
 		}
 	};
 	typedef xraft::xemmai::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_transfer f_transfer(T_extension* a_extension, const xraft::t_pointer<T>& a_value)
+	static t_scoped f_transfer(T_extension* a_extension, const xraft::t_pointer<T>& a_value)
 	{
 		return xraft::xemmai::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), static_cast<T*>(a_value));
 	}
 	template<typename T_extension, typename T>
-	static t_transfer f_transfer(T_extension* a_extension, T* a_value)
+	static t_scoped f_transfer(T_extension* a_extension, T* a_value)
 	{
 		return xraft::xemmai::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), a_value);
 	}
@@ -132,12 +132,10 @@ struct t_type_of<xraft::t_object> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(const t_transfer& a_module, const t_transfer& a_super) : t_type(a_module, a_super)
-	{
-	}
+	using t_type::t_type;
 	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive(::xemmai::t_object* a_this);
 	XRAFT__XEMMAI__EXPORT virtual void f_finalize(::xemmai::t_object* a_this);
-	XRAFT__XEMMAI__EXPORT virtual t_transfer f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
 };
 

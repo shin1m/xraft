@@ -10,7 +10,7 @@ namespace
 {
 
 template<typename T>
-t_transfer f_surface_create(t_xraftcairo* a_extension, T& a_target)
+t_scoped f_surface_create(t_xraftcairo* a_extension, T& a_target)
 {
 	return cairo::xemmai::t_surface::f_construct(f_surface_create(a_target));
 }
@@ -36,11 +36,11 @@ void f_draw(t_xraftcairo* a_extension, T& a_target, const t_value& a_callable)
 
 }
 
-t_xraftcairo::t_xraftcairo(t_object* a_module, const t_transfer& a_cairo) : ::xemmai::t_extension(a_module), v_module_cairo(a_cairo)
+t_xraftcairo::t_xraftcairo(t_object* a_module, t_scoped&& a_cairo) : ::xemmai::t_extension(a_module), v_module_cairo(std::move(a_cairo))
 {
 	v_cairo = f_extension<cairo::xemmai::t_extension>(v_module_cairo);
-	f_define<t_transfer (*)(t_xraftcairo*, t_bitmap&), f_surface_create<t_bitmap> >(this, L"BitmapSurface");
-	f_define<t_transfer (*)(t_xraftcairo*, t_pixmap&), f_surface_create<t_pixmap> >(this, L"PixmapSurface");
+	f_define<t_scoped (*)(t_xraftcairo*, t_bitmap&), f_surface_create<t_bitmap> >(this, L"BitmapSurface");
+	f_define<t_scoped (*)(t_xraftcairo*, t_pixmap&), f_surface_create<t_pixmap> >(this, L"PixmapSurface");
 	f_define<void (*)(t_xraftcairo*, t_window&, const t_value&), f_draw<t_window> >(this, L"draw_on_window");
 	f_define<void (*)(t_xraftcairo*, t_graphics&, const t_value&), f_draw<t_graphics> >(this, L"draw_on_graphics");
 }
