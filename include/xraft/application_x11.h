@@ -39,7 +39,7 @@ class t_application
 		t_runnable* v_writer;
 	};
 
-	static __thread t_application* v_instance;
+	static thread_local t_application* v_instance;
 
 	static void f_terminate(int a_signal);
 
@@ -300,7 +300,7 @@ class t_bridge
 		virtual void operator()();
 	};
 
-	static __thread dbus_int32_t v_slot;
+	static thread_local dbus_int32_t v_slot;
 
 	static void f_free(void* a_data);
 	static dbus_bool_t f_add(DBusWatch* a_watch, void* a_data);

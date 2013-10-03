@@ -7,7 +7,7 @@
 namespace xraft
 {
 
-__thread t_application* t_application::v_instance;
+thread_local t_application* t_application::v_instance;
 
 void t_application::f_terminate(int a_signal)
 {
@@ -469,7 +469,7 @@ void t_bridge::t_timeout::operator()()
 	dbus_timeout_handle(v_timeout);
 }
 
-__thread dbus_int32_t t_bridge::v_slot = -1;
+thread_local dbus_int32_t t_bridge::v_slot = -1;
 
 void t_bridge::f_free(void* a_data)
 {
