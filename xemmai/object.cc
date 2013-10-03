@@ -40,7 +40,7 @@ void t_type_of<xraft::t_object>::f_instantiate(::xemmai::t_object* a_class, t_sl
 		static_cast<xraft::xemmai::t_proxy*>(f_as<xraft::t_object*>(object)->f_user())->f_release();
 		throw;
 	}
-	a_stack[0].f_construct(std::move(object));
+	a_stack[0] = std::move(object);
 }
 
 }
