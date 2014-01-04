@@ -190,10 +190,11 @@ void t_buffer::f_insert(unsigned a_x, unsigned a_y, unsigned a_n)
 void t_buffer::f_put(unsigned a_x, unsigned a_y, const t_cell& a_cell, bool a_shift)
 {
 	if (a_x >= v_width) return;
+	int n = wcwidth(a_cell.v_c);
+	if (n <= 0) return;
 	t_row* row = v_current[a_y];
 	row->f_expand(a_x);
 	row->f_split(a_x);
-	unsigned n = wcwidth(a_cell.v_c);
 	t_cell* p = row->v_cells;
 	if (a_x + n > v_width) {
 		std::fill(p + a_x, p + v_width, t_cell(L' ', a_cell.v_a));

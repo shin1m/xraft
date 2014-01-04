@@ -204,6 +204,7 @@ protected:
 	void f_alternate__(bool a_alternate)
 	{
 		v_buffer.f_alternate__(a_alternate);
+		f_invalidate(0, f_height());
 	}
 	void f_scroll_log();
 	void f_scroll_up(unsigned a_y, unsigned a_height, unsigned a_n);
@@ -323,6 +324,10 @@ class t_terminal : public t_content, protected t_runnable
 		e_code__KP_8, e_code__KP_9,
 		e_code__NONE
 	};
+	enum t_csi
+	{
+		e_csi__PRIMARY, e_csi__SECONDARY, e_csi__PRIVATE
+	};
 
 	typedef void (t_terminal::*t_state)(wchar_t a_c);
 
@@ -335,7 +340,8 @@ class t_terminal : public t_content, protected t_runnable
 	size_t v_mbn;
 	std::mbstate_t v_mbstate;
 	bool v_mode_insert;
-	bool v_mode_auto_wrap;
+	bool v_mode_origin;
+	bool v_mode_wraparound;
 	bool v_mode_application_keypad;
 	bool v_mode_application_cursor;
 	::t_attribute v_saved_attribute;
@@ -345,7 +351,7 @@ class t_terminal : public t_content, protected t_runnable
 	unsigned v_region_begin;
 	unsigned v_region_size;
 	t_state v_state;
-	bool v_private;
+	t_csi v_csi;
 	int v_parameters[16];
 	int v_parameters_size;
 
@@ -378,6 +384,7 @@ class t_terminal : public t_content, protected t_runnable
 	void f_control_sequence(wchar_t a_c);
 	void f_state_default(wchar_t a_c);
 	void f_state_escape(wchar_t a_c);
+	void f_state_escape_sharp(wchar_t a_c);
 	void f_state_csi(wchar_t a_c);
 	void f_state_csi_parameter(wchar_t a_c);
 	void f_state_csi_parameter_digit(wchar_t a_c);
