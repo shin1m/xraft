@@ -358,12 +358,15 @@ class t_terminal : public t_content, protected t_runnable
 	void f_scroll();
 	void f_back_space();
 	void f_tab_stop_forward(unsigned a_n);
+	void f_tab_set();
+	void f_tab_clear();
 	void f_line_feed();
 	void f_carriage_return();
 	void f_save_cursor();
 	void f_restore_cursor();
 	void f_index();
 	void f_reverse_index();
+	void f_next_line();
 	void f_cursor_up();
 	void f_cursor_down();
 	void f_cursor_forward();

@@ -217,6 +217,24 @@ void t_terminal::f_tab_stop_forward(unsigned a_n)
 	} while (--a_n > 0);
 }
 
+void t_terminal::f_tab_set()
+{
+	if (v_cursor_x < f_width()) v_tab_stops[v_cursor_x / 8] |= 1 << v_cursor_x % 8;
+}
+
+void t_terminal::f_tab_clear()
+{
+	if (v_parameters_size < 1 || v_parameters[0] == -1) v_parameters[0] = 0;
+	switch (v_parameters[0]) {
+	case 0:
+		if (v_cursor_x < f_width()) v_tab_stops[v_cursor_x / 8] &= ~(1 << v_cursor_x % 8);
+		break;
+	case 3:
+		std::fill_n(v_tab_stops, (f_width() + 7) / 8, 0);
+		break;
+	}
+}
+
 void t_terminal::f_line_feed()
 {
 	f_index();
@@ -261,6 +279,12 @@ void t_terminal::f_reverse_index()
 		f_scroll_down(v_region_begin, v_region_size, 1);
 	else if (v_cursor_y > 0)
 		--v_cursor_y;
+}
+
+void t_terminal::f_next_line()
+{
+	v_cursor_x = 0;
+	f_index();
 }
 
 void t_terminal::f_cursor_up()
@@ -512,7 +536,8 @@ void t_terminal::f_scroll_region()
 	if (v_parameters[1] < v_parameters[0] + 2) v_parameters[1] = v_parameters[0] + 2;
 	v_region_begin = v_parameters[0];
 	v_region_size = v_parameters[1] - v_parameters[0];
-	v_cursor_x = v_cursor_y = 0;
+	v_cursor_x = 0;
+	v_cursor_y = v_mode_origin ? v_region_begin : 0;
 }
 
 void t_terminal::f_put(wchar_t a_c)
@@ -599,6 +624,9 @@ void t_terminal::f_control_sequence(wchar_t a_c)
 	case L'f':
 		f_cursor_position();
 		break;
+	case L'g':
+		f_tab_clear();
+		break;
 	case L'h':
 		f_mode(true);
 		break;
@@ -661,8 +689,10 @@ void t_terminal::f_state_escape(wchar_t a_c)
 		f_index();
 		break;
 	case L'E':
-		v_cursor_x = 0;
-		f_index();
+		f_next_line();
+		break;
+	case L'H':
+		f_tab_set();
 		break;
 	case L'M':
 		f_reverse_index();
