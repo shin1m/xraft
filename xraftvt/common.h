@@ -371,6 +371,9 @@ class t_terminal : public t_content, protected t_runnable
 	void f_cursor_down();
 	void f_cursor_forward();
 	void f_cursor_backward();
+	void f_cursor_next_line();
+	void f_cursor_preceding_line();
+	void f_cursor_character_absolute();
 	void f_cursor_position();
 	void f_erase_display();
 	void f_erase_line();

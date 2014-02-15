@@ -321,6 +321,25 @@ void t_terminal::f_cursor_backward()
 		v_cursor_x -= v_parameters[0];
 }
 
+void t_terminal::f_cursor_next_line()
+{
+	f_cursor_down();
+	v_cursor_x = 0;
+}
+
+void t_terminal::f_cursor_preceding_line()
+{
+	f_cursor_up();
+	v_cursor_x = 0;
+}
+
+void t_terminal::f_cursor_character_absolute()
+{
+	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
+	v_cursor_x = v_parameters[0] > 0 ? v_parameters[0] - 1 : 0;
+	if (v_cursor_x >= f_width()) v_cursor_x = f_width() - 1;
+}
+
 void t_terminal::f_cursor_position()
 {
 	while (v_parameters_size < 2) v_parameters[v_parameters_size++] = 1;
@@ -599,6 +618,15 @@ void t_terminal::f_control_sequence(wchar_t a_c)
 		break;
 	case L'D':
 		f_cursor_backward();
+		break;
+	case L'E':
+		f_cursor_next_line();
+		break;
+	case L'F':
+		f_cursor_preceding_line();
+		break;
+	case L'G':
+		f_cursor_character_absolute();
 		break;
 	case L'H':
 		f_cursor_position();
