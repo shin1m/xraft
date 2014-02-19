@@ -98,7 +98,7 @@ using xraft::xemmai::t_with_application_thread;
 
 void t_type_of<t_cross_mode>::f_define(t_extension* a_extension)
 {
-	t_define<t_cross_mode, ptrdiff_t>(a_extension, L"CrossMode")
+	t_define<t_cross_mode, intptr_t>(a_extension, L"CrossMode")
 		(L"NORMAL", e_cross_mode__NORMAL)
 		(L"GRAB", e_cross_mode__GRAB)
 		(L"UNGRAB", e_cross_mode__UNGRAB)
@@ -107,7 +107,7 @@ void t_type_of<t_cross_mode>::f_define(t_extension* a_extension)
 
 void t_type_of<t_cross_detail>::f_define(t_extension* a_extension)
 {
-	t_define<t_cross_detail, ptrdiff_t>(a_extension, L"CrossDetail")
+	t_define<t_cross_detail, intptr_t>(a_extension, L"CrossDetail")
 		(L"OUTER", e_cross_detail__OUTER)
 		(L"INNER", e_cross_detail__INNER)
 		(L"THROUGH", e_cross_detail__THROUGH)

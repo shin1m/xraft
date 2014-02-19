@@ -15,7 +15,7 @@ class t_opengl_context;
 class t_opengl_widget;
 
 //typedef HCURSOR t_cursor;
-typedef ptrdiff_t t_cursor;
+typedef intptr_t t_cursor;
 
 class t_window : public t_drawable
 {

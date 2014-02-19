@@ -167,7 +167,7 @@ using xraft::xemmai::t_with_application_thread;
 
 void t_type_of<t_side>::f_define(t_extension* a_extension)
 {
-	t_define<t_side, ptrdiff_t>(a_extension, L"Side")
+	t_define<t_side, intptr_t>(a_extension, L"Side")
 		(L"NONE", e_side__NONE)
 		(L"NEAR", e_side__NEAR)
 		(L"FAR", e_side__FAR)

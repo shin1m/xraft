@@ -5,7 +5,7 @@ namespace xemmai
 
 void t_type_of<t_key>::f_define(t_extension* a_extension)
 {
-	t_define<t_key, ptrdiff_t>(a_extension, L"Key")
+	t_define<t_key, intptr_t>(a_extension, L"Key")
 		(L"NONE", e_key__NONE)
 		(L"BACK_SPACE", e_key__BACK_SPACE)
 		(L"TAB", e_key__TAB)
@@ -171,7 +171,7 @@ void t_type_of<t_key>::f_define(t_extension* a_extension)
 
 void t_type_of<t_modifier>::f_define(t_extension* a_extension)
 {
-	t_define<t_modifier, ptrdiff_t>(a_extension, L"Modifier")
+	t_define<t_modifier, intptr_t>(a_extension, L"Modifier")
 		(L"NONE", e_modifier__NONE)
 		(L"SHIFT", e_modifier__SHIFT)
 		(L"LOCK", e_modifier__LOCK)
@@ -187,7 +187,7 @@ void t_type_of<t_modifier>::f_define(t_extension* a_extension)
 
 void t_type_of<t_button>::f_define(t_extension* a_extension)
 {
-	t_define<t_button, ptrdiff_t>(a_extension, L"Button")
+	t_define<t_button, intptr_t>(a_extension, L"Button")
 		(L"NONE", e_button__NONE)
 		(L"BUTTON1", e_button__1)
 		(L"BUTTON2", e_button__2)

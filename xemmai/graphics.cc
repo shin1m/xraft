@@ -104,7 +104,7 @@ t_type* t_type_of<t_graphics>::f_derive(t_object* a_this)
 
 void t_type_of<t_graphics::t_function>::f_define(t_extension* a_extension)
 {
-	t_define<t_graphics::t_function, ptrdiff_t>(a_extension, L"Function")
+	t_define<t_graphics::t_function, intptr_t>(a_extension, L"Function")
 		(L"CLEAR", t_graphics::e_function__CLEAR)
 		(L"AND", t_graphics::e_function__AND)
 		(L"AND_REVERSE", t_graphics::e_function__AND_REVERSE)

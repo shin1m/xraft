@@ -9,7 +9,7 @@ using xraft::xemmai::t_with_application_thread;
 
 void t_type_of<t_input_attribute>::f_define(t_extension* a_extension)
 {
-	t_define<t_input_attribute, ptrdiff_t>(a_extension, L"InputAttribute")
+	t_define<t_input_attribute, intptr_t>(a_extension, L"InputAttribute")
 		(L"NONE", e_input_attribute__NONE)
 		(L"REVERSE", e_input_attribute__REVERSE)
 		(L"UNDERLINE", e_input_attribute__UNDERLINE)
