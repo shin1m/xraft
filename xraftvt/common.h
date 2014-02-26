@@ -391,6 +391,7 @@ class t_terminal : public t_content, protected t_runnable
 	void f_state_default(wchar_t a_c);
 	void f_state_escape(wchar_t a_c);
 	void f_state_escape_sharp(wchar_t a_c);
+	void f_state_designate_g0(wchar_t a_c);
 	void f_state_csi(wchar_t a_c);
 	void f_state_csi_parameter(wchar_t a_c);
 	void f_state_csi_parameter_digit(wchar_t a_c);

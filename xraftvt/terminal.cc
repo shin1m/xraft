@@ -701,6 +701,9 @@ void t_terminal::f_state_escape(wchar_t a_c)
 	case L'#':
 		v_state = &t_terminal::f_state_escape_sharp;
 		return;
+	case L'(':
+		v_state = &t_terminal::f_state_designate_g0;
+		return;
 	case L'7':
 		f_save_cursor();
 		break;
@@ -750,6 +753,21 @@ void t_terminal::f_state_escape_sharp(wchar_t a_c)
 		break;
 	default:
 std::printf("Unknown escape sequence: # %c\n", a_c);
+	}
+	v_state = &t_terminal::f_state_default;
+}
+
+void t_terminal::f_state_designate_g0(wchar_t a_c)
+{
+	if (std::iswcntrl(a_c)) {
+		f_control_character(a_c);
+		return;
+	}
+	switch (a_c) {
+	case L'B':
+		break;
+	default:
+std::printf("Unknown G0 character set: # %c\n", a_c);
 	}
 	v_state = &t_terminal::f_state_default;
 }
