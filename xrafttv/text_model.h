@@ -50,29 +50,26 @@ private:
 	gapped<wchar_t> v_text;
 	gapped<t_segment> v_segments;
 	std::list<t_observer*> v_observers;
-	bool v_notify;
+	bool v_notify = false;
 
 protected:
 	void f_fire_loaded()
 	{
-		if (v_notify) for (typename std::list<t_observer*>::iterator i = v_observers.begin(); i != v_observers.end(); ++i) (*i)->f_loaded();
+		if (v_notify) for (auto p : v_observers) p->f_loaded();
 	}
 	void f_fire_replacing(size_t a_p, size_t a_n)
 	{
-		if (v_notify) for (typename std::list<t_observer*>::iterator i = v_observers.begin(); i != v_observers.end(); ++i) (*i)->f_replacing(a_p, a_n);
+		if (v_notify) for (auto p : v_observers) p->f_replacing(a_p, a_n);
 	}
 	void f_fire_replaced(size_t a_n)
 	{
-		if (v_notify) for (typename std::list<t_observer*>::iterator i = v_observers.begin(); i != v_observers.end(); ++i) (*i)->f_replaced(a_n);
+		if (v_notify) for (auto p : v_observers) p->f_replaced(a_n);
 	}
 	typename t_segments::const_iterator f_text_to_segment_(size_t a_p) const;
 	void f_erase_attribute(size_t a_p, size_t a_n);
 	void f_insert_attribute(size_t a_p, size_t a_n, const T_attribute& a_attribute);
 
 public:
-	t_text_model() : v_notify(false)
-	{
-	}
 	void f_add_observer(t_observer* a_observer)
 	{
 		v_observers.push_back(a_observer);
@@ -133,10 +130,10 @@ public:
 template<typename T_attribute>
 typename t_text_model<T_attribute>::t_segments::const_iterator t_text_model<T_attribute>::f_text_to_segment_(size_t a_p) const
 {
-	typename t_segments::const_iterator si = v_segments.gap();
-	typename t_segments::const_iterator send = v_segments.end();
+	auto si = v_segments.gap();
+	auto send = v_segments.end();
 	if (si == send || a_p < v_text.size() - si->v_text) {
-		typename t_segments::const_iterator sbegin = v_segments.begin();
+		auto sbegin = v_segments.begin();
 		while (si != sbegin) if ((--si)->v_text <= a_p) break;
 	} else {
 		do {
@@ -153,8 +150,8 @@ typename t_text_model<T_attribute>::t_segments::const_iterator t_text_model<T_at
 template<typename T_attribute>
 void t_text_model<T_attribute>::f_erase_attribute(size_t a_p, size_t a_n)
 {
-	typename t_segments::const_iterator si = v_segments.gap();
-	typename t_segments::const_iterator send = v_segments.end();
+	auto si = v_segments.gap();
+	auto send = v_segments.end();
 	if (a_p < (si == send ? v_text.size() : v_text.size() - si->v_text)) {
 		do --si; while (si->v_text > a_p);
 		if (si->v_text < a_p) ++si;
@@ -176,7 +173,7 @@ void t_text_model<T_attribute>::f_erase_attribute(size_t a_p, size_t a_n)
 	}
 	if (si < v_segments.gap()) return;
 	if (si != send) {
-		typename t_segments::const_iterator sj = v_segments.gap();
+		auto sj = v_segments.gap();
 		if (sj != v_segments.begin() && (--sj)->v_attribute == si->v_attribute) {
 			v_segments.erase_forward(++si - v_segments.gap());
 			return;
@@ -190,7 +187,7 @@ template<typename T_attribute>
 void t_text_model<T_attribute>::f_insert_attribute(size_t a_p, size_t a_n, const T_attribute& a_attribute)
 {
 	if (a_n <= 0) return;
-	typename t_segments::const_iterator si = v_segments.gap();
+	auto si = v_segments.gap();
 	if (si == v_segments.begin()) {
 		if (si != v_segments.end() && a_attribute == si->v_attribute) v_segments.erase_forward(1);
 		v_segments.insert_forward(t_segment(0, a_attribute));

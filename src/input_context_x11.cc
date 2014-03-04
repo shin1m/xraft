@@ -39,11 +39,10 @@ void t_input_context::t_component::f_hide()
 
 void t_input_context::f_text(DBusMessageIter& a_i, std::vector<wchar_t>& a_cs, std::vector<t_input_attribute>& a_as)
 {
-	a_cs.clear();
-	a_as.clear();
 	ibus::t_variant_parser p0(a_i);
 	const char* value;
 	p0 >> value;
+	a_cs.clear();
 	t_converter<char, wchar_t> converter("utf-8", "wchar_t");
 	converter(value, value + std::strlen(value), std::back_inserter(a_cs));
 	a_as.assign(a_cs.size(), e_input_attribute__NONE);

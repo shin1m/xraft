@@ -21,8 +21,8 @@ t_scoped t_type_of<t_input_context>::f_composition(t_extension* a_extension, t_i
 	std::vector<wchar_t> cs;
 	std::vector<t_input_attribute> as0;
 	a_self.f_composition(cs, as0);
-	t_scoped as1 = t_array::f_instantiate();
-	for (std::vector<t_input_attribute>::const_iterator i = as0.begin(); i != as0.end(); ++i) f_as<t_array&>(as1).f_push(a_extension->f_as(*i));
+	t_scoped as1 = t_tuple::f_instantiate(as0.size());
+	for (size_t i = 0; i < as0.size(); ++i) f_as<t_tuple&>(as1)[i] = a_extension->f_as(as0[i]);
 	t_scoped tuple = t_tuple::f_instantiate(2);
 	f_as<t_tuple&>(tuple)[0] = a_extension->f_as(std::wstring(cs.begin(), cs.end()));
 	f_as<t_tuple&>(tuple)[1] = std::move(as1);

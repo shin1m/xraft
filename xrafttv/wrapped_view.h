@@ -20,15 +20,11 @@ public:
 	};
 	struct t_caret
 	{
-		size_t v_text;
-		size_t v_row;
-		size_t v_line;
-		size_t v_row_x;
-		size_t v_line_x;
-
-		t_caret() : v_text(0), v_row(0), v_line(0), v_row_x(0), v_line_x(0)
-		{
-		}
+		size_t v_text = 0;
+		size_t v_row = 0;
+		size_t v_line = 0;
+		size_t v_row_x = 0;
+		size_t v_line_x = 0;
 	};
 
 private:
@@ -64,13 +60,13 @@ private:
 
 	std::list<t_observer*> v_observers;
 	T_font v_font;
-	t_text_model<T_attribute>* v_model;
-	size_t v_width;
+	t_text_model<T_attribute>* v_model = nullptr;
+	size_t v_width = 0;
 	t_rows v_rows;
 	t_lines v_lines;
 	t_caret v_caret;
-	size_t v_preferred_line_x;
-	bool v_caret_visible;
+	size_t v_preferred_line_x = 0;
+	bool v_caret_visible = false;
 	t_caret v_work;
 	size_t v_rows_size;
 	size_t v_first;
@@ -104,22 +100,22 @@ private:
 protected:
 	void f_fire_invalidated(size_t a_y, size_t a_height)
 	{
-		for (typename std::list<t_observer*>::iterator i = v_observers.begin(); i != v_observers.end(); ++i) (*i)->f_invalidated(a_y, a_height);
+		for (auto p : v_observers) p->f_invalidated(a_y, a_height);
 	}
 	void f_fire_resized()
 	{
-		for (typename std::list<t_observer*>::iterator i = v_observers.begin(); i != v_observers.end(); ++i) (*i)->f_resized();
+		for (auto p : v_observers) p->f_resized();
 	}
 	void f_fire_moved(size_t a_y, size_t a_height, int a_delta)
 	{
-		for (typename std::list<t_observer*>::iterator i = v_observers.begin(); i != v_observers.end(); ++i) (*i)->f_moved(a_y, a_height, a_delta);
+		for (auto p : v_observers) p->f_moved(a_y, a_height, a_delta);
 	}
 	virtual void f_loaded();
 	virtual void f_replacing(size_t a_p, size_t a_n);
 	virtual void f_replaced(size_t a_n);
 
 public:
-	t_wrapped_view(const T_font& a_font) : v_font(a_font), v_model(0), v_width(0), v_preferred_line_x(0), v_caret_visible(false)
+	t_wrapped_view(const T_font& a_font) : v_font(a_font)
 	{
 	}
 	~t_wrapped_view()
@@ -228,8 +224,8 @@ void t_wrapped_view<T_attribute, T_font>::f_layout()
 	size_t text = 0;
 	size_t row = 0;
 	t_x x;
-	typename t_text_model<T_attribute>::t_iterator mi = v_model->f_begin();
-	typename t_text_model<T_attribute>::t_iterator mend = v_model->f_end();
+	auto mi = v_model->f_begin();
+	auto mend = v_model->f_end();
 	while (mi != mend) {
 		wchar_t c = *mi;
 		size_t w = c == L'\t' ? f_tab_width(x.v_pixel) : c == L'\n' ? v_font.f_width() : f_character_width(c);
@@ -284,7 +280,7 @@ void t_wrapped_view<T_attribute, T_font>::f_caret_adjust_pixel(t_caret& a_caret)
 	}
 	a_caret.v_row_x = 0;
 	size_t text = f_row_to_text_(a_caret.v_row);
-	typename t_text_model<T_attribute>::t_iterator mi = v_model->f_begin() + text;
+	auto mi = v_model->f_begin() + text;
 	while (text < a_caret.v_text) {
 		wchar_t c = *mi;
 		a_caret.v_row_x += c == L'\t' ? f_tab_width(a_caret.v_row_x) : f_character_width(c);
@@ -302,7 +298,7 @@ void t_wrapped_view<T_attribute, T_font>::f_caret_move_row_x_forward(t_caret& a_
 	size_t row = a_caret.v_row + 1;
 	if (row < v_rows.size() && row >= f_line_to_row(a_caret.v_line + 1)) --text;
 	a_caret.v_text = f_row_to_text_(a_caret.v_row);
-	typename t_text_model<T_attribute>::t_iterator mi = v_model->f_begin() + a_caret.v_text;
+	auto mi = v_model->f_begin() + a_caret.v_text;
 	while (a_caret.v_text < text) {
 		wchar_t c = *mi;
 		size_t w = c == L'\t' ? f_tab_width(a_caret.v_row_x) : f_character_width(c);
@@ -381,7 +377,7 @@ void t_wrapped_view<T_attribute, T_font>::f_replaced(size_t a_n)
 	t_caret caret = v_work;
 	caret.v_line_x -= caret.v_row_x;
 	t_x x(v_first, caret.v_row_x);
-	typename t_text_model<T_attribute>::t_iterator mi = v_model->f_begin() + text;
+	auto mi = v_model->f_begin() + text;
 	while (a_n > 0) {
 		wchar_t c = *mi;
 		size_t w = c == L'\t' ? f_tab_width(x.v_pixel) : c == L'\n' ? v_font.f_width() : f_character_width(c);
@@ -406,7 +402,7 @@ void t_wrapped_view<T_attribute, T_font>::f_replaced(size_t a_n)
 	}
 	caret.v_text = text;
 	caret.v_line_x += caret.v_row_x = x.v_pixel;
-	typename t_text_model<T_attribute>::t_iterator mend = v_model->f_end();
+	auto mend = v_model->f_end();
 	while (true) {
 		if (mi == mend) {
 			v_rows.erase_forward(v_rows.size() - v_rows.gap_index());
@@ -415,8 +411,8 @@ void t_wrapped_view<T_attribute, T_font>::f_replaced(size_t a_n)
 		wchar_t c = *mi;
 		size_t w = c == L'\t' ? f_tab_width(x.v_pixel) : c == L'\n' ? v_font.f_width() : f_character_width(c);
 		if (x.v_pixel + w > v_width) {
-			typename t_rows::const_iterator ri = v_rows.gap();
-			typename t_rows::const_iterator rend = v_rows.end();
+			auto ri = v_rows.gap();
+			auto rend = v_rows.end();
 			size_t text0;
 			while (ri != rend && (text0 = v_model->f_text_size() - ri->v_text) < text) ++ri;
 			v_rows.erase_forward(ri - v_rows.gap());
@@ -467,11 +463,11 @@ void t_wrapped_view<T_attribute, T_font>::f_draw(T_context& a_context, size_t a_
 		a_context.f_draw_page_end(a_top, v_width, a_bottom - a_top);
 		return;
 	}
-	typename t_rows::const_iterator ri = v_rows.begin() + y;
-	typename t_rows::const_iterator rgap = v_rows.gap();
-	typename t_rows::const_iterator rend = v_rows.end();
+	auto ri = v_rows.begin() + y;
+	auto rgap = v_rows.gap();
+	auto rend = v_rows.end();
 	size_t text = ri < rgap ? ri->v_text : v_model->f_text_size() - ri->v_text;
-	typename t_text_model<T_attribute>::t_iterator mi = v_model->f_begin() + text;
+	auto mi = v_model->f_begin() + text;
 	size_t si = v_model->f_text_to_segment(text);
 	size_t sn = v_model->f_segments_size();
 	if (si < sn) a_context.f_attribute(v_model->f_segment_to_attribute(si++));
