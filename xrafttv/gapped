@@ -30,12 +30,20 @@ public:
 protected:
 	struct block_type
 	{
-		value_type elements[SIZE];
+		char data[SIZE * sizeof(value_type)];
 		pointer first;
 		pointer last;
 		int index;
-		gapped<E, SIZE, A>* buffer;
+		gapped* buffer;
 
+		const value_type* elements() const
+		{
+			return reinterpret_cast<const value_type*>(data);
+		}
+		value_type* elements()
+		{
+			return reinterpret_cast<value_type*>(data);
+		}
 		block_type* next() const
 		{
 			return *((index < 0 ? buffer->_block_last : buffer->_block_first) + index + 1);
@@ -50,7 +58,7 @@ protected:
 public:
 	class const_iterator : public std::iterator<std::random_access_iterator_tag, typename allocator_type::value_type, int>
 	{
-		friend class gapped<E, SIZE, A>;
+		friend class gapped;
 
 	public:
 		typedef int difference_type;
@@ -66,7 +74,7 @@ public:
 		}
 		size_type index() const
 		{
-			return _p - _block->elements;
+			return _p - _block->elements();
 		}
 		size_type position() const
 		{
@@ -150,11 +158,11 @@ public:
 			size_type p = position() + n;
 			if (p < _block->buffer->gap_index()) {
 				_block = *(_block->buffer->_block_first + p / SIZE);
-				_p = _block->elements + p % SIZE;
+				_p = _block->elements() + p % SIZE;
 			} else {
 				p = _block->buffer->internal_size() - p;
 				_block = *(_block->buffer->_block_last - 1 - (p - 1) / SIZE);
-				_p = _block->elements + (SIZE - p) % SIZE;
+				_p = _block->elements() + (SIZE - p) % SIZE;
 			}
 			return *this;
 		}
@@ -226,11 +234,11 @@ protected:
 
 	size_type gap_head_index() const
 	{
-		return _gap_head_p - _gap_head_block->elements;
+		return _gap_head_p - _gap_head_block->elements();
 	}
 	size_type gap_tail_index() const
 	{
-		return _gap_tail_p - _gap_tail_block->elements;
+		return _gap_tail_p - _gap_tail_block->elements();
 	}
 	size_type internal_size() const
 	{
@@ -239,10 +247,10 @@ protected:
 	pointer pointer_at(size_type p) const
 	{
 		if (p < gap_index()) {
-			return (*(_block_first + p / SIZE))->elements + p % SIZE;
+			return (*(_block_first + p / SIZE))->elements() + p % SIZE;
 		} else {
 			p = internal_size() - p;
-			return (*(_block_last - 1 - (p - 1) / SIZE))->elements + (SIZE - p) % SIZE;
+			return (*(_block_last - 1 - (p - 1) / SIZE))->elements() + (SIZE - p) % SIZE;
 		}
 	}
 	template<typename P>
@@ -286,12 +294,12 @@ public:
 		*_block_first = new block_type();
 		(*_block_first)->buffer = this;
 		(*_block_first)->index = 0;
-		(*_block_first)->first = (*_block_first)->last = (*_block_first)->elements;
+		(*_block_first)->first = (*_block_first)->last = (*_block_first)->elements();
 		*_block_last = new block_type();
 		(*_block_last)->buffer = this;
 		(*_block_last)->index = -1;
-		(*_block_last)->first = (*_block_last)->elements + SIZE - 1;
-		(*_block_last)->last = (*_block_last)->elements + SIZE;
+		(*_block_last)->first = (*_block_last)->elements() + SIZE - 1;
+		(*_block_last)->last = (*_block_last)->elements() + SIZE;
 		_gap_head_block = *_block_first;
 		_gap_head_p = (*_block_first)->last;
 		_gap_tail_block = *_block_last;
@@ -306,11 +314,11 @@ public:
 	}
 	const_iterator begin() const
 	{
-		return _gap_head_p == (*_block_first)->elements ? gap() : const_iterator(*_block_first, (*_block_first)->elements);
+		return _gap_head_p == (*_block_first)->elements() ? gap() : const_iterator(*_block_first, (*_block_first)->elements());
 	}
 	const_iterator end() const
 	{
-		return const_iterator(*(_block_last - 1), (*(_block_last - 1))->elements + SIZE - 1);
+		return const_iterator(*(_block_last - 1), (*(_block_last - 1))->elements() + SIZE - 1);
 	}
 	size_type size() const
 	{
@@ -363,15 +371,15 @@ public:
 			_gap_tail_p += m;
 			n -= m;
 			if (gap_head_index() >= SIZE) {
-				_gap_head_block->last = _gap_head_block->elements + SIZE;
+				_gap_head_block->last = _gap_head_block->elements() + SIZE;
 				int index = _gap_head_block->index;
 				_gap_head_block = _gap_head_block->next();
-				_gap_head_block->first = _gap_head_p = _gap_head_block->elements;
+				_gap_head_block->first = _gap_head_p = _gap_head_block->elements();
 				_gap_head_block->index = index + 1;
 			}
 			if (gap_tail_index() >= SIZE) {
 				_gap_tail_block = _gap_tail_block->next();
-				_gap_tail_p = _gap_tail_block->elements;
+				_gap_tail_p = _gap_tail_block->elements();
 			}
 		}
 		_gap_head_block->last = _gap_head_p;
@@ -387,13 +395,13 @@ public:
 		while (n > 0) {
 			if (gap_head_index() <= 0) {
 				_gap_head_block = _gap_head_block->previous();
-				_gap_head_p = _gap_head_block->elements + SIZE;
+				_gap_head_p = _gap_head_block->elements() + SIZE;
 			}
 			if (gap_tail_index() <= 0) {
-				_gap_tail_block->first = _gap_tail_block->elements;
+				_gap_tail_block->first = _gap_tail_block->elements();
 				int index = _gap_tail_block->index;
 				_gap_tail_block = _gap_tail_block->previous();
-				_gap_tail_block->last = _gap_tail_p = _gap_tail_block->elements + SIZE;
+				_gap_tail_block->last = _gap_tail_p = _gap_tail_block->elements() + SIZE;
 				_gap_tail_block->index = index - 1;
 			}
 			size_type m = std::min(std::min(n, gap_head_index()), gap_tail_index());
@@ -416,12 +424,12 @@ public:
 			new(_gap_head_p) E(*first);
 			++_gap_head_p;
 			++first;
-			if (_gap_head_p == _gap_head_block->elements + SIZE) {
+			if (_gap_head_p == _gap_head_block->elements() + SIZE) {
 				if (_gap_head_block->next() == _gap_tail_block) grow();
 				_gap_head_block->last = _gap_head_p;
 				int index = _gap_head_block->index;
 				_gap_head_block = _gap_head_block->next();
-				_gap_head_block->first = _gap_head_p = _gap_head_block->elements;
+				_gap_head_block->first = _gap_head_p = _gap_head_block->elements();
 				_gap_head_block->index = index + 1;
 			}
 		}
@@ -437,12 +445,12 @@ public:
 	void insert_backward(I first, I last)
 	{
 		while (first != last) {
-			if (_gap_tail_p == _gap_tail_block->elements) {
+			if (_gap_tail_p == _gap_tail_block->elements()) {
 				if (_gap_head_block->next() == _gap_tail_block) grow();
 				_gap_tail_block->first = _gap_tail_p;
 				int index = _gap_tail_block->index;
 				_gap_tail_block = _gap_tail_block->previous();
-				_gap_tail_block->last = _gap_tail_p = _gap_tail_block->elements + SIZE;
+				_gap_tail_block->last = _gap_tail_p = _gap_tail_block->elements() + SIZE;
 				_gap_tail_block->index = index - 1;
 			}
 			--_gap_tail_p;
@@ -462,9 +470,9 @@ public:
 				_gap_tail_p->~E();
 				++_gap_tail_p;
 			} while (--m > 0);
-			if (_gap_tail_p == _gap_tail_block->elements + SIZE) {
+			if (_gap_tail_p == _gap_tail_block->elements() + SIZE) {
 				_gap_tail_block = _gap_tail_block->next();
-				_gap_tail_p = _gap_tail_block->elements;
+				_gap_tail_p = _gap_tail_block->elements();
 				if (_block_last + _gap_tail_block->index - _block_first - _gap_head_block->index > 2) shrink();
 			}
 		}
@@ -473,9 +481,9 @@ public:
 	void erase_backward(size_type n)
 	{
 		while (n > 0) {
-			if (_gap_head_p == _gap_head_block->elements) {
+			if (_gap_head_p == _gap_head_block->elements()) {
 				_gap_head_block = _gap_head_block->previous();
-				_gap_head_p = _gap_head_block->elements + SIZE;
+				_gap_head_p = _gap_head_block->elements() + SIZE;
 				if (_block_last + _gap_tail_block->index - _block_first - _gap_head_block->index > 2) shrink();
 			}
 			size_type m = std::min(n, gap_head_index());
