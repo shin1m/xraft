@@ -121,6 +121,7 @@ Editor = Class(xraft.Frame) :: @{
 		extent = $geometry();
 		top = y - $_position;
 		bottom = top + height;
+		if (bottom <= 0) return;
 		if (top < 0) top = 0;
 		$invalidate(0, top, extent.width(), bottom - top);
 	};
