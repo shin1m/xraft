@@ -13,14 +13,13 @@
 namespace xraft
 {
 
-template<typename E, size_t SIZE = 1024, typename A = std::allocator<E> >
+template<typename E, size_t SIZE = 1024, typename A = std::allocator<E>>
 class gapped
 {
 public:
 	typedef A allocator_type;
 	typedef typename allocator_type::size_type size_type;
-//	typedef typename allocator_type::difference_type difference_type;
-	typedef int difference_type;
+	typedef typename allocator_type::difference_type difference_type;
 	typedef typename allocator_type::pointer pointer;
 	typedef typename allocator_type::const_pointer const_pointer;
 	typedef typename allocator_type::reference reference;
@@ -28,6 +27,13 @@ public:
 	typedef typename allocator_type::value_type value_type;
 
 protected:
+	struct block_type;
+	typedef typename std::allocator_traits<allocator_type>::template rebind_alloc<block_type> block_allocator_type;
+	typedef typename block_allocator_type::pointer block_pointer;
+	typedef typename block_allocator_type::const_pointer const_block_pointer;
+	typedef typename std::allocator_traits<allocator_type>::template rebind_alloc<block_pointer> block_pointer_allocator_type;
+	typedef typename block_pointer_allocator_type::pointer block_pointer_pointer;
+
 	struct block_type
 	{
 		char data[SIZE * sizeof(value_type)];
@@ -36,40 +42,39 @@ protected:
 		int index;
 		gapped* buffer;
 
-		const value_type* elements() const
+		pointer elements()
 		{
-			return reinterpret_cast<const value_type*>(data);
+			return reinterpret_cast<pointer>(data);
 		}
-		value_type* elements()
+		const_pointer elements() const
 		{
-			return reinterpret_cast<value_type*>(data);
+			return reinterpret_cast<const_pointer>(data);
 		}
-		block_type* next() const
+		block_pointer next() const
 		{
 			return *((index < 0 ? buffer->_block_last : buffer->_block_first) + index + 1);
 		}
-		block_type* previous() const
+		block_pointer previous() const
 		{
 			return *((index < 0 ? buffer->_block_last : buffer->_block_first) + index - 1);
 		}
 	};
-	friend struct block_type;
 
 public:
-	class const_iterator : public std::iterator<std::random_access_iterator_tag, typename allocator_type::value_type, int>
+	class const_iterator : public std::iterator<std::random_access_iterator_tag, value_type, difference_type>
 	{
 		friend class gapped;
 
 	public:
-		typedef int difference_type;
+		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_reference reference;
 
 	private:
-		const block_type* _block;
+		const_block_pointer _block;
 		const_pointer _p;
 
-		const_iterator(const block_type* b, const_pointer p) : _block(b), _p(p)
+		const_iterator(const_block_pointer b, const_pointer p) : _block(b), _p(p)
 		{
 		}
 		size_type index() const
@@ -213,11 +218,10 @@ public:
 			return !(*this < x);
 		}
 	};
-	friend class const_iterator;
 
 	struct identical : public std::unary_function<value_type, value_type>
 	{
-		const value_type& operator()(const value_type& x) const
+		const_reference operator()(const_reference x) const
 		{
 			return x;
 		}
@@ -225,11 +229,13 @@ public:
 
 protected:
 	allocator_type _allocator;
-	block_type** _block_first;
-	block_type** _block_last;
-	block_type* _gap_head_block;
+	block_allocator_type _block_allocator;
+	block_pointer_allocator_type _block_pointer_allocator;
+	block_pointer_pointer _block_first;
+	block_pointer_pointer _block_last;
+	block_pointer _gap_head_block;
 	pointer _gap_head_p;
-	block_type* _gap_tail_block;
+	block_pointer _gap_tail_block;
 	pointer _gap_tail_p;
 
 	size_type gap_head_index() const
@@ -257,8 +263,8 @@ protected:
 	void move(pointer s, pointer d, size_type n, P p)
 	{
 		while (n > 0) {
-			new(d) E(p(*s));
-			s->~E();
+			_allocator.construct(d, p(*s));
+			_allocator.destroy(s);
 			++s;
 			++d;
 			--n;
@@ -266,36 +272,36 @@ protected:
 	}
 	void grow()
 	{
-		block_type** f = new block_type*[_block_last - _block_first + 1];
-		block_type** p = _block_first + _gap_head_block->index + 1;
-		block_type** l = std::copy(_block_first, p, f);
-		*l = new block_type();
+		auto f = _block_pointer_allocator.allocate(_block_last - _block_first + 1);
+		auto p = _block_first + _gap_head_block->index + 1;
+		auto l = std::copy(_block_first, p, f);
+		*l = _block_allocator.allocate(1);
 		(*l)->buffer = this;
 		l = std::copy(p, _block_last, ++l);
-		delete _block_first;
+		_block_pointer_allocator.deallocate(_block_first, _block_last - _block_first);
 		_block_first = f;
 		_block_last = l;
 	}
 	void shrink()
 	{
-		block_type** f = new block_type*[_block_last - _block_first - 1];
-		block_type** p = _block_first + _gap_head_block->index + 1;
-		block_type** l = std::copy(_block_first, p, f);
-		delete *p;
+		auto f = _block_pointer_allocator.allocate(_block_last - _block_first - 1);
+		auto p = _block_first + _gap_head_block->index + 1;
+		auto l = std::copy(_block_first, p, f);
+		_block_allocator.deallocate(*p, 1);
 		l = std::copy(++p, _block_last, l);
-		delete _block_first;
+		_block_pointer_allocator.deallocate(_block_first, _block_last - _block_first);
 		_block_first = f;
 		_block_last = l;
 	}
 
 public:
-	gapped() : _block_first(new block_type*[2]), _block_last(_block_first + 1)
+	gapped(const allocator_type& allocator = allocator_type()) : _allocator(allocator), _block_allocator(allocator), _block_pointer_allocator(allocator), _block_first(_block_pointer_allocator.allocate(2)), _block_last(_block_first + 1)
 	{
-		*_block_first = new block_type();
+		*_block_first = _block_allocator.allocate(1);
 		(*_block_first)->buffer = this;
 		(*_block_first)->index = 0;
 		(*_block_first)->first = (*_block_first)->last = (*_block_first)->elements();
-		*_block_last = new block_type();
+		*_block_last = _block_allocator.allocate(1);
 		(*_block_last)->buffer = this;
 		(*_block_last)->index = -1;
 		(*_block_last)->first = (*_block_last)->elements() + SIZE - 1;
@@ -309,8 +315,8 @@ public:
 	~gapped()
 	{
 		clear();
-		for (block_type** p = _block_first; p != _block_last; ++p) delete *p;
-		delete _block_first;
+		for (auto p = _block_first; p != _block_last; ++p) _block_allocator.deallocate(*p, 1);
+		_block_pointer_allocator.deallocate(_block_first, _block_last - _block_first);
 	}
 	const_iterator begin() const
 	{
@@ -345,7 +351,7 @@ public:
 	{
 		return *pointer_at(p);
 	}
-	A get_allocator() const
+	allocator_type get_allocator() const
 	{
 		return _allocator;
 	}
@@ -413,7 +419,7 @@ public:
 		_gap_head_block->last = _gap_head_p;
 		_gap_tail_block->first = _gap_tail_p;
 	}
-	void insert_forward(const E& v)
+	void insert_forward(const_reference v)
 	{
 		insert_forward(&v, &v + 1);
 	}
@@ -421,7 +427,7 @@ public:
 	void insert_forward(I first, I last)
 	{
 		while (first != last) {
-			new(_gap_head_p) E(*first);
+			_allocator.construct(_gap_head_p, *first);
 			++_gap_head_p;
 			++first;
 			if (_gap_head_p == _gap_head_block->elements() + SIZE) {
@@ -437,7 +443,7 @@ public:
 			/*&& gap_head_index() > gap_tail_index()*/) grow();
 		_gap_head_block->last = _gap_head_p;
 	}
-	void insert_backward(const E& v)
+	void insert_backward(const_reference v)
 	{
 		insert_backward(&v, &v + 1);
 	}
@@ -455,7 +461,7 @@ public:
 			}
 			--_gap_tail_p;
 			--last;
-			new(_gap_tail_p) E(*last);
+			_allocator.construct(_gap_tail_p, *last);
 		}
 		if (_gap_head_block->next() == _gap_tail_block
 			/*&& gap_head_index() > gap_tail_index()*/) grow();
@@ -467,7 +473,7 @@ public:
 			size_type m = std::min(n, SIZE - gap_tail_index());
 			n -= m;
 			do {
-				_gap_tail_p->~E();
+				_allocator.destroy(_gap_tail_p);
 				++_gap_tail_p;
 			} while (--m > 0);
 			if (_gap_tail_p == _gap_tail_block->elements() + SIZE) {
@@ -490,7 +496,7 @@ public:
 			n -= m;
 			do {
 				--_gap_head_p;
-				_gap_head_p->~E();
+				_allocator.destroy(_gap_head_p);
 			} while (--m > 0);
 		}
 		_gap_head_block->last = _gap_head_p;
