@@ -40,6 +40,7 @@ struct t_arguments
 
 void t_application::f_wait()
 {
+	t_safe_region region;
 	xraft::t_application::f_wait();
 }
 
