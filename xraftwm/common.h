@@ -146,6 +146,7 @@ class t_root : public t_window, t_runnable
 	Atom WM_CHANGE_STATE;
 	Atom WM_TAKE_FOCUS;
 	Atom WM_COLORMAP_WINDOWS;
+	Atom WM_Sn;
 	t_client* v_revokeds;
 	t_client* v_active;
 

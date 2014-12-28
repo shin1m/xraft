@@ -104,18 +104,22 @@ t_root::t_root()
 	int shape_error;
 	v_shape = XShapeQueryExtension(display, &v_shape_event, &shape_error);
 	XC_CLIENT = XUniqueContext();
+	char wm_sn[32];
+	std::sprintf(wm_sn, "WM_S%d", DefaultScreen(display));
 	char* names[] = {
 		const_cast<char*>("WM_STATE"),
 		const_cast<char*>("WM_CHANGE_STATE"),
 		const_cast<char*>("WM_TAKE_FOCUS"),
-		const_cast<char*>("WM_COLORMAP_WINDOWS")
+		const_cast<char*>("WM_COLORMAP_WINDOWS"),
+		wm_sn
 	};
-	Atom atoms[4];
-	XInternAtoms(display, names, 4, False, atoms);
+	Atom atoms[5];
+	XInternAtoms(display, names, sizeof(atoms) / sizeof(Atom), False, atoms);
 	WM_STATE = atoms[0];
 	WM_CHANGE_STATE = atoms[1];
 	WM_TAKE_FOCUS = atoms[2];
 	WM_COLORMAP_WINDOWS = atoms[3];
+	WM_Sn = atoms[4];
 	v_handle = DefaultRootWindow(display);
 	application->f_register(v_handle, this);
 	f_x11_geometry__(t_rectangle(t_point(0, 0), application->f_screen()));
@@ -133,6 +137,7 @@ void t_root::f_run()
 	t_application* application = f_application();
 	Display* display = application->f_x11_display();
 	XSelectInput(display, v_handle, ButtonPressMask | ButtonReleaseMask | PointerMotionMask | EnterWindowMask | LeaveWindowMask | ExposureMask | SubstructureRedirectMask);
+	XSetSelectionOwner(display, WM_Sn, v_handle, CurrentTime);
 	Window root;
 	Window parent;
 	Window* children;
@@ -151,6 +156,7 @@ void t_root::f_run()
 	application->f_run();
 	XInstallColormap(display, DefaultColormap(display, DefaultScreen(display)));
 	XSetInputFocus(display, PointerRoot, RevertToPointerRoot, CurrentTime);
+	XSetSelectionOwner(display, WM_Sn, None, CurrentTime);
 	size_t i = 0;
 	while (i < f_count()) {
 		t_pointer<t_client> client = f_dynamic_cast<t_client>(f_at(i));
@@ -172,7 +178,7 @@ void t_root::f_active__(const t_pointer<t_client>& a_client)
 	if (active) {
 		if (!active->v_shaded) {
 			XInstallColormap(display, DefaultColormap(display, DefaultScreen(display)));
-	//		XSetInputFocus(display, PointerRoot, RevertToNone, time);
+//			XSetInputFocus(display, PointerRoot, RevertToNone, time);
 		}
 		active->f_on_deactivate();
 	}
