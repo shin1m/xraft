@@ -152,7 +152,7 @@ f_log("home=%s\n", home.c_str());
 f_log("request=%d\n", request);
 			DWORD process;
 			reader.f_read(process);
-			std::set<DWORD>::iterator i = processes.lower_bound(process);
+			auto i = processes.lower_bound(process);
 			if (i == processes.end() || *i != process) {
 				handles.push_back(OpenProcess(PROCESS_QUERY_INFORMATION | SYNCHRONIZE, FALSE, process));
 				processes.insert(i, process);
@@ -176,14 +176,14 @@ f_log("request=%d\n", request);
 					dictionary.f_search(&entry[0], n, okuri, candidates);
 					t_writer<t_device> writer(device);
 					writer.f_write(candidates.size());
-					for (std::deque<t_candidate>::const_iterator i = candidates.begin(); i != candidates.end(); ++i) {
-						writer.f_write(i->v_text.size());
-						writer.f_write(reinterpret_cast<const char*>(i->v_text.c_str()), sizeof(wchar_t) * i->v_text.size());
-						const std::vector<std::wstring>& annotations = i->v_annotations;
+					for (const auto& x : candidates) {
+						writer.f_write(x.v_text.size());
+						writer.f_write(reinterpret_cast<const char*>(x.v_text.c_str()), sizeof(wchar_t) * x.v_text.size());
+						const std::vector<std::wstring>& annotations = x.v_annotations;
 						writer.f_write(annotations.size());
-						for (std::vector<std::wstring>::const_iterator j = annotations.begin(); j != annotations.end(); ++j) {
-							writer.f_write(j->size());
-							writer.f_write(reinterpret_cast<const char*>(j->c_str()), sizeof(wchar_t) * j->size());
+						for (const auto& y : annotations) {
+							writer.f_write(y.size());
+							writer.f_write(reinterpret_cast<const char*>(y.c_str()), sizeof(wchar_t) * y.size());
 						}
 					}
 				}
@@ -211,7 +211,7 @@ f_log("request=%d\n", request);
 				if (error != ERROR_PIPE_CONNECTED && error != ERROR_IO_PENDING) break;
 			}
 		} else if (result < WAIT_OBJECT_0 + handles.size()) {
-			std::vector<HANDLE>::iterator i = handles.begin() + (result - WAIT_OBJECT_0);
+			auto i = handles.begin() + (result - WAIT_OBJECT_0);
 f_log("exited=%d\n", GetProcessId(*i));
 			processes.erase(GetProcessId(*i));
 			CloseHandle(*i);

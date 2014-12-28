@@ -130,7 +130,7 @@ t_application::t_application(std::vector<std::string>& a_arguments) : v_pointed(
 
 t_application::~t_application()
 {
-	for (std::vector<t_pointer<t_shell> >::const_iterator i = v_shells.begin(); i != v_shells.end(); ++i) (*i)->f_destroy();
+	for (const auto& p : v_shells) p->f_destroy();
 	v_shells.clear();
 	v_input_context = 0;
 	v_font = 0;
@@ -178,7 +178,7 @@ void t_application::f_add(const t_pointer<t_shell>& a_shell, size_t a_i)
 
 void t_application::f_remove(size_t a_i)
 {
-	std::vector<t_pointer<t_shell> >::iterator i = v_shells.begin() + a_i;
+	auto i = v_shells.begin() + a_i;
 	(*i)->f_destroy();
 	v_shells.erase(i);
 }

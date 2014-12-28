@@ -250,7 +250,7 @@ void t_client::f_configure(const XConfigureRequestEvent& a_xconfigurerequest)
 			{
 				t_pointer<t_widget> p = this;
 				children.erase(std::find(children.begin(), children.end(), p));
-				std::vector<t_pointer<t_widget> >::iterator i = (a_xconfigurerequest.value_mask & CWSibling) != 0 ? std::find(children.begin(), children.end(), f_root()->f_find(a_xconfigurerequest.above)) : children.end();
+				auto i = (a_xconfigurerequest.value_mask & CWSibling) != 0 ? std::find(children.begin(), children.end(), f_root()->f_find(a_xconfigurerequest.above)) : children.end();
 				if (i != children.end()) {
 					if (a_xconfigurerequest.detail == Above) ++i;
 					children.insert(i, p);

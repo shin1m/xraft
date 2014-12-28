@@ -18,7 +18,7 @@ void t_window::f_create(HWND a_parent, ATOM a_atom, DWORD dwExStyle, DWORD dwSty
 	v_handle = CreateWindowEx(dwExStyle, reinterpret_cast<LPCTSTR>(a_atom), NULL, dwStyle, v_geometry.v_x, v_geometry.v_y, v_geometry.v_width, v_geometry.v_height, a_parent, NULL, f_application()->v_hinstance, NULL);
 	SetWindowLong(f_hwnd(), 0, reinterpret_cast<LONG>(this));
 	ImmAssociateContext(f_hwnd(), v_input_context ? v_input_context->v_himc : NULL);
-	for (std::vector<t_pointer<t_widget> >::const_iterator i = v_children.begin(); i != v_children.end(); ++i) (*i)->f_create();
+	for (const auto& p : v_children) p->f_create();
 }
 
 t_window::t_window() : v_geometry(0, 0, 0, 0), v_visible(false), v_cursor(f_application()->f_cursor_arrow())
@@ -27,14 +27,14 @@ t_window::t_window() : v_geometry(0, 0, 0, 0), v_visible(false), v_cursor(f_appl
 
 t_window::~t_window()
 {
-	for (std::vector<t_pointer<t_widget> >::const_iterator i = v_children.begin(); i != v_children.end(); ++i) (*i)->v_parent = 0;
+	for (const auto& p : v_children) p->v_parent = 0;
 }
 
 void t_window::f_destroy()
 {
 	if (this == f_application()->v_pointed) f_application()->f_pointed__(0, 0, 0, e_cross_mode__NORMAL);
 	if (this == f_application()->f_focus()) f_application()->f_focus__(0);
-	for (std::vector<t_pointer<t_widget> >::const_iterator i = v_children.begin(); i != v_children.end(); ++i) (*i)->f_destroy();
+	for (const auto& p : v_children) p->f_destroy();
 	SetWindowLong(f_hwnd(), 0, 0);
 	DestroyWindow(f_hwnd());
 	v_handle = NULL;
@@ -257,7 +257,7 @@ void t_window::f_add(const t_pointer<t_widget>& a_widget, size_t a_i)
 
 void t_window::f_remove(size_t a_i)
 {
-	std::vector<t_pointer<t_widget> >::iterator i = v_children.begin() + a_i;
+	auto i = v_children.begin() + a_i;
 	const t_pointer<t_widget>& widget = *i;
 	if (v_handle != NULL) widget->f_destroy();
 	widget->v_parent = 0;

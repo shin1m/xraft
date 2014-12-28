@@ -215,11 +215,11 @@ void t_ibus_engine::f_on_forward()
 void t_ibus_engine::f_on_compose(size_t a_i, size_t a_m, const wchar_t* a_cs, const t_attribute* a_as, size_t a_n)
 {
 	{
-		std::vector<wchar_t>::iterator i = v_cs.begin() + a_i;
+		auto i = v_cs.begin() + a_i;
 		v_cs.insert(v_cs.erase(i, i + a_m), a_cs, a_cs + a_n);
 	}
 	{
-		std::vector<t_attribute>::iterator i = v_as.begin() + a_i;
+		auto i = v_as.begin() + a_i;
 		v_as.insert(v_as.erase(i, i + a_m), a_as, a_as + a_n);
 	}
 	f_update_preedit_text(&v_cs[0], &v_as[0], v_cs.size(), f_caret(), !v_cs.empty(), ibus::e_engine_preedit__CLEAR);
@@ -290,10 +290,10 @@ void t_ibus_engine::f_on_choose()
 				const std::wstring& text = candidate.v_text;
 				std::vector<wchar_t> cs(text.begin(), text.end());
 				const std::vector<std::wstring>& annotations = candidate.v_annotations;
-				for (std::vector<std::wstring>::const_iterator j = annotations.begin(); j != annotations.end(); ++j) {
+				for (const auto& x : annotations) {
 					cs.push_back(L' ');
 					cs.push_back(L';');
-					cs.insert(cs.end(), j->begin(), j->end());
+					cs.insert(cs.end(), x.begin(), x.end());
 				}
 				f_text(b1, &cs[0], cs.size());
 			}

@@ -54,7 +54,7 @@ void t_window::f_x11_create(Window a_parent, unsigned int a_border_width, int a_
 	Display* display = application->f_x11_display();
 	v_handle = XCreateWindow(display, a_parent, v_geometry.v_x, v_geometry.v_y, v_geometry.v_width > 0 ? v_geometry.v_width : 1, v_geometry.v_height > 0 ? v_geometry.v_height : 1, a_border_width, a_depth, InputOutput, a_visual, valuemask, &attributes);
 	application->f_register(v_handle, this);
-	for (std::vector<t_pointer<t_widget> >::const_iterator i = v_children.begin(); i != v_children.end(); ++i) (*i)->f_create();
+	for (const auto& p : v_children) p->f_create();
 	if (v_visible && v_geometry.v_width > 0 && v_geometry.v_height > 0) XMapWindow(display, v_handle);
 }
 
@@ -64,7 +64,7 @@ t_window::t_window() : v_geometry(0, 0, 0, 0), v_visible(false), v_next_invalid(
 
 t_window::~t_window()
 {
-	for (std::vector<t_pointer<t_widget> >::const_iterator i = v_children.begin(); i != v_children.end(); ++i) (*i)->v_parent = 0;
+	for (const auto& p : v_children) p->v_parent = 0;
 }
 
 void t_window::f_destroy()
@@ -72,7 +72,7 @@ void t_window::f_destroy()
 	t_application* application = f_application();
 	if (this == application->v_focus) application->f_focus__(0);
 	if (this == application->v_pointer_grabber) application->v_pointer_grabber = 0;
-	for (std::vector<t_pointer<t_widget> >::const_iterator i = v_children.begin(); i != v_children.end(); ++i) (*i)->f_destroy();
+	for (const auto& p : v_children) p->f_destroy();
 	if (v_next_invalid) {
 		t_window*& invalids = application->v_invalids;
 		if (v_next_invalid == this) {
@@ -245,7 +245,7 @@ void t_window::f_add(const t_pointer<t_widget>& a_widget, size_t a_i)
 
 void t_window::f_remove(size_t a_i)
 {
-	std::vector<t_pointer<t_widget> >::iterator i = v_children.begin() + a_i;
+	auto i = v_children.begin() + a_i;
 	const t_pointer<t_widget>& widget = *i;
 	if (v_handle != None) widget->f_destroy();
 	widget->v_parent = 0;

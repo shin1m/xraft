@@ -19,8 +19,8 @@ class t_ibus : public t_frame
 		a_g.f_color(v_foreground.f_pixel());
 		t_pointer<t_font> font = f_application()->f_font();
 		int y = font->f_ascent();
-		for (std::vector<std::wstring>::const_iterator i = v_texts.begin(); i != v_texts.end(); ++i) {
-			a_g.f_draw(0, y, i->c_str(), i->size());
+		for (const auto& x : v_texts) {
+			a_g.f_draw(0, y, x.c_str(), x.size());
 			y += font->f_height();
 		}
 	}

@@ -269,10 +269,9 @@ void t_lexer<T>::f_next()
 template<typename T>
 void f_build(const std::vector<std::wstring>& a_texts, T& a_target)
 {
-	for (std::vector<std::wstring>::const_iterator i = a_texts.begin(); i != a_texts.end(); ++i) {
+	for (const auto& x : a_texts) {
 		a_target(L'/');
-		for (std::wstring::const_iterator j = i->begin(); j != i->end(); ++j) {
-			wchar_t c = *j;
+		for (wchar_t c : x) {
 			switch (c) {
 			case L'/':
 			case L';':
@@ -290,23 +289,23 @@ void f_build(const std::vector<std::wstring>& a_texts, T& a_target)
 void f_add(std::deque<t_candidate>& a_candidates, std::map<std::wstring, t_candidate*>& a_map, const std::wstring& a_text, const std::wstring& a_annotation)
 {
 	if (a_text.empty()) return;
-	std::map<std::wstring, t_candidate*>::iterator i = a_map.lower_bound(a_text);
+	auto i = a_map.lower_bound(a_text);
 	if (i == a_map.end() || i->first != a_text) {
 		a_candidates.push_back(t_candidate(a_text));
-		i = a_map.insert(i, std::make_pair(a_text, &a_candidates.back()));
+		i = a_map.emplace_hint(i, a_text, &a_candidates.back());
 	}
 	if (!a_annotation.empty()) i->second->v_annotations.push_back(a_annotation);
 }
 
 void f_add(std::deque<t_candidate>& a_candidates, std::map<std::wstring, t_candidate*>& a_map, const std::vector<std::wstring>& a_texts)
 {
-	for (std::vector<std::wstring>::const_iterator i = a_texts.begin(); i != a_texts.end(); ++i) f_add(a_candidates, a_map, *i, std::wstring());
+	for (const auto& x : a_texts) f_add(a_candidates, a_map, x, std::wstring());
 }
 
 void f_put(std::map<std::wstring, std::vector<std::wstring> >& a_map, const std::wstring& a_entry, const std::wstring& a_text)
 {
-	std::map<std::wstring, std::vector<std::wstring> >::iterator i = a_map.lower_bound(a_entry);
-	if (i == a_map.end() || i->first != a_entry) i = a_map.insert(i, std::make_pair(a_entry, std::vector<std::wstring>()));
+	auto i = a_map.lower_bound(a_entry);
+	if (i == a_map.end() || i->first != a_entry) i = a_map.emplace_hint(i, a_entry, std::vector<std::wstring>());
 	std::vector<std::wstring>& texts = i->second;
 	texts.erase(std::remove(texts.begin(), texts.end(), a_text), texts.end());
 	texts.insert(texts.begin(), a_text);
@@ -347,16 +346,16 @@ void t_basic_dictionary::f_load()
 			c = decoder();
 		}
 		if (c != L' ') continue;
-		t_map0& map = v_aris.insert(std::make_pair(std::wstring(cs.begin(), cs.end()), t_map0())).first->second;
-		t_map0::iterator texts = map.insert(std::make_pair(std::wstring(), std::vector<std::wstring>())).first;
+		t_map0& map = v_aris.emplace(std::wstring(cs.begin(), cs.end()), t_map0()).first->second;
+		auto texts = map.emplace(std::wstring(), std::vector<std::wstring>()).first;
 		t_lexer<t_decoder<t_file> > lexer(decoder);
 		while (lexer.f_token() != e_token__NONE) {
 			if (lexer.f_token() == e_token__TEXT)
 				texts->second.push_back(lexer.f_text());
 			else if (lexer.f_token() == e_token__BEGIN)
-				texts = map.insert(std::make_pair(lexer.f_text(), std::vector<std::wstring>())).first;
+				texts = map.emplace(lexer.f_text(), std::vector<std::wstring>()).first;
 			else if (lexer.f_token() == e_token__END)
-				texts = map.insert(std::make_pair(std::wstring(), std::vector<std::wstring>())).first;
+				texts = map.emplace(std::wstring(), std::vector<std::wstring>()).first;
 			lexer.f_next();
 		}
 	}
@@ -369,7 +368,7 @@ void t_basic_dictionary::f_load()
 			c = decoder();
 		}
 		if (c != L' ') continue;
-		std::vector<std::wstring>& texts = v_nashis.insert(std::make_pair(std::wstring(cs.begin(), cs.end()), std::vector<std::wstring>())).first->second;
+		std::vector<std::wstring>& texts = v_nashis.emplace(std::wstring(cs.begin(), cs.end()), std::vector<std::wstring>()).first->second;
 		t_lexer<t_decoder<t_file> > lexer(decoder);
 		while (lexer.f_token() == e_token__TEXT) {
 			texts.push_back(lexer.f_text());
@@ -384,10 +383,10 @@ void t_basic_dictionary::f_save() const
 	t_file file(v_private.c_str(), "wb");
 	t_encoder<t_file> encoder(file, "euc-jp");
 	encoder(L";; okuri-ari entries.\n");
-	for (t_map1::const_reverse_iterator i = v_aris.rbegin(); i != v_aris.rend(); ++i) {
+	for (auto i = v_aris.rbegin(); i != v_aris.rend(); ++i) {
 		encoder(i->first.begin(), i->first.end());
 		encoder(L' ');
-		t_map0::const_iterator j = i->second.begin();
+		auto j = i->second.begin();
 		f_build(j->second, encoder);
 		while (++j != i->second.end()) {
 			encoder(L'/');
@@ -401,10 +400,10 @@ void t_basic_dictionary::f_save() const
 		encoder(L'\n');
 	}
 	encoder(L";; okuri-nasi entries.\n");
-	for (t_map0::const_iterator i = v_nashis.begin(); i != v_nashis.end(); ++i) {
-		encoder(i->first.begin(), i->first.end());
+	for (const auto& p : v_nashis) {
+		encoder(p.first.begin(), p.first.end());
 		encoder(L' ');
-		f_build(i->second, encoder);
+		f_build(p.second, encoder);
 		encoder(L'/');
 		encoder(L'\n');
 	}
@@ -416,21 +415,21 @@ void t_basic_dictionary::f_search(const wchar_t* a_entry, size_t a_n, size_t a_o
 	std::map<std::wstring, t_candidate*> map;
 	if (ari) {
 		++a_n;
-		t_map1::const_iterator i = v_aris.find(std::wstring(a_entry, a_n));
+		auto i = v_aris.find(std::wstring(a_entry, a_n));
 		if (i != v_aris.end()) {
 			const t_map0& aris = i->second;
-			t_map0::const_iterator j = aris.find(std::wstring(a_entry + a_n, a_okuri - 1));
+			auto j = aris.find(std::wstring(a_entry + a_n, a_okuri - 1));
 			if (j != aris.end()) f_add(a_candidates, map, j->second);
 			f_add(a_candidates, map, aris.find(std::wstring())->second);
 		}
 	} else {
-		t_map0::const_iterator i = v_nashis.find(std::wstring(a_entry, a_n));
+		auto i = v_nashis.find(std::wstring(a_entry, a_n));
 		if (i != v_nashis.end()) f_add(a_candidates, map, i->second);
 	}
 	std::vector<char> cs;
 	t_converter<wchar_t, char> converter("wchar_t", "euc-jp");
 	converter(a_entry, a_entry + a_n, std::back_inserter(cs));
-	for (std::vector<std::string>::const_iterator i = v_publics.begin(); i != v_publics.end(); ++i) ::f_search(i->c_str(), &cs[0], cs.size(), ari, a_candidates, map);
+	for (const auto& x : v_publics) ::f_search(x.c_str(), &cs[0], cs.size(), ari, a_candidates, map);
 }
 
 void t_basic_dictionary::f_register(const wchar_t* a_entry, size_t a_n, size_t a_okuri, const wchar_t* a_text, size_t a_m)
@@ -439,8 +438,8 @@ void t_basic_dictionary::f_register(const wchar_t* a_entry, size_t a_n, size_t a
 	if (a_okuri > 0) {
 		++a_n;
 		std::wstring entry(a_entry, a_n);
-		t_map1::iterator i = v_aris.find(entry);
-		if (i == v_aris.end()) i = v_aris.insert(i, std::make_pair(entry, t_map0()));
+		auto i = v_aris.find(entry);
+		if (i == v_aris.end()) i = v_aris.emplace_hint(i, entry, t_map0());
 		f_put(i->second, std::wstring(), text);
 		f_put(i->second, std::wstring(a_entry + a_n, a_okuri - 1), text);
 	} else {

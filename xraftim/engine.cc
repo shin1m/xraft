@@ -133,9 +133,9 @@ void t_engine::f_text_commit()
 		size_t text = v_states.back().v_text;
 		v_states.pop_back();
 		t_state& state = v_states.back();
-		std::vector<wchar_t>::iterator i = v_buffer.begin() + state.v_base + state.v_text;
+		auto i = v_buffer.begin() + state.v_base + state.v_text;
 		if (text > 0) v_dictionary.f_register(&*i, state.v_entry, state.v_okuri, &v_buffer[base], text);
-		std::vector<wchar_t>::iterator j = i + state.v_entry;
+		auto j = i + state.v_entry;
 		if (state.v_okuri > 0) {
 			++j;
 			--state.v_okuri;
@@ -412,10 +412,10 @@ void t_engine::f_mode_choose(t_modifier a_modifier, t_key a_key, char a_ascii)
 		f_on_compose(state.v_text, n, s.c_str(), &as[0], s.size());
 		f_on_choose();
 	} else if (a_key == e_key__RETURN || std::isprint(a_ascii)) {
-		std::vector<wchar_t>::iterator i = v_buffer.begin() + state.v_base + state.v_text;
+		auto i = v_buffer.begin() + state.v_base + state.v_text;
 		const std::wstring& s = v_candidates[v_chosen].v_text;
 		v_dictionary.f_register(&*i, state.v_entry, state.v_okuri, s.c_str(), s.size());
-		std::vector<wchar_t>::iterator j = i + state.v_entry;
+		auto j = i + state.v_entry;
 		if (state.v_okuri > 0) ++j;
 		i = v_buffer.erase(i, j);
 		v_buffer.insert(i, s.begin(), s.end());

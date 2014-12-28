@@ -36,7 +36,7 @@ DBusHandlerResult t_connection::f_filter(DBusConnection* a_connection, DBusMessa
 //std::fprintf(stderr, "filter: %s, %s, %s\n", dbus_message_get_path(a_message), dbus_message_get_interface(a_message), dbus_message_get_member(a_message));
 	t_connection* p = static_cast<t_connection*>(a_data);
 	if (dbus_message_get_type(a_message) == DBUS_MESSAGE_TYPE_SIGNAL) {
-		std::map<t_match, t_slot_message>::const_iterator i = p->v_matches.find(t_match(dbus_message_get_path(a_message), dbus_message_get_interface(a_message), dbus_message_get_member(a_message)));
+		auto i = p->v_matches.find(t_match(dbus_message_get_path(a_message), dbus_message_get_interface(a_message), dbus_message_get_member(a_message)));
 		if (i != p->v_matches.end()) {
 			t_message message(a_message, t_own());
 			(*i->second.v_function)(i->second.v_this, message);
@@ -44,7 +44,7 @@ DBusHandlerResult t_connection::f_filter(DBusConnection* a_connection, DBusMessa
 		}
 	}
 	if (dbus_message_is_signal(a_message, DBUS_INTERFACE_LOCAL, "Disconnected") != FALSE) {
-		for (std::set<t_slot_void>::const_iterator i = p->v_disconnecteds.begin(); i != p->v_disconnecteds.end(); ++i) (*i->v_function)(i->v_this);
+		for (auto q : p->v_disconnecteds) (*q.v_function)(q.v_this);
 		p->f_reset();
 		return DBUS_HANDLER_RESULT_HANDLED;
 	}
