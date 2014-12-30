@@ -1,6 +1,6 @@
 xemmaidir = $(XEMMAI_MODULE_PATH)
 
-xemmai_LTLIBRARIES = xraft.la xraftcairo.la xraftwm.la
+xemmai_LTLIBRARIES = xraft.la xraftdbus.la xraftcairo.la xraftwm.la
 AM_CPPFLAGS = -I$(top_srcdir)/include -DXRAFT_X11 $(X11_CFLAGS) $(DBUS_CFLAGS) $(GL_FLAGS) $(XEMMAI_CFLAGS)
 AM_CXXFLAGS = -std=c++11
 AM_LDFLAGS = -module -avoid-version
@@ -45,6 +45,8 @@ xraft_la_SOURCES = \
 	window.cc \
 	xraft.h \
 	xraft.cc
+xraftdbus_la_LIBADD = $(LIBADD)
+xraftdbus_la_SOURCES = xraftdbus.cc
 xraftcairo_la_CPPFLAGS = $(AM_CPPFLAGS) $(CAIRO_CFLAGS)
 xraftcairo_la_LIBADD = $(LIBADD) $(CAIRO_LIBS)
 xraftcairo_la_SOURCES = \
