@@ -27,7 +27,6 @@ t_message t_reply::operator()()
 	dbus_pending_call_block(v_p);
 	t_message message = dbus_pending_call_steal_reply(v_p);
 	if (!message) throw std::runtime_error("dbus_pending_call_steal_reply failed.");
-	while (dbus_connection_dispatch(v_connection) == DBUS_DISPATCH_DATA_REMAINS);
 	return message;
 }
 
