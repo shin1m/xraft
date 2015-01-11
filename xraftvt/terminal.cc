@@ -894,6 +894,7 @@ void t_terminal::f_on_move()
 void t_terminal::f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
 {
 	if (!f_send(a_modifier, a_key) && a_ascii != '\0') f_send(&a_ascii, 1);
+	f_position__(INT_MAX);
 }
 
 void t_terminal::f_on_input_commit(const wchar_t* a_cs, size_t a_n)

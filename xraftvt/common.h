@@ -189,6 +189,7 @@ protected:
 	virtual void f_on_focus_enter();
 	virtual void f_on_focus_leave();
 	virtual t_rectangle f_on_input_spot();
+	virtual void f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x, int a_y);
 	unsigned f_width() const
 	{
 		return v_buffer.f_width();

@@ -209,6 +209,18 @@ t_rectangle t_content::f_on_input_spot()
 	return t_rectangle(t_point(v_cursor_x * v_unit.v_width, (v_buffer.f_log_size() + v_cursor_y) * v_unit.v_height - v_position), v_unit);
 }
 
+void t_content::f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x, int a_y)
+{
+	switch (a_button) {
+	case e_button__4:
+		f_position__(v_position - v_unit.v_height * 4);
+		break;
+	case e_button__5:
+		f_position__(v_position + v_unit.v_height * 4);
+		break;
+	}
+}
+
 void t_content::f_scroll_log()
 {
 	f_invalidate(v_cursor_y, 1);
