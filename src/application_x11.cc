@@ -3,6 +3,7 @@
 #include <signal.h>
 #include <xraft/ibus.h>
 #include <xraft/graphics.h>
+#include <X11/XKBlib.h>
 
 namespace xraft
 {
@@ -175,6 +176,17 @@ v_x(0), v_y(0), v_width(512), v_height(384), v_gravity(ForgetGravity)
 	XSetLocaleModifiers("");
 	XC_SINK = XUniqueContext();
 	v_display = XOpenDisplay(NULL);
+	{
+		int opcode;
+		int event;
+		int error;
+		int major = XkbMajorVersion;
+		int minor = XkbMinorVersion;
+		if (XkbQueryExtension(v_display, &opcode, &event, &error, &major, &minor)) {
+			Bool supported;
+			XkbSetDetectableAutoRepeat(v_display, True, &supported);
+		}
+	}
 	int screen = DefaultScreen(v_display);
 	{
 		auto end = a_arguments.end();
