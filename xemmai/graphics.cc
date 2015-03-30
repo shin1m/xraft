@@ -22,7 +22,7 @@ void t_type_of<t_font>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<t_font>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_font>::f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped (*)(::xemmai::t_object*, const std::wstring&), f_construct>::t_bind<t_font>::f_do(a_class, a_stack, a_n);
 }
@@ -47,7 +47,7 @@ void t_type_of<t_color>::f_finalize(t_object* a_this)
 	delete f_as<t_color*>(a_this);
 }
 
-t_scoped t_type_of<t_color>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_color>::f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n)
 {
 #ifdef XRAFT_X11
 	return t_overload<

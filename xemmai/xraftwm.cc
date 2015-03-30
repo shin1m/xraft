@@ -225,7 +225,7 @@ t_type* t_type_of<t_client>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_scoped t_type_of<t_client>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_client>::f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_client::f_construct>::t_bind<t_client>::f_do(a_class, a_stack, a_n);
 }
@@ -252,7 +252,7 @@ t_type* t_type_of<t_root>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_scoped t_type_of<t_root>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_root>::f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_root::f_construct>::t_bind<t_root>::f_do(a_class, a_stack, a_n);
 }

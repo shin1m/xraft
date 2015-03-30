@@ -49,7 +49,7 @@ t_type* t_type_of<t_timer>::f_derive(::xemmai::t_object* a_this)
 	return new t_type_of(v_module, a_this);
 }
 
-t_scoped t_type_of<t_timer>::f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n)
+t_scoped t_type_of<t_timer>::f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped (*)(::xemmai::t_object*, t_scoped&&), xraft::xemmai::t_timer::f_construct>::t_bind<t_timer>::f_do(a_class, a_stack, a_n);
 }

@@ -23,7 +23,7 @@ struct t_type_of<t_input_context> : t_type_of<xraft::t_object>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
 };
 
 }

@@ -31,7 +31,7 @@ struct t_type_of<t_font> : t_type_of<xraft::t_object>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
 };
 
 template<>
@@ -70,7 +70,7 @@ struct t_type_of<t_color> : t_type
 	using t_type::t_type;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
 	virtual void f_finalize(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_slot* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
 };
 
 template<>
