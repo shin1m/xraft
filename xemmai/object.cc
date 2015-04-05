@@ -35,7 +35,7 @@ void t_type_of<xraft::t_object>::f_instantiate(::xemmai::t_object* a_class, t_sc
 {
 	t_scoped object = f_as<t_type&>(a_class).f_construct(a_class, a_stack, a_n);
 	try {
-		object.f_get(f_global()->f_symbol_initialize()).f_call_and_return(a_stack, a_n);
+		object.f_get(f_global()->f_symbol_initialize()).f_call(a_stack, a_n);
 	} catch (...) {
 		static_cast<xraft::xemmai::t_proxy*>(f_as<xraft::t_object*>(object)->f_user())->f_release();
 		throw;
