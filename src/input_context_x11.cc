@@ -5,7 +5,6 @@
 #include <xraft/ibus.h>
 #include <xraft/application.h>
 #include <xraft/graphics.h>
-#include <xraft/converter.h>
 
 namespace xraft
 {
@@ -37,14 +36,42 @@ void t_input_context::t_component::f_hide()
 	v_handle = None;
 }
 
+void t_input_context::f_negotiate()
+{
+	if (!f_application()->v_input_negotiating) return;
+	f_application()->v_input_negotiating = false;
+	t_pointer<t_input_context> context;
+	if (f_application()->v_focus) context = f_application()->v_focus->v_input_context;
+	if (context) {
+		context->f_preedit();
+		t_rectangle spot = f_application()->v_focus->f_on_input_spot();
+		t_point point = f_application()->v_focus->f_to_screen(spot);
+		spot.v_width = 0;
+		context->f_send("SetCursorLocation", DBUS_TYPE_INT32, &point.v_x, DBUS_TYPE_INT32, &point.v_y, DBUS_TYPE_INT32, &spot.v_width, DBUS_TYPE_INT32, &spot.v_height, DBUS_TYPE_INVALID);
+	} else {
+		f_application()->v_input_first->f_hide();
+		f_application()->v_input_middle->f_hide();
+		f_application()->v_input_last->f_hide();
+	}
+}
+
+t_input_context::~t_input_context()
+{
+	if (v_context.empty()) return;
+	dbus::t_connection& bus = f_application()->f_input_bus();
+	bus.f_remove_disconnected(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disconnected>);
+	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
+	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
+	bus.f_send("org.freedesktop.IBus", v_context.c_str(), "org.freedesktop.IBus.Service", "Destroy", DBUS_TYPE_INVALID);
+}
+
 void t_input_context::f_text(DBusMessageIter& a_i, std::vector<wchar_t>& a_cs, std::vector<t_input_attribute>& a_as)
 {
 	ibus::t_variant_parser p0(a_i);
 	const char* value;
 	p0 >> value;
 	a_cs.clear();
-	t_converter<char, wchar_t> converter("utf-8", "wchar_t");
-	converter(value, value + std::strlen(value), std::back_inserter(a_cs));
+	v_converter(value, value + std::strlen(value), std::back_inserter(a_cs));
 	a_as.assign(a_cs.size(), e_input_attribute__NONE);
 	ibus::t_variant_parser p1(p0);
 	if (dbus_message_iter_get_arg_type(p1) != DBUS_TYPE_ARRAY) throw std::runtime_error("dbus_message_iter_get_arg_type must be DBUS_TYPE_ARRAY.");
@@ -74,35 +101,6 @@ void t_input_context::f_text(DBusMessageIter& a_i, std::vector<wchar_t>& a_cs, s
 		}
 		if (a != e_input_attribute__NONE) for (size_t i = start; i < end; ++i) a_as[i] = static_cast<t_input_attribute>(a_as[i] | a);
 	}
-}
-
-void t_input_context::f_negotiate()
-{
-	if (!f_application()->v_input_negotiating) return;
-	f_application()->v_input_negotiating = false;
-	t_pointer<t_input_context> context;
-	if (f_application()->v_focus) context = f_application()->v_focus->v_input_context;
-	if (context) {
-		context->f_preedit();
-		t_rectangle spot = f_application()->v_focus->f_on_input_spot();
-		t_point point = f_application()->v_focus->f_to_screen(spot);
-		spot.v_width = 0;
-		context->f_send("SetCursorLocation", DBUS_TYPE_INT32, &point.v_x, DBUS_TYPE_INT32, &point.v_y, DBUS_TYPE_INT32, &spot.v_width, DBUS_TYPE_INT32, &spot.v_height, DBUS_TYPE_INVALID);
-	} else {
-		f_application()->v_input_first->f_hide();
-		f_application()->v_input_middle->f_hide();
-		f_application()->v_input_last->f_hide();
-	}
-}
-
-t_input_context::~t_input_context()
-{
-	if (v_context.empty()) return;
-	dbus::t_connection& bus = f_application()->f_input_bus();
-	bus.f_remove_disconnected(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disconnected>);
-	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
-	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
-	bus.f_send("org.freedesktop.IBus", v_context.c_str(), "org.freedesktop.IBus.Service", "Destroy", DBUS_TYPE_INVALID);
 }
 
 void t_input_context::f_create()

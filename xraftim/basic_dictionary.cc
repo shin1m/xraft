@@ -1,11 +1,8 @@
 #include "basic_dictionary.h"
 
+#include <cstdio>
 #include <algorithm>
 #include <iterator>
-#include <cstdio>
-#include <xraft/converter.h>
-
-using namespace xraft;
 
 namespace
 {
@@ -427,8 +424,7 @@ void t_basic_dictionary::f_search(const wchar_t* a_entry, size_t a_n, size_t a_o
 		if (i != v_nashis.end()) f_add(a_candidates, map, i->second);
 	}
 	std::vector<char> cs;
-	t_converter<wchar_t, char> converter("wchar_t", "euc-jp");
-	converter(a_entry, a_entry + a_n, std::back_inserter(cs));
+	v_converter(a_entry, a_entry + a_n, std::back_inserter(cs));
 	for (const auto& x : v_publics) ::f_search(x.c_str(), &cs[0], cs.size(), ari, a_candidates, map);
 }
 

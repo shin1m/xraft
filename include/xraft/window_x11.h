@@ -31,10 +31,10 @@ class t_window : public t_drawable, protected t_sink
 
 	static void f_validate();
 
-	std::vector<t_pointer<t_widget> > v_children;
-	t_rectangle v_geometry;
-	bool v_visible;
-	t_window* v_next_invalid;
+	std::vector<t_pointer<t_widget>> v_children;
+	t_rectangle v_geometry{0, 0, 0, 0};
+	bool v_visible = false;
+	t_window* v_next_invalid = nullptr;
 	t_region v_region;
 	t_pointer<t_input_context> v_input_context;
 	t_cursor v_cursor;
@@ -43,7 +43,7 @@ class t_window : public t_drawable, protected t_sink
 
 protected:
 	void f_x11_create(Window a_parent, unsigned int a_border_width, int a_depth, Visual* a_visual, long a_event_mask, bool a_override_redirect, Colormap a_colormap);
-	std::vector<t_pointer<t_widget> >& f_x11_children()
+	std::vector<t_pointer<t_widget>>& f_x11_children()
 	{
 		return v_children;
 	}
@@ -126,13 +126,13 @@ class t_widget : public t_window
 	friend class t_window;
 	friend class t_opengl_widget;
 
-	t_window* v_parent;
+	t_window* v_parent = nullptr;
 
 protected:
 	virtual void f_create();
 
 public:
-	t_widget() : v_parent(0)
+	t_widget()
 	{
 		v_visible = true;
 	}

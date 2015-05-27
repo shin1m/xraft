@@ -30,7 +30,7 @@ LRESULT CALLBACK t_application::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, 
 namespace
 {
 
-void f_ancestors(const t_pointer<t_window>& a_window, std::vector<t_pointer<t_window> >& a_ancestors)
+void f_ancestors(const t_pointer<t_window>& a_window, std::vector<t_pointer<t_window>>& a_ancestors)
 {
 	t_pointer<t_widget> widget = f_dynamic_cast<t_widget>(a_window);
 	while (widget) {
@@ -47,9 +47,9 @@ void t_application::f_pointed__(const t_pointer<t_window>& a_window, int a_x, in
 	if (a_window == v_pointed) return;
 	t_pointer<t_window> pointed = v_pointed;
 	v_pointed = a_window;
-	std::vector<t_pointer<t_window> > ancestors0;
+	std::vector<t_pointer<t_window>> ancestors0;
 	f_ancestors(pointed, ancestors0);
-	std::vector<t_pointer<t_window> > ancestors1;
+	std::vector<t_pointer<t_window>> ancestors1;
 	f_ancestors(v_pointed, ancestors1);
 	size_t i = 0;
 	while (i < ancestors0.size() && i < ancestors1.size() && ancestors0[i] == ancestors1[i]) ++i;

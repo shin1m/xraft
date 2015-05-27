@@ -58,7 +58,7 @@ void t_window::f_x11_create(Window a_parent, unsigned int a_border_width, int a_
 	if (v_visible && v_geometry.v_width > 0 && v_geometry.v_height > 0) XMapWindow(display, v_handle);
 }
 
-t_window::t_window() : v_geometry(0, 0, 0, 0), v_visible(false), v_next_invalid(0), v_cursor(f_application()->f_cursor_arrow())
+t_window::t_window() : v_cursor(f_application()->f_cursor_arrow())
 {
 }
 
@@ -213,7 +213,7 @@ void t_window::f_add(const t_pointer<t_widget>& a_widget, size_t a_i)
 {
 	if (a_i == size_t(-1)) a_i = v_children.size();
 	if (a_widget->v_parent) {
-		std::vector<t_pointer<t_widget> >& children = a_widget->v_parent->v_children;
+		std::vector<t_pointer<t_widget>>& children = a_widget->v_parent->v_children;
 		size_t i = 0;
 		while (children[i] != a_widget) ++i;
 		children.erase(children.begin() + i);

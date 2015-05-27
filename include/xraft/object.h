@@ -21,16 +21,13 @@ struct t_user
 
 class t_object
 {
-	size_t v_n;
-	t_user* v_user;
+	size_t v_n = 0;
+	t_user* v_user = nullptr;
 
 protected:
-	XRAFT__EXPORT virtual ~t_object();
+	XRAFT__EXPORT virtual ~t_object() = default;
 
 public:
-	t_object() : v_n(0), v_user(0)
-	{
-	}
 	void f_acquire()
 	{
 		++v_n;

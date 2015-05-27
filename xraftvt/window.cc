@@ -288,11 +288,7 @@ void t_content::f_erase(unsigned a_x, unsigned a_y, unsigned a_n, bool a_shift)
 
 t_content::t_content(unsigned a_log, unsigned a_width, unsigned a_height) :
 v_font(f_application()->f_font()), v_unit(v_font->f_width(), v_font->f_height()),
-#ifdef XRAFT_TRANSPARENT
-v_pixmap(None), v_moved(true),
-#endif
-v_buffer(a_log, a_width, a_height), v_position(0), v_cs(new wchar_t[a_width]),
-v_attribute(false, false, false, false, 0, 7), v_cursor_x(0), v_cursor_y(0)
+v_buffer(a_log, a_width, a_height), v_cs(new wchar_t[a_width])
 {
 	const t_color colors[] = {
 #ifdef XRAFT_TRANSPARENT
@@ -598,12 +594,7 @@ void t_pane::f_on_close()
 	f_application()->f_exit();
 }
 
-t_pane::t_pane(const t_pointer<t_content>& a_content) :
-v_content(a_content),
-v_face_active(0, 47, 159), v_face_inactive(31, 63, 143),
-v_gap(79, 79, 79),
-v_text_active(223, 223, 223), v_text_inactive(127, 127, 127),
-v_grabbing_part(e_part__NONE)
+t_pane::t_pane(const t_pointer<t_content>& a_content) : v_content(a_content)
 {
 	f_add(v_content);
 	t_rectangle geometry = v_content->f_geometry();

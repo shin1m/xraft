@@ -17,9 +17,7 @@ v_double_buffer(a_double_buffer),
 v_alpha(a_alpha),
 v_depth(a_depth),
 v_stencil(a_stencil),
-v_accumulation(a_accumulation),
-v_owns_colormap(false),
-v_colormap(None)
+v_accumulation(a_accumulation)
 {
 	Display* display = f_application()->f_x11_display();
 	int screen = DefaultScreen(display);

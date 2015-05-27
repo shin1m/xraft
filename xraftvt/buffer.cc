@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-t_row::t_row(unsigned a_size, const t_cell* a_cells) : v_size(a_size), v_wrapped(false)
+t_row::t_row(unsigned a_size, const t_cell* a_cells) : v_size(a_size)
 {
 	std::copy(a_cells, a_cells + a_size, v_cells);
 }
@@ -32,8 +32,7 @@ void t_row::f_insert(unsigned a_x, unsigned a_n, unsigned a_width)
 }
 
 t_buffer::t_buffer(unsigned a_log, unsigned a_width, unsigned a_height) :
-v_log_capacity(a_log), v_width(a_width), v_height(a_height),
-v_log_begin(0), v_log_size(0)
+v_log_capacity(a_log), v_width(a_width), v_height(a_height)
 {
 	unsigned m = sizeof(t_row) + sizeof(t_cell) * v_width;
 	unsigned n = v_height * 2;

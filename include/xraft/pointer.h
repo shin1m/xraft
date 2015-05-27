@@ -7,12 +7,10 @@ namespace xraft
 template<typename T>
 class t_pointer
 {
-	T* v_p;
+	T* v_p = nullptr;
 
 public:
-	t_pointer() : v_p(0)
-	{
-	}
+	t_pointer() = default;
 	t_pointer(T* a_p) : v_p(a_p)
 	{
 		if (v_p) v_p->f_acquire();

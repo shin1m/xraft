@@ -442,12 +442,7 @@ void t_engine::f_mode_choose(t_modifier a_modifier, t_key a_key, char a_ascii)
 	}
 }
 
-t_engine::t_engine(t_dictionary& a_dictionary) :
-v_dictionary(a_dictionary),
-v_mode(&t_engine::f_mode_roman),
-v_katakana(false),
-v_map(&t_roman_table::v_default),
-v_states(1)
+t_engine::t_engine(t_dictionary& a_dictionary) : v_dictionary(a_dictionary), v_map(&t_roman_table::v_default), v_states(1)
 {
 }
 

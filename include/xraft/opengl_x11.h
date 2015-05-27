@@ -21,8 +21,8 @@ class t_opengl_format : public t_object
 	bool v_stencil;
 	bool v_accumulation;
 	XVisualInfo* v_visual;
-	bool v_owns_colormap;
-	Colormap v_colormap;
+	bool v_owns_colormap = false;
+	Colormap v_colormap = None;
 
 	virtual ~t_opengl_format();
 

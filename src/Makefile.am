@@ -19,7 +19,6 @@ libxraft_la_SOURCES = \
 	application_x11.cc \
 	graphics_x11.cc \
 	input_context_x11.cc \
-	object.cc \
 	opengl_x11.cc \
 	pixmap_x11.cc \
 	timer_x11.cc \

@@ -145,24 +145,7 @@ void t_application::f_wait()
 	}
 }
 
-t_application::t_application(std::vector<std::string>& a_arguments) :
-v_loop(0), v_pollfds(2), v_time(CurrentTime), v_notifier(0), v_timer(0),
-v_invalids(0), v_active(0), v_focus(0), v_pointer_grabber(0),
-v_cursor_x(None),
-v_cursor_arrow(None),
-v_cursor_ibeam(None),
-v_cursor_vslide(None),
-v_cursor_hslide(None),
-v_cursor_top(None),
-v_cursor_bottom(None),
-v_cursor_left(None),
-v_cursor_right(None),
-v_cursor_top_left(None),
-v_cursor_top_right(None),
-v_cursor_bottom_left(None),
-v_cursor_bottom_right(None),
-v_input_negotiating(false), v_input_composing(false),
-v_x(0), v_y(0), v_width(512), v_height(384), v_gravity(ForgetGravity)
+t_application::t_application(std::vector<std::string>& a_arguments) : v_pollfds(2)
 {
 	if (v_instance) throw std::runtime_error("application instance already exists.");
 #if 0

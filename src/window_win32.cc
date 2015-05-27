@@ -235,7 +235,7 @@ void t_window::f_add(const t_pointer<t_widget>& a_widget, size_t a_i)
 {
 	if (a_i == size_t(-1)) a_i = v_children.size();
 	if (a_widget->v_parent) {
-		std::vector<t_pointer<t_widget> >& children = a_widget->v_parent->v_children;
+		std::vector<t_pointer<t_widget>>& children = a_widget->v_parent->v_children;
 		size_t i = 0;
 		while (children[i] != a_widget) ++i;
 		children.erase(children.begin() + i);

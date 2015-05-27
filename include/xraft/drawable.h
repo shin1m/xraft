@@ -30,16 +30,12 @@ class t_drawable : public t_object
 	friend class t_graphics;
 
 protected:
-	t_handle v_handle;
-
 #ifdef XRAFT_X11
-	t_drawable() : v_handle(None)
+	t_handle v_handle = None;
 #endif
 #ifdef XRAFT_WIN32
-	t_drawable() : v_handle(NULL)
+	t_handle v_handle = NULL;
 #endif
-	{
-	}
 
 public:
 	t_handle f_handle() const

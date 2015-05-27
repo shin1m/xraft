@@ -30,8 +30,8 @@ class t_timer : public t_object, protected t_runnable
 	size_t v_interval;
 	bool v_single;
 #ifdef XRAFT_X11
-	bool v_queued;
-	t_timer* v_next;
+	bool v_queued = false;
+	t_timer* v_next = nullptr;
 	timeval v_time;
 #endif
 #ifdef XRAFT_WIN32
@@ -43,11 +43,6 @@ protected:
 	XRAFT__EXPORT void f_add();
 
 public:
-#ifdef XRAFT_X11
-	t_timer() : v_queued(false), v_next(0)
-	{
-	}
-#endif
 	void f_start(size_t a_interval, bool a_single = false)
 	{
 		f_stop();

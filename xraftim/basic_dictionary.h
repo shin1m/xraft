@@ -2,14 +2,18 @@
 #define BASIC_DICTIONARY_H
 
 #include <map>
+#include <xraft/converter.h>
 
 #include "dictionary.h"
+
+using namespace xraft;
 
 class t_basic_dictionary : public t_dictionary
 {
 	typedef std::map<std::wstring, std::vector<std::wstring> > t_map0;
 	typedef std::map<std::wstring, t_map0> t_map1;
 
+	t_converter<wchar_t, char> v_converter{"wchar_t", "euc-jp"};
 	std::vector<std::string> v_publics;
 	std::string v_private;
 	t_map0 v_nashis;

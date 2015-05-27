@@ -16,7 +16,7 @@ class t_encoder
 	T& v_target;
 	iconv_t v_cd;
 	wchar_t v_cs[16];
-	size_t v_n;
+	size_t v_n = 0;
 
 	void f_convert()
 	{
@@ -33,7 +33,7 @@ class t_encoder
 	}
 
 public:
-	t_encoder(T& a_target, const char* a_encoding) : v_target(a_target), v_cd(iconv_open(a_encoding, "WCHAR_T")), v_n(0)
+	t_encoder(T& a_target, const char* a_encoding) : v_target(a_target), v_cd(iconv_open(a_encoding, "wchar_t"))
 	{
 	}
 	~t_encoder()
@@ -105,7 +105,7 @@ class t_decoder
 	}
 
 public:
-	t_decoder(T& a_source, const char* a_encoding) : v_source(a_source), v_cd(iconv_open("WCHAR_T", a_encoding)), v_p0(v_mbs), v_q0(v_mbs), v_p(v_cs), v_q(v_cs)
+	t_decoder(T& a_source, const char* a_encoding) : v_source(a_source), v_cd(iconv_open("wchar_t", a_encoding)), v_p0(v_mbs), v_q0(v_mbs), v_p(v_cs), v_q(v_cs)
 	{
 	}
 	~t_decoder()
@@ -139,12 +139,12 @@ public:
 		iconv_close(v_cd);
 	}
 	template<typename I, typename O>
-	O operator()(I f, I l, O d);
+	O operator()(I f, I l, O d) const;
 };
 
 template<typename C0, typename C1>
 template<typename I, typename O>
-O t_converter<C0, C1>::operator()(I f, I l, O d)
+O t_converter<C0, C1>::operator()(I f, I l, O d) const
 {
 	char cs0[16];
 	char cs1[16];

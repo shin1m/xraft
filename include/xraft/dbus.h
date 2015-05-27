@@ -58,13 +58,11 @@ public:
 
 class t_reply
 {
-	DBusPendingCall* v_p;
-	DBusConnection* v_connection;
+	DBusPendingCall* v_p = NULL;
+	DBusConnection* v_connection = NULL;
 
 public:
-	t_reply() : v_p(NULL), v_connection(NULL)
-	{
-	}
+	t_reply() = default;
 	t_reply(DBusPendingCall* a_p, DBusConnection* a_connection) : v_p(a_p), v_connection(a_connection)
 	{
 		if (v_connection != NULL) dbus_connection_ref(v_connection);
@@ -134,7 +132,7 @@ class t_connection
 
 	static DBusHandlerResult f_filter(DBusConnection* a_connection, DBusMessage* a_message, void* a_data);
 
-	DBusConnection* v_p;
+	DBusConnection* v_p = NULL;
 	std::set<t_slot_void> v_disconnecteds;
 	std::map<t_match, t_slot_message> v_matches;
 
@@ -149,9 +147,6 @@ class t_connection
 	}
 
 public:
-	t_connection() : v_p(NULL)
-	{
-	}
 	~t_connection()
 	{
 		f_reset();

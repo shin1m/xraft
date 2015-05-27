@@ -102,7 +102,7 @@ class t_graphics
 {
 	t_pointer<t_drawable> v_drawable;
 	t_region v_region;
-	t_point v_origin;
+	t_point v_origin{0, 0};
 	t_pointer<t_font> v_font;
 
 public:
@@ -126,7 +126,7 @@ public:
 		e_function__SET = GXset
 	};
 
-	t_graphics(const t_pointer<t_drawable>& a_drawable, bool a_include = false) : v_drawable(a_drawable), v_origin(0, 0), v_font(f_application()->f_font())
+	t_graphics(const t_pointer<t_drawable>& a_drawable, bool a_include = false) : v_drawable(a_drawable), v_font(f_application()->f_font())
 	{
 		t_application* application = f_application();
 		Display* display = application->f_x11_display();

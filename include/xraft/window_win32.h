@@ -46,7 +46,7 @@ class t_window : public t_drawable
 	}
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	std::vector<t_pointer<t_widget> > v_children;
+	std::vector<t_pointer<t_widget>> v_children;
 	t_rectangle v_geometry;
 	bool v_visible;
 	t_pointer<t_input_context> v_input_context;

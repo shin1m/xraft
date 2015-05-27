@@ -44,7 +44,7 @@ class t_application
 	t_cursor v_cursor_hslide;
 	t_pointer<t_font> v_font;
 	t_pointer<t_input_context> v_input_context;
-	std::vector<t_pointer<t_shell> > v_shells;
+	std::vector<t_pointer<t_shell>> v_shells;
 
 	void f_pointed__(const t_pointer<t_window>& a_window, int a_x, int a_y, t_cross_mode a_mode);
 

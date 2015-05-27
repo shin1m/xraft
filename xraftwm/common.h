@@ -40,24 +40,24 @@ class t_client : public t_widget
 		unsigned f_adjust(int a_x) const;
 	};
 
-	unsigned v_borders[4];
-	t_client* v_next_revoked;
-	Window v_client;
-	unsigned v_width;
-	unsigned v_height;
-	unsigned v_border_width;
-	Colormap v_colormap;
-	Bool v_input;
+	unsigned v_borders[4]{0, 0, 0, 0};
+	t_client* v_next_revoked = nullptr;
+	Window v_client = None;
+	unsigned v_width = 0;
+	unsigned v_height = 0;
+	unsigned v_border_width = 0;
+	Colormap v_colormap = None;
+	Bool v_input = False;
 	std::wstring v_name;
 	t_size_hints v_width_hints;
 	t_size_hints v_height_hints;
-	int v_gravity;
-	bool v_take_focus;
-	bool v_delete_window;
+	int v_gravity = ForgetGravity;
+	bool v_take_focus = false;
+	bool v_delete_window = false;
 	Window v_transient_for;
-	bool v_shaped;
-	bool v_shaded;
-	unsigned long v_serial;
+	bool v_shaped = false;
+	bool v_shaded = false;
+	unsigned long v_serial = 0;
 
 	t_point f_gravity() const;
 	void f_fetch_wm_hints(CARD32* a_initial_state);
@@ -84,9 +84,8 @@ public:
 	virtual void f_on_protocols();
 
 public:
-	t_client() : v_next_revoked(0), v_client(None), v_width(0), v_height(0), v_border_width(0), v_colormap(None), v_input(False), v_gravity(ForgetGravity), v_take_focus(false), v_delete_window(false), v_shaped(false), v_shaded(false), v_serial(0)
+	t_client()
 	{
-		std::fill_n(v_borders, 4, 0);
 		f_x11_visible__(false);
 	}
 	void f_attach(Window a_window, const XWindowAttributes& a_attributes);

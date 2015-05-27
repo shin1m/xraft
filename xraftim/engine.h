@@ -13,11 +13,11 @@ public:
 	struct t_state
 	{
 		size_t v_base;
-		size_t v_text;
-		size_t v_entry;
-		size_t v_okuri;
+		size_t v_text = 0;
+		size_t v_entry = 0;
+		size_t v_okuri = 0;
 
-		t_state(size_t a_base = 0) : v_base(a_base), v_text(0), v_entry(0), v_okuri(0)
+		t_state(size_t a_base = 0) : v_base(a_base)
 		{
 		}
 	};
@@ -91,9 +91,9 @@ private:
 	friend struct t_roman_table;
 
 	t_dictionary& v_dictionary;
-	void (t_engine::*v_mode)(t_modifier, t_key, char);
+	void (t_engine::*v_mode)(t_modifier, t_key, char) = &t_engine::f_mode_roman;
 	std::vector<wchar_t> v_buffer;
-	bool v_katakana;
+	bool v_katakana = false;
 	const t_map* v_map;
 	std::vector<t_state> v_states;
 	std::deque<t_candidate> v_candidates;

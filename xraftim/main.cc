@@ -81,6 +81,7 @@ class t_ibus_engine : public t_engine
 	static void f_unregister(DBusConnection* a_connection, void* a_data);
 	static DBusHandlerResult f_message(DBusConnection* a_connection, DBusMessage* a_message, void* a_data);
 
+	t_converter<wchar_t, char> v_converter{"wchar_t", "utf-8"};
 	std::string v_path;
 	bool v_choosing;
 	std::vector<wchar_t> v_cs;
@@ -142,9 +143,8 @@ public:
 
 void t_ibus_engine::f_text(DBusMessageIter& a_i, const wchar_t* a_cs, size_t a_n)
 {
-	t_converter<wchar_t, char> converter("WCHAR_T", "UTF-8");
 	std::vector<char> cs;
-	converter(a_cs, a_cs + a_n, std::back_inserter(cs));
+	v_converter(a_cs, a_cs + a_n, std::back_inserter(cs));
 	cs.push_back('\0');
 	ibus::t_variant_builder b0(a_i, "(sa{sv}sv)", "IBusText");
 	b0 << &cs[0];
@@ -154,9 +154,8 @@ void t_ibus_engine::f_text(DBusMessageIter& a_i, const wchar_t* a_cs, size_t a_n
 
 void t_ibus_engine::f_text(DBusMessageIter& a_i, const wchar_t* a_cs, const t_attribute* a_as, size_t a_n)
 {
-	t_converter<wchar_t, char> converter("WCHAR_T", "UTF-8");
 	std::vector<char> cs;
-	converter(a_cs, a_cs + a_n, std::back_inserter(cs));
+	v_converter(a_cs, a_cs + a_n, std::back_inserter(cs));
 	cs.push_back('\0');
 	ibus::t_variant_builder b0(a_i, "(sa{sv}sv)", "IBusText");
 	b0 << &cs[0];

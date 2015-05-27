@@ -940,13 +940,7 @@ std::printf("read: %s\n", std::strerror(errno));
 	}
 }
 
-t_terminal::t_terminal(unsigned a_log, unsigned a_width, unsigned a_height, int a_master) :
-t_content(a_log, a_width, a_height), v_master(a_master),
-v_mbn(0),
-v_mode_insert(false), v_mode_origin(false), v_mode_wraparound(true),
-v_mode_application_keypad(false), v_mode_application_cursor(false),
-v_region_begin(0), v_region_size(a_height),
-v_state(&t_terminal::f_state_default)
+t_terminal::t_terminal(unsigned a_log, unsigned a_width, unsigned a_height, int a_master) : t_content(a_log, a_width, a_height), v_master(a_master), v_region_size(a_height)
 {
 	std::memset(&v_mbstate, 0, sizeof(std::mbstate_t));
 	unsigned n = (f_width() + 7) / 8;

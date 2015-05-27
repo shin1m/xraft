@@ -12,9 +12,7 @@ struct t_attribute
 	unsigned char v_attribute;
 	unsigned char v_color;
 
-	t_attribute()
-	{
-	}
+	t_attribute() = default;
 	t_attribute(bool a_bold, bool a_underline, bool a_blink, bool a_reverse, int a_foreground, int a_background) :
 	v_attribute((a_bold ? 1 : 0) | (a_underline ? 2 : 0) | (a_blink ? 4 : 0) | (a_reverse ? 8 : 0)), v_color((a_foreground << 4) | (a_background))
 	{
@@ -78,9 +76,7 @@ struct t_cell
 	wchar_t v_c;
 	::t_attribute v_a;
 
-	t_cell()
-	{
-	}
+	t_cell() = default;
 	t_cell(wchar_t a_c, ::t_attribute a_a) : v_c(a_c), v_a(a_a)
 	{
 	}
@@ -88,13 +84,11 @@ struct t_cell
 
 struct t_row
 {
-	unsigned v_size;
-	bool v_wrapped;
+	unsigned v_size = 0;
+	bool v_wrapped = false;
 	t_cell v_cells[1];
 
-	t_row() : v_size(0), v_wrapped(false)
-	{
-	}
+	t_row() = default;
 	t_row(unsigned a_size, const t_cell* a_cells);
 	void f_split(unsigned a_x);
 	void f_expand(unsigned a_size);
@@ -108,8 +102,8 @@ class t_buffer
 	unsigned v_height;
 	char* v_buffer;
 	t_row** v_log;
-	unsigned v_log_begin;
-	unsigned v_log_size;
+	unsigned v_log_begin = 0;
+	unsigned v_log_size = 0;
 	t_row** v_normal;
 	t_row** v_alternate;
 	t_row** v_current;
@@ -165,12 +159,12 @@ class t_content : public t_widget
 	t_pointer<t_font> v_font;
 	t_extent v_unit;
 #ifdef XRAFT_TRANSPARENT
-	Pixmap v_pixmap;
-	bool v_moved;
+	Pixmap v_pixmap = None;
+	bool v_moved = true;
 	t_point v_origin;
 #endif
 	t_buffer v_buffer;
-	int v_position;
+	int v_position = 0;
 	wchar_t* v_cs;
 
 	void f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row);
@@ -179,9 +173,9 @@ class t_content : public t_widget
 	void f_scroll(int a_y, unsigned a_height, int a_dy);
 
 protected:
-	::t_attribute v_attribute;
-	unsigned v_cursor_x;
-	unsigned v_cursor_y;
+	::t_attribute v_attribute{false, false, false, false, 0, 7};
+	unsigned v_cursor_x = 0;
+	unsigned v_cursor_y = 0;
 
 	virtual ~t_content();
 	virtual void f_on_move();
@@ -258,7 +252,8 @@ struct t_colors
 
 class t_pane : public t_frame
 {
-	enum t_part {
+	enum t_part
+	{
 		e_part__NONE,
 		e_part__BUTTON_UP,
 		e_part__BUTTON_DOWN,
@@ -277,12 +272,12 @@ class t_pane : public t_frame
 	}
 
 	t_pointer<t_content> v_content;
-	t_colors v_face_active;
-	t_colors v_face_inactive;
-	t_colors v_gap;
-	t_color v_text_active;
-	t_color v_text_inactive;
-	t_part v_grabbing_part;
+	t_colors v_face_active{0, 47, 159};
+	t_colors v_face_inactive{31, 63, 143};
+	t_colors v_gap{79, 79, 79};
+	t_color v_text_active{223, 223, 223};
+	t_color v_text_inactive{127, 127, 127};
+	t_part v_grabbing_part = e_part__NONE;
 	int v_grabbing_offset;
 
 protected:
@@ -338,20 +333,20 @@ class t_terminal : public t_content, protected t_runnable
 
 	int v_master;
 	char v_mbs[MB_LEN_MAX * 256];
-	size_t v_mbn;
+	size_t v_mbn = 0;
 	std::mbstate_t v_mbstate;
-	bool v_mode_insert;
-	bool v_mode_origin;
-	bool v_mode_wraparound;
-	bool v_mode_application_keypad;
-	bool v_mode_application_cursor;
+	bool v_mode_insert = false;
+	bool v_mode_origin = false;
+	bool v_mode_wraparound = true;
+	bool v_mode_application_keypad = false;
+	bool v_mode_application_cursor = false;
 	::t_attribute v_saved_attribute;
 	unsigned v_saved_cursor_x;
 	unsigned v_saved_cursor_y;
 	unsigned char* v_tab_stops;
-	unsigned v_region_begin;
+	unsigned v_region_begin = 0;
 	unsigned v_region_size;
-	t_state v_state;
+	t_state v_state = &t_terminal::f_state_default;
 	t_csi v_csi;
 	int v_parameters[16];
 	int v_parameters_size;

@@ -6,6 +6,7 @@
 
 #include "drawable.h"
 #include "geometry.h"
+#include "converter.h"
 #include "dbus.h"
 
 namespace xraft
@@ -39,14 +40,15 @@ class t_input_context : public t_object
 		}
 	};
 
-	static void f_text(DBusMessageIter& a_i, std::vector<wchar_t>& a_cs, std::vector<t_input_attribute>& a_as);
 	static void f_negotiate();
 
+	t_converter<char, wchar_t> v_converter{"utf-8", "wchar_t"};
 	std::string v_context;
 	std::vector<wchar_t> v_cs;
 	std::vector<t_input_attribute> v_as;
 
 	virtual ~t_input_context();
+	void f_text(DBusMessageIter& a_i, std::vector<wchar_t>& a_cs, std::vector<t_input_attribute>& a_as);
 	void f_create();
 	void f_on_disconnected();
 	void f_on_commit_text(dbus::t_message& a_message);

@@ -11,9 +11,7 @@ struct t_point
 	int v_x;
 	int v_y;
 
-	t_point()
-	{
-	}
+	t_point() = default;
 	t_point(int a_x, int a_y) : v_x(a_x), v_y(a_y)
 	{
 	}
@@ -28,9 +26,7 @@ struct t_extent
 	unsigned v_width;
 	unsigned v_height;
 
-	t_extent()
-	{
-	}
+	t_extent() = default;
 	t_extent(unsigned a_width, unsigned a_height) : v_width(a_width), v_height(a_height)
 	{
 	}
@@ -42,9 +38,7 @@ struct t_extent
 
 struct t_rectangle : t_point, t_extent
 {
-	t_rectangle()
-	{
-	}
+	t_rectangle() = default;
 	t_rectangle(const t_point& a_point, const t_extent& a_extent) : t_point(a_point), t_extent(a_extent)
 	{
 	}
