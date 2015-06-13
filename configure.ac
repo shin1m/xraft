@@ -1,4 +1,4 @@
-AC_INIT([xraft], [201504])
+AC_INIT([xraft], [201506])
 AM_INIT_AUTOMAKE([foreign nostdinc dist-bzip2 no-dist-gzip])
 AC_CONFIG_SRCDIR([src/application_x11.cc])
 
@@ -6,7 +6,7 @@ PKG_CHECK_MODULES([X11], [x11 >= 1.4])
 PKG_CHECK_MODULES([DBUS], [dbus-1 >= 1.4])
 PKG_CHECK_MODULES([GL], [gl >= 7.11])
 PKG_CHECK_MODULES([CAIRO], [cairo >= 1.8])
-XEMMAI_USE=xemmai-201504
+XEMMAI_USE=xemmai-201506
 PKG_CHECK_MODULES([XEMMAI], [${XEMMAI_USE}], [
 	XEMMAI_MODULE_PATH=`pkg-config --variable=module_path ${XEMMAI_USE}`
 ])
