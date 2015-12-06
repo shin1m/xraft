@@ -9,10 +9,10 @@ Editor = Class(xraft.Frame) :: @
 	$insert = @(s) $_model.replace($_view.caret_text(), 0, '('(s.size(), $_attribute_default)), s
 	$backspace = @
 		model = $_view.caret_text(
-		$_model.replace(model - 1, 1, '(), "" if model > 0
+		if model > 0: $_model.replace(model - 1, 1, '(), ""
 	$delete = @
 		model = $_view.caret_text(
-		$_model.replace(model, 1, '(), "" if model < $_model.text_size()
+		if model < $_model.text_size(): $_model.replace(model, 1, '(), ""
 	$on_move = @
 		extent = $geometry(
 		$_view.width__(extent.width(
@@ -28,8 +28,7 @@ Editor = Class(xraft.Frame) :: @
 		xraft.Key.RETURN: @() $insert("\n"
 		xraft.Key.BACK_SPACE: @() $backspace(
 		xraft.Key.DELETE: @() $delete(
-		xraft.Key.F1: @
-			$insert(String.from_code(c for c = 0x20; c <= 0x7e; c = c + 1
+		xraft.Key.F1: @() for c = 0x20; c <= 0x7e; c = c + 1: $insert(String.from_code(c
 		xraft.Key.F2: @
 			segments = '(3, 5, 7, 9, 11, 13, 17, 19
 			attributes = '(
@@ -41,12 +40,12 @@ Editor = Class(xraft.Frame) :: @
 			i = 0
 			while i < n
 				m = segments[i % segments.size()]
-				m = n - i if i + m > n
+				if i + m > n: m = n - i
 				$_model.attribute(i, m, attributes[i % attributes.size()]
 				i = i + m
 		xraft.Key.F3: @
 			n = $_model.text_size(
-			system.out.write_line($_model.slice(i, 10 for i = 0; i < n; i = i + 10
+			for i = 0; i < n; i = i + 10: system.out.write_line($_model.slice(i, 10
 	$on_key_press = @(modifier, key, ascii)
 		if key_binds.has(key)
 			key_binds[key][$](
@@ -55,7 +54,7 @@ Editor = Class(xraft.Frame) :: @
 		h = xraft.application().font().height(
 		$scroll_viewable($_view.caret_row() * h, h
 	$on_input_compose = @
-		$_composing_begin = $_view.caret_text() if $_composing_size <= 0
+		if $_composing_size <= 0: $_composing_begin = $_view.caret_text(
 		composition = $input_context().composition(
 		text = composition[0]
 		attributes = composition[1]
@@ -65,36 +64,35 @@ Editor = Class(xraft.Frame) :: @
 		while i < attributes.size()
 			a = attributes[i]
 			j = i + 1
-			j = j + 1 while j < attributes.size() && attributes[j] == a
+			while j < attributes.size() && attributes[j] == a: j = j + 1
 			segments.push('(j - i, $_attribute_compose[a]
-			caret = j if (a & xraft.InputAttribute.REVERSE) != 0
+			if (a & xraft.InputAttribute.REVERSE) != 0: caret = j
 			i = j
 		$_model.replace($_composing_begin, $_composing_size, segments, text
 		$_view.caret_move_text($_composing_begin + caret
 		$_composing_size = text.size(
 	$on_input_commit = @(text)
-		$_composing_begin = $_view.caret_text() if $_composing_size <= 0
+		if $_composing_size <= 0: $_composing_begin = $_view.caret_text(
 		$_model.replace($_composing_begin, $_composing_size, '('(text.size(), $_attribute_default)), text
 		$_composing_size = 0
 	$on_input_spot = @
 		h = xraft.application().font().height(
 		xraft.Rectangle($_view.caret_row_x(), $_view.caret_row() * h, 0, h
-	$on_button_press = @(modifier, button, x, y)
-		$on_close() if button == xraft.Button.BUTTON3
+	$on_button_press = @(modifier, button, x, y) if button == xraft.Button.BUTTON3: $on_close(
 	$on_close = @() xraft.application().exit(
 	$invalidated = @(y, height)
 		extent = $geometry(
 		top = y - $_position
 		bottom = top + height
-		return if bottom <= 0
-		top = 0 if top < 0
+		if bottom <= 0: return
+		if top < 0: top = 0
 		$invalidate(0, top, extent.width(), bottom - top
 	$resized = @() $position__($_position
 	$moved = @(y, height, delta)
 		extent = $geometry(
 		top = y - $_position
 		bottom = top + height
-		top = 0 if top < 0
+		if top < 0: top = 0
 		$scroll(0, top, extent.width(), bottom - top, 0, delta
 	$__initialize = @
 		:$^__initialize[$](
@@ -120,16 +118,16 @@ Editor = Class(xraft.Frame) :: @
 	$position__ = @(position)
 		extent = $geometry(
 		limit = $_view.rows_size() * xraft.application().font().height()
-		position = limit - extent.height() if position + extent.height() > limit
-		position = 0 if position < 0
-		return if position == $_position
+		if position + extent.height() > limit: position = limit - extent.height()
+		if position < 0: position = 0
+		if position == $_position: return
 		$scroll(0, 0, extent.width(), extent.height(), 0, $_position - position
 		$_position = position
 	$scroll_viewable = @(y, height)
 		extent = $geometry(
 		position = $_position
-		position = y + height - extent.height() if position + extent.height() < y + height
-		position = y if position > y
+		if position + extent.height() < y + height: position = y + height - extent.height()
+		if position > y: position = y
 		$position__(position
 
 xraft.main(system.arguments, @(application)
