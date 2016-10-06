@@ -28,7 +28,7 @@ struct t_type_of<t_bitmap> : t_type_of<t_drawable>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<t_drawable>::t_type_of;
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -53,7 +53,7 @@ struct t_type_of<t_pixmap> : t_type_of<t_drawable>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<t_drawable>::t_type_of;
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }

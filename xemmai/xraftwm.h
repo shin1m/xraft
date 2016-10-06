@@ -140,7 +140,7 @@ struct t_type_of<t_client> : t_type_of<t_widget>
 
 	using t_type_of<t_widget>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -152,7 +152,7 @@ struct t_type_of<t_root> : t_type_of<t_window>
 
 	using t_type_of<t_window>::t_type_of;
 	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
+	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }

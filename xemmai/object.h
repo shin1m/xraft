@@ -135,8 +135,8 @@ struct t_type_of<xraft::t_object> : t_type
 	using t_type::t_type;
 	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive(::xemmai::t_object* a_this);
 	XRAFT__XEMMAI__EXPORT virtual void f_finalize(::xemmai::t_object* a_this);
-	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
-	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }

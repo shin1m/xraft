@@ -112,7 +112,7 @@ t_type* t_type_of<t_application>::f_derive(::xemmai::t_object* a_this)
 	return nullptr;
 }
 
-t_scoped t_type_of<t_application>::f_construct(::xemmai::t_object* a_class, t_scoped* a_stack, size_t a_n)
+t_scoped t_type_of<t_application>::f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
 {
 	t_throwable::f_throw(L"uninstantiatable.");
 }
