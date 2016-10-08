@@ -2,7 +2,7 @@ xemmaidir = $(XEMMAI_MODULE_PATH)
 
 xemmai_LTLIBRARIES = xraft.la xraftdbus.la xraftcairo.la xraftwm.la
 AM_CPPFLAGS = -I$(top_srcdir)/include -DXRAFT_X11 $(X11_CFLAGS) $(DBUS_CFLAGS) $(GL_FLAGS) $(XEMMAI_CFLAGS)
-AM_CXXFLAGS = -std=c++11
+AM_CXXFLAGS =
 AM_LDFLAGS = -module -avoid-version
 LIBADD = $(top_srcdir)/src/libxraft.la $(XEMMAI_LIBS)
 if DEBUG
