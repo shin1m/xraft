@@ -6,7 +6,7 @@ namespace xraft
 namespace dbus
 {
 
-void t_message::f_get(int a_type, ...)
+void t_message::f_get(int a_type, ...) const
 {
 	DBusError error;
 	dbus_error_init(&error);
@@ -25,22 +25,30 @@ void t_message::f_get(int a_type, ...)
 t_message t_reply::operator()()
 {
 	dbus_pending_call_block(v_p);
-	t_message message = dbus_pending_call_steal_reply(v_p);
-	if (!message) throw std::runtime_error("dbus_pending_call_steal_reply failed.");
-	return message;
+	return f_steal(v_p);
+}
+
+void t_reply::operator()(std::function<void (const t_message&)>&& a_function)
+{
+	auto p = new std::remove_reference_t<decltype(a_function)>(std::move(a_function));
+	if (dbus_pending_call_set_notify(v_p, [](auto a_pending, auto a_data)
+	{
+		(*static_cast<decltype(p)>(a_data))(f_steal(a_pending));
+	}, p, [](auto a_data)
+	{
+		delete static_cast<decltype(p)>(a_data);
+	}) == FALSE) throw std::runtime_error("dbus_pending_call_set_notify failed.");
 }
 
 DBusHandlerResult t_connection::f_filter(DBusConnection* a_connection, DBusMessage* a_message, void* a_data)
 {
-//std::fprintf(stderr, "filter: %s, %s, %s\n", dbus_message_get_path(a_message), dbus_message_get_interface(a_message), dbus_message_get_member(a_message));
-	t_connection* p = static_cast<t_connection*>(a_data);
-	if (dbus_message_get_type(a_message) == DBUS_MESSAGE_TYPE_SIGNAL) {
-		auto i = p->v_matches.find(t_match(dbus_message_get_path(a_message), dbus_message_get_interface(a_message), dbus_message_get_member(a_message)));
-		if (i != p->v_matches.end()) {
-			t_message message(a_message, t_own());
-			(*i->second.v_function)(i->second.v_this, message);
-			return DBUS_HANDLER_RESULT_HANDLED;
-		}
+//std::fprintf(stderr, "filter: %s, %s, %s, %s\n", dbus_message_type_to_string(dbus_message_get_type(a_message)), dbus_message_get_path(a_message), dbus_message_get_interface(a_message), dbus_message_get_member(a_message));
+	auto p = static_cast<t_connection*>(a_data);
+	auto i = p->v_matches.find(t_match{dbus_message_get_type(a_message), f_s(dbus_message_get_path(a_message)), f_s(dbus_message_get_interface(a_message)), f_s(dbus_message_get_member(a_message))});
+	if (i != p->v_matches.end()) {
+		t_message message(a_message, t_own());
+		(*i->second.v_function)(i->second.v_this, message);
+		return DBUS_HANDLER_RESULT_HANDLED;
 	}
 	if (dbus_message_is_signal(a_message, DBUS_INTERFACE_LOCAL, "Disconnected") != FALSE) {
 		for (auto q : p->v_disconnecteds) (*q.v_function)(q.v_this);
@@ -105,12 +113,13 @@ void t_connection::f_emit_valist(const char* a_path, const char* a_interface, co
 	if (dbus_connection_send(v_p, message, NULL) == FALSE) throw std::runtime_error("dbus_connection_send failed.");
 }
 
-void t_connection::f_add_match(void* a_this, void (*a_function)(void*, t_message&), const std::string& a_path, const std::string& a_interface, const std::string& a_member)
+void t_connection::f_add_match(void* a_this, void (*a_function)(void*, t_message&), int a_type, const std::string& a_path, const std::string& a_interface, const std::string& a_member)
 {
-	if (!v_matches.insert(std::make_pair(t_match(a_path, a_interface, a_member), t_slot_message(a_this, a_function))).second) return;
+	if (!v_matches.emplace(t_match{a_type, a_path, a_interface, a_member}, t_slot_message{a_this, a_function}).second) return;
+	std::string type = dbus_message_type_to_string(a_type);
 	DBusError error;
 	dbus_error_init(&error);
-	dbus_bus_add_match(v_p, ("type='signal',path='" + a_path + "',interface='" + a_interface + "',member='" + a_member + "'").c_str(), &error);
+	dbus_bus_add_match(v_p, ("type='" + type + "',path='" + a_path + "',interface='" + a_interface + "',member='" + a_member + "'").c_str(), &error);
 	if (dbus_error_is_set(&error) != FALSE) {
 		std::string s = error.message;
 		dbus_error_free(&error);
@@ -118,12 +127,13 @@ void t_connection::f_add_match(void* a_this, void (*a_function)(void*, t_message
 	}
 }
 
-void t_connection::f_remove_match(const std::string& a_path, const std::string& a_interface, const std::string& a_member)
+void t_connection::f_remove_match(int a_type, const std::string& a_path, const std::string& a_interface, const std::string& a_member)
 {
-	if (v_matches.erase(t_match(a_path, a_interface, a_member)) <= 0) return;
+	if (v_matches.erase(t_match{a_type, a_path, a_interface, a_member}) <= 0) return;
+	std::string type = dbus_message_type_to_string(a_type);
 	DBusError error;
 	dbus_error_init(&error);
-	dbus_bus_remove_match(v_p, ("type='signal',path='" + a_path + "',interface='" + a_interface + "',member='" + a_member + "'").c_str(), &error);
+	dbus_bus_remove_match(v_p, ("type='" + type + "',path='" + a_path + "',interface='" + a_interface + "',member='" + a_member + "'").c_str(), &error);
 	if (dbus_error_is_set(&error) != FALSE) {
 		std::string s = error.message;
 		dbus_error_free(&error);

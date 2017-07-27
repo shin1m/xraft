@@ -60,8 +60,8 @@ t_input_context::~t_input_context()
 	if (v_context.empty()) return;
 	dbus::t_connection& bus = f_application()->f_input_bus();
 	bus.f_remove_disconnected(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disconnected>);
-	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
-	bus.f_remove_match(v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
+	bus.f_remove_match(DBUS_MESSAGE_TYPE_SIGNAL, v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
+	bus.f_remove_match(DBUS_MESSAGE_TYPE_SIGNAL, v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
 	bus.f_send("org.freedesktop.IBus", v_context.c_str(), "org.freedesktop.IBus.Service", "Destroy", DBUS_TYPE_INVALID);
 }
 
@@ -115,8 +115,8 @@ void t_input_context::f_create()
 	v_context = p;
 //std::fprintf(stderr, "CreateInputContext: %s\n", v_context.c_str());
 	bus.f_add_disconnected(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_disconnected>);
-	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_commit_text>, v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
-	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_update_preedit_text>, v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
+	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_commit_text>, DBUS_MESSAGE_TYPE_SIGNAL, v_context.c_str(), "org.freedesktop.IBus.InputContext", "CommitText");
+	bus.f_add_match(this, dbus::f_slot_member<t_input_context, &t_input_context::f_on_update_preedit_text>, DBUS_MESSAGE_TYPE_SIGNAL, v_context.c_str(), "org.freedesktop.IBus.InputContext", "UpdatePreeditText");
 	dbus_uint32_t capabilities = ibus::e_capability__PREEDIT_TEXT | ibus::e_capability__FOCUS;
 	f_send("SetCapabilities", DBUS_TYPE_UINT32, &capabilities, DBUS_TYPE_INVALID);
 }

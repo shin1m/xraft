@@ -54,7 +54,7 @@ public:
 	{
 		v_connection.f_connect(DBUS_BUS_SESSION);
 		new dbus::t_bridge(v_connection);
-		v_connection.f_add_match(this, dbus::f_slot_member<t_dbus, &t_dbus::f_signal>, "/xraft/Foo", "xraft.Foo", "Hello");
+		v_connection.f_add_match(this, dbus::f_slot_member<t_dbus, &t_dbus::f_signal>, DBUS_MESSAGE_TYPE_SIGNAL, "/xraft/Foo", "xraft.Foo", "Hello");
 	}
 };
 

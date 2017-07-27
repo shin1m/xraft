@@ -474,7 +474,7 @@ void t_bridge::f_free(void* a_data)
 
 dbus_bool_t t_bridge::f_add(DBusWatch* a_watch, void* a_data)
 {
-	t_bridge* p = static_cast<t_bridge*>(a_data);
+	auto p = static_cast<t_bridge*>(a_data);
 	auto i = p->v_watches.emplace(a_watch, std::make_pair(t_watch(p->v_connection, a_watch, DBUS_WATCH_READABLE), t_watch(p->v_connection, a_watch, DBUS_WATCH_WRITABLE))).first;
 	int fd = dbus_watch_get_unix_fd(a_watch);
 	if (dbus_watch_get_enabled(a_watch) != FALSE) {
@@ -487,7 +487,7 @@ dbus_bool_t t_bridge::f_add(DBusWatch* a_watch, void* a_data)
 
 void t_bridge::f_remove(DBusWatch* a_watch, void* a_data)
 {
-	t_bridge* p = static_cast<t_bridge*>(a_data);
+	auto p = static_cast<t_bridge*>(a_data);
 	f_application()->f_poll(dbus_watch_get_unix_fd(a_watch), 0, 0);
 	p->v_watches.erase(a_watch);
 }
@@ -500,7 +500,7 @@ void t_bridge::f_toggle(DBusWatch* a_watch, void* a_data)
 		if ((flags & DBUS_WATCH_READABLE) != 0) f_application()->f_poll_reader(fd, 0);
 		if ((flags & DBUS_WATCH_WRITABLE) != 0) f_application()->f_poll_writer(fd, 0);
 	} else {
-		t_bridge* p = static_cast<t_bridge*>(a_data);
+		auto p = static_cast<t_bridge*>(a_data);
 		auto i = p->v_watches.find(a_watch);
 		if ((flags & DBUS_WATCH_READABLE) != 0) f_application()->f_poll_reader(fd, &i->second.first);
 		if ((flags & DBUS_WATCH_WRITABLE) != 0) f_application()->f_poll_writer(fd, &i->second.second);
@@ -509,7 +509,7 @@ void t_bridge::f_toggle(DBusWatch* a_watch, void* a_data)
 
 dbus_bool_t t_bridge::f_add(DBusTimeout* a_timeout, void* a_data)
 {
-	t_bridge* p = static_cast<t_bridge*>(a_data);
+	auto p = static_cast<t_bridge*>(a_data);
 	auto i = p->v_timeouts.emplace(a_timeout, new t_timeout(a_timeout)).first;
 	if (dbus_timeout_get_enabled(a_timeout) != FALSE) i->second->f_start(dbus_timeout_get_interval(a_timeout));
 	return TRUE;
@@ -517,7 +517,7 @@ dbus_bool_t t_bridge::f_add(DBusTimeout* a_timeout, void* a_data)
 
 void t_bridge::f_remove(DBusTimeout* a_timeout, void* a_data)
 {
-	t_bridge* p = static_cast<t_bridge*>(a_data);
+	auto p = static_cast<t_bridge*>(a_data);
 	auto i = p->v_timeouts.lower_bound(a_timeout);
 	i->second->f_stop();
 	p->v_timeouts.erase(i);
@@ -525,7 +525,7 @@ void t_bridge::f_remove(DBusTimeout* a_timeout, void* a_data)
 
 void t_bridge::f_toggle(DBusTimeout* a_timeout, void* a_data)
 {
-	t_bridge* p = static_cast<t_bridge*>(a_data);
+	auto p = static_cast<t_bridge*>(a_data);
 	auto i = p->v_timeouts.find(a_timeout);
 	if (dbus_timeout_get_enabled(a_timeout) == FALSE)
 		i->second->f_stop();

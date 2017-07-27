@@ -1,6 +1,7 @@
 #ifndef XRAFT__DBUS_H
 #define XRAFT__DBUS_H
 
+#include <functional>
 #include <map>
 #include <set>
 #include <stdexcept>
@@ -53,11 +54,18 @@ public:
 	{
 		return v_p;
 	}
-	void f_get(int a_type, ...);
+	void f_get(int a_type, ...) const;
 };
 
 class t_reply
 {
+	static t_message f_steal(DBusPendingCall* a_p)
+	{
+		t_message message = dbus_pending_call_steal_reply(a_p);
+		if (!message) throw std::runtime_error("dbus_pending_call_steal_reply failed.");
+		return message;
+	}
+
 	DBusPendingCall* v_p = NULL;
 	DBusConnection* v_connection = NULL;
 
@@ -90,21 +98,21 @@ public:
 		return *this;
 	}
 	t_message operator()();
+	void operator()(std::function<void (const t_message&)>&& a_function);
 };
 
 class t_connection
 {
 	struct t_match
 	{
+		int v_type;
 		std::string v_path;
 		std::string v_interface;
 		std::string v_member;
 
-		t_match(const std::string& a_path, const std::string& a_interface, const std::string& a_member = std::string()) : v_path(a_path), v_interface(a_interface), v_member(a_member)
-		{
-		}
 		bool operator<(const t_match& a_match) const
 		{
+			if (v_type != a_match.v_type) return v_type < a_match.v_type;
 			if (v_path < a_match.v_path) return true;
 			if (v_path > a_match.v_path) return false;
 			if (v_interface < a_match.v_interface) return true;
@@ -118,9 +126,6 @@ class t_connection
 		void* v_this;
 		T_function v_function;
 
-		t_slot(void* a_this, T_function a_function) : v_this(a_this), v_function(a_function)
-		{
-		}
 		bool operator<(const t_slot& a_x) const
 		{
 			if (v_this != a_x.v_this) return v_this < a_x.v_this;
@@ -130,6 +135,10 @@ class t_connection
 	typedef t_slot<void (*)(void*)> t_slot_void;
 	typedef t_slot<void (*)(void*, t_message&)> t_slot_message;
 
+	static std::string f_s(const char* a_p)
+	{
+		return a_p ? std::string(a_p) : std::string();
+	}
 	static DBusHandlerResult f_filter(DBusConnection* a_connection, DBusMessage* a_message, void* a_data);
 
 	DBusConnection* v_p = NULL;
@@ -184,14 +193,14 @@ public:
 	void f_emit_valist(const char* a_path, const char* a_interface, const char* a_name, int a_type, va_list a_list);
 	void f_add_disconnected(void* a_this, void (*a_function)(void*))
 	{
-		v_disconnecteds.insert(t_slot_void(a_this, a_function));
+		v_disconnecteds.insert(t_slot_void{a_this, a_function});
 	}
 	void f_remove_disconnected(void* a_this, void (*a_function)(void*))
 	{
-		v_disconnecteds.erase(t_slot_void(a_this, a_function));
+		v_disconnecteds.erase(t_slot_void{a_this, a_function});
 	}
-	void f_add_match(void* a_this, void (*a_function)(void*, t_message&), const std::string& a_path, const std::string& a_interface, const std::string& a_member);
-	void f_remove_match(const std::string& a_path, const std::string& a_interface, const std::string& a_member);
+	void f_add_match(void* a_this, void (*a_function)(void*, t_message&), int a_type, const std::string& a_path, const std::string& a_interface, const std::string& a_member);
+	void f_remove_match(int a_type, const std::string& a_path, const std::string& a_interface, const std::string& a_member);
 };
 
 template<typename T_this, void (T_this::*A_function)()>

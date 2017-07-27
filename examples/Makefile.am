@@ -12,7 +12,7 @@ AM_CXXFLAGS += -pg
 AM_LDFLAGS += -pg
 endif
 
-noinst_PROGRAMS = balls cairo gears dbus ibus
+noinst_PROGRAMS = balls cairo gears dbus ibus spp
 balls_LDADD = $(top_srcdir)/src/libxraft.la
 balls_SOURCES = balls.cc
 cairo_CPPFLAGS = $(AM_CPPFLAGS) $(CAIRO_CFLAGS)
@@ -24,3 +24,5 @@ dbus_LDADD = $(top_srcdir)/src/libxraft.la
 dbus_SOURCES = dbus.cc
 ibus_LDADD = $(top_srcdir)/src/libxraft.la
 ibus_SOURCES = ibus.cc
+spp_LDADD = $(top_srcdir)/src/libxraft.la
+spp_SOURCES = spp.cc
