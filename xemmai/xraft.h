@@ -1,5 +1,5 @@
-#ifndef XRAFT__XEMMAI__XRAFT_H
-#define XRAFT__XEMMAI__XRAFT_H
+#ifndef XEMMAIX__XRAFT__XRAFT_H
+#define XEMMAIX__XRAFT__XRAFT_H
 
 #ifdef XRAFT_WIN32
 #ifndef XRAFT__XEMMAI__EXPORT
@@ -13,13 +13,14 @@
 #include <xraft/opengl.h>
 #include <xemmai/convert.h>
 
+namespace xemmaix
+{
+
 namespace xraft
 {
 
-namespace xemmai
-{
-
-using namespace ::xemmai;
+using namespace ::xraft;
+using namespace xemmai;
 
 class t_entry
 {
@@ -49,7 +50,7 @@ class t_proxy : public t_user, public t_entry
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(::xemmai::t_object* a_class, T* a_p) : v_application(f_application()), v_object(::xemmai::t_object::f_allocate(a_class))
+	t_proxy(xemmai::t_object* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class))
 	{
 		a_p->f_user__(this);
 		v_object.f_pointer__(a_p);
@@ -58,7 +59,7 @@ class t_proxy : public t_user, public t_entry
 
 public:
 	template<typename T>
-	static t_scoped f_wrap(::xemmai::t_object* a_class, T* a_value)
+	static t_scoped f_wrap(xemmai::t_object* a_class, T* a_value)
 	{
 		if (!a_value) return t_value();
 		t_proxy* proxy = static_cast<t_proxy*>(a_value->f_user());
@@ -66,7 +67,7 @@ public:
 		return proxy->v_object;
 	}
 	template<typename T>
-	static t_scoped f_construct(::xemmai::t_object* a_class, T* a_p)
+	static t_scoped f_construct(xemmai::t_object* a_class, T* a_p)
 	{
 		t_proxy* proxy = new t_proxy(a_class, a_p);
 		proxy->f_acquire();
@@ -74,7 +75,7 @@ public:
 	}
 
 	XRAFT__XEMMAI__EXPORT virtual void f_dispose();
-	::xemmai::t_object* f_object() const
+	xemmai::t_object* f_object() const
 	{
 		return v_object;
 	}
@@ -82,7 +83,7 @@ public:
 	void f_release();
 };
 
-inline ::xemmai::t_object* f_self(const xraft::t_object* a_this)
+inline xemmai::t_object* f_self(const ::xraft::t_object* a_this)
 {
 	return static_cast<t_proxy*>(a_this->f_user())->f_object();
 }
@@ -90,7 +91,7 @@ inline ::xemmai::t_object* f_self(const xraft::t_object* a_this)
 template<typename T>
 struct t_wrapper
 {
-	static t_scoped f_construct(::xemmai::t_object* a_class)
+	static t_scoped f_construct(xemmai::t_object* a_class)
 	{
 		return t_proxy::f_construct(a_class, new T());
 	}
@@ -104,9 +105,9 @@ struct t_with_application_thread
 	}
 };
 
-class t_extension : public ::xemmai::t_extension
+class t_extension : public xemmai::t_extension
 {
-	template<typename T, typename T_super> friend class ::xemmai::t_define;
+	template<typename T, typename T_super> friend class xemmai::t_define;
 
 public:
 	t_slot v_symbol_on_move;
@@ -162,7 +163,7 @@ private:
 	t_slot v_type_opengl_format;
 	t_slot v_type_opengl_widget;
 	t_slot v_type_opengl_context;
-	::xemmai::t_object* v_application;
+	xemmai::t_object* v_application;
 
 	static void f_main(t_extension* a_extension, const t_value& a_arguments, const t_value& a_callable);
 	static t_scoped f_application(t_extension* a_extension)
@@ -219,7 +220,7 @@ inline void t_extension::f_type__<t_rectangle>(t_scoped&& a_type)
 }
 
 template<>
-inline void t_extension::f_type__<xraft::t_object>(t_scoped&& a_type)
+inline void t_extension::f_type__<::xraft::t_object>(t_scoped&& a_type)
 {
 	v_type_object = std::move(a_type);
 }
@@ -393,7 +394,7 @@ inline xemmai::t_object* t_extension::f_type<t_rectangle>() const
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<xraft::t_object>() const
+inline xemmai::t_object* t_extension::f_type<::xraft::t_object>() const
 {
 	return v_type_object;
 }

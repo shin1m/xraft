@@ -5,33 +5,32 @@
 namespace xemmai
 {
 
-using xraft::xemmai::t_with_application_thread;
-
 void t_type_of<xraft::t_object>::f_define(t_extension* a_extension)
 {
-	t_define<xraft::t_object, ::xemmai::t_object>(a_extension, L"Object")
+	using xemmaix::xraft::t_with_application_thread;
+	t_define<xraft::t_object, xemmai::t_object>(a_extension, L"Object")
 		(L"acquire", t_member<void (*)(xraft::t_object&), f_acquire, t_with_application_thread>())
 		(L"release", t_member<void (*)(xraft::t_object&), f_release, t_with_application_thread>())
 	;
 }
 
-t_type* t_type_of<xraft::t_object>::f_derive(::xemmai::t_object* a_this)
+t_type* t_type_of<xraft::t_object>::f_derive(xemmai::t_object* a_this)
 {
 	return nullptr;
 }
 
-void t_type_of<xraft::t_object>::f_finalize(::xemmai::t_object* a_this)
+void t_type_of<xraft::t_object>::f_finalize(xemmai::t_object* a_this)
 {
 //	assert(!f_as<xraft::t_object*>(a_this));
 	assert(!a_this->f_pointer());
 }
 
-t_scoped t_type_of<xraft::t_object>::f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_object>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
 {
 	t_throwable::f_throw(L"uninstantiatable.");
 }
 
-void t_type_of<xraft::t_object>::f_instantiate(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+void t_type_of<xraft::t_object>::f_instantiate(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
 {
 	t_scoped object;
 	try {
@@ -43,7 +42,7 @@ void t_type_of<xraft::t_object>::f_instantiate(::xemmai::t_object* a_class, t_st
 	try {
 		object.f_call(f_global()->f_symbol_initialize(), a_stack, a_n);
 	} catch (...) {
-		static_cast<xraft::xemmai::t_proxy*>(f_as<xraft::t_object*>(object)->f_user())->f_release();
+		static_cast<xemmaix::xraft::t_proxy*>(f_as<xraft::t_object*>(object)->f_user())->f_release();
 		throw;
 	}
 	a_stack[0] = std::move(object);

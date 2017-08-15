@@ -5,10 +5,9 @@
 namespace xemmai
 {
 
-using xraft::xemmai::t_with_application_thread;
-
-void t_type_of<t_input_attribute>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_input_attribute>::f_define(t_extension* a_extension)
 {
+	using namespace xraft;
 	t_define<t_input_attribute, intptr_t>(a_extension, L"InputAttribute")
 		(L"NONE", e_input_attribute__NONE)
 		(L"REVERSE", e_input_attribute__REVERSE)
@@ -16,10 +15,10 @@ void t_type_of<t_input_attribute>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<t_input_context>::f_composition(t_extension* a_extension, t_input_context& a_self)
+t_scoped t_type_of<xraft::t_input_context>::f_composition(t_extension* a_extension, xraft::t_input_context& a_self)
 {
 	std::vector<wchar_t> cs;
-	std::vector<t_input_attribute> as0;
+	std::vector<xraft::t_input_attribute> as0;
 	a_self.f_composition(cs, as0);
 	t_scoped as1 = t_tuple::f_instantiate(as0.size());
 	for (size_t i = 0; i < as0.size(); ++i) f_as<t_tuple&>(as1)[i] = a_extension->f_as(as0[i]);
@@ -29,16 +28,18 @@ t_scoped t_type_of<t_input_context>::f_composition(t_extension* a_extension, t_i
 	return tuple;
 }
 
-void t_type_of<t_input_context>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_input_context>::f_define(t_extension* a_extension)
 {
+	using namespace xraft;
+	using xemmaix::xraft::t_with_application_thread;
 	t_define<t_input_context, xraft::t_object>(a_extension, L"InputContext")
-		(L"composition", t_member<t_scoped (*)(t_extension*, t_input_context&), f_composition, t_with_application_thread>())
+		(L"composition", t_member<t_scoped(*)(t_extension*, t_input_context&), f_composition, t_with_application_thread>())
 	;
 }
 
-t_scoped t_type_of<t_input_context>::f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_input_context>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped (*)(::xemmai::t_object*), xraft::xemmai::t_wrapper<t_input_context>::f_construct>::t_bind<t_input_context>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(xemmai::t_object*), xemmaix::xraft::t_wrapper<xraft::t_input_context>::f_construct>::t_bind<xraft::t_input_context>::f_do(a_class, a_stack, a_n);
 }
 
 }

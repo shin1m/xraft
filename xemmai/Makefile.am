@@ -49,11 +49,7 @@ xraftdbus_la_LIBADD = $(LIBADD)
 xraftdbus_la_SOURCES = xraftdbus.cc
 xraftcairo_la_CPPFLAGS = $(AM_CPPFLAGS) $(CAIRO_CFLAGS)
 xraftcairo_la_LIBADD = $(LIBADD) $(CAIRO_LIBS)
-xraftcairo_la_SOURCES = \
-	xraftcairo.h \
-	xraftcairo.cc
+xraftcairo_la_SOURCES = xraftcairo.cc
 xraftwm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)
 xraftwm_la_LIBADD = $(LIBADD) $(top_srcdir)/xraftwm/libxraftwm.la
-xraftwm_la_SOURCES = \
-	xraftwm.h \
-	xraftwm.cc
+xraftwm_la_SOURCES = xraftwm.cc

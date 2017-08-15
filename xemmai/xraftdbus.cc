@@ -1,29 +1,28 @@
-#include <dbus/xemmai/connection.h>
+#include <xemmaix/dbus/connection.h>
 
 #include "application.h"
 
-namespace xraft
+namespace xemmaix
 {
 
-namespace xemmai
+namespace xraftdbus
 {
 
-using ::xemmai::t_object;
-using ::xemmai::t_scan;
+using namespace xemmai;
 
-void f_watch(::dbus::xemmai::t_connection& a_connection)
+void f_watch(xemmaix::dbus::t_connection& a_connection)
 {
-	new dbus::t_bridge(a_connection);
+	new xraft::dbus::t_bridge(a_connection);
 }
 
-class t_xraftdbus : public ::xemmai::t_extension
+class t_extension : public xemmai::t_extension
 {
 	template<typename T, typename T_super> friend class t_define;
 
 public:
-	t_xraftdbus(t_object* a_module) : ::xemmai::t_extension(a_module)
+	t_extension(xemmai::t_object* a_module) : xemmai::t_extension(a_module)
 	{
-		f_define<void (*)(::dbus::xemmai::t_connection&), f_watch>(this, L"watch");
+		f_define<void(*)(xemmaix::dbus::t_connection&), f_watch>(this, L"watch");
 	}
 	virtual void f_scan(t_scan a_scan)
 	{
@@ -36,5 +35,5 @@ public:
 
 XEMMAI__MODULE__FACTORY(xemmai::t_object* a_module)
 {
-	return new xraft::xemmai::t_xraftdbus(a_module);
+	return new xemmaix::xraftdbus::t_extension(a_module);
 }

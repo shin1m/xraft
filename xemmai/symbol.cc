@@ -3,8 +3,9 @@
 namespace xemmai
 {
 
-void t_type_of<t_key>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_key>::f_define(t_extension* a_extension)
 {
+	using namespace xraft;
 	t_define<t_key, intptr_t>(a_extension, L"Key")
 		(L"NONE", e_key__NONE)
 		(L"BACK_SPACE", e_key__BACK_SPACE)
@@ -169,8 +170,9 @@ void t_type_of<t_key>::f_define(t_extension* a_extension)
 	;
 }
 
-void t_type_of<t_modifier>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_modifier>::f_define(t_extension* a_extension)
 {
+	using namespace xraft;
 	t_define<t_modifier, intptr_t>(a_extension, L"Modifier")
 		(L"NONE", e_modifier__NONE)
 		(L"SHIFT", e_modifier__SHIFT)
@@ -185,8 +187,9 @@ void t_type_of<t_modifier>::f_define(t_extension* a_extension)
 	;
 }
 
-void t_type_of<t_button>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_button>::f_define(t_extension* a_extension)
 {
+	using namespace xraft;
 	t_define<t_button, intptr_t>(a_extension, L"Button")
 		(L"NONE", e_button__NONE)
 		(L"BUTTON1", e_button__1)

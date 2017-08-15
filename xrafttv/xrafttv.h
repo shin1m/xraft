@@ -6,17 +6,16 @@
 #include "object.h"
 #include "wrapped_view.h"
 
-namespace xraft
+namespace xemmaix
 {
 
-namespace xemmai
+namespace xrafttv
 {
 
-using namespace ::xemmai;
+using namespace xraft;
+using namespace xemmai;
 
-struct t_xrafttv;
-
-struct t_attribute : t_object
+struct t_attribute : ::xraft::t_object
 {
 	t_pixel v_foreground;
 	t_pixel v_background;
@@ -192,9 +191,9 @@ struct t_event
 	}
 };
 
-struct t_text_model : t_object, xraft::t_text_model<t_pointer<t_attribute> >, xraft::t_text_model<t_pointer<t_attribute> >::t_observer
+struct t_text_model : ::xraft::t_object, ::xraft::t_text_model<t_pointer<t_attribute>>, ::xraft::t_text_model<t_pointer<t_attribute>>::t_observer
 {
-	typedef xraft::t_text_model<t_pointer<t_attribute> > t_base;
+	typedef ::xraft::t_text_model<t_pointer<t_attribute>> t_base;
 
 	t_event v_loaded;
 	t_event v_replacing;
@@ -273,9 +272,9 @@ struct t_text_model : t_object, xraft::t_text_model<t_pointer<t_attribute> >, xr
 	}
 };
 
-struct t_wrapped_view : t_object, xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>, xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>::t_observer
+struct t_wrapped_view : ::xraft::t_object, ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>, ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>::t_observer
 {
-	typedef xraft::t_wrapped_view<t_pointer<t_attribute>, t_font> t_base;
+	typedef ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font> t_base;
 
 	t_event v_invalidated;
 	t_event v_resized;
@@ -436,12 +435,10 @@ struct t_wrapped_view : t_object, xraft::t_wrapped_view<t_pointer<t_attribute>, 
 	}
 };
 
-struct t_xrafttv : ::xemmai::t_extension
+struct t_extension : xemmai::t_extension
 {
-	template<typename T, typename T_super> friend class t_define;
-
 	t_slot v_module_xraft;
-	xraft::xemmai::t_extension* v_xraft;
+	xemmaix::xraft::t_extension* v_xraft;
 	t_slot v_symbol_size;
 	t_slot v_type_attribute;
 	t_slot v_type_text_model;
@@ -450,7 +447,7 @@ struct t_xrafttv : ::xemmai::t_extension
 	template<typename T>
 	void f_type__(t_scoped&& a_type);
 
-	t_xrafttv(xemmai::t_object* a_module, t_scoped&& a_xraft);
+	t_extension(xemmai::t_object* a_module, t_scoped&& a_xraft);
 	virtual void f_scan(t_scan a_scan);
 	template<typename T>
 	const T* f_extension() const
@@ -471,43 +468,43 @@ struct t_xrafttv : ::xemmai::t_extension
 };
 
 template<>
-inline void t_xrafttv::f_type__<t_attribute>(t_scoped&& a_type)
+inline void t_extension::f_type__<t_attribute>(t_scoped&& a_type)
 {
 	v_type_attribute = std::move(a_type);
 }
 
 template<>
-inline void t_xrafttv::f_type__<t_text_model>(t_scoped&& a_type)
+inline void t_extension::f_type__<t_text_model>(t_scoped&& a_type)
 {
 	v_type_text_model = std::move(a_type);
 }
 
 template<>
-inline void t_xrafttv::f_type__<t_wrapped_view>(t_scoped&& a_type)
+inline void t_extension::f_type__<t_wrapped_view>(t_scoped&& a_type)
 {
 	v_type_wrapped_view = std::move(a_type);
 }
 
 template<>
-inline const t_xrafttv* t_xrafttv::f_extension<t_xrafttv>() const
+inline const t_extension* t_extension::f_extension<t_extension>() const
 {
 	return this;
 }
 
 template<>
-inline xemmai::t_object* t_xrafttv::f_type<t_attribute>() const
+inline xemmai::t_object* t_extension::f_type<t_attribute>() const
 {
 	return v_type_attribute;
 }
 
 template<>
-inline xemmai::t_object* t_xrafttv::f_type<t_text_model>() const
+inline xemmai::t_object* t_extension::f_type<t_text_model>() const
 {
 	return v_type_text_model;
 }
 
 template<>
-inline xemmai::t_object* t_xrafttv::f_type<t_wrapped_view>() const
+inline xemmai::t_object* t_extension::f_type<t_wrapped_view>() const
 {
 	return v_type_wrapped_view;
 }
@@ -519,57 +516,52 @@ inline xemmai::t_object* t_xrafttv::f_type<t_wrapped_view>() const
 namespace xemmai
 {
 
-using namespace xraft;
-using xraft::xemmai::t_attribute;
-using xraft::xemmai::t_text_model;
-using xraft::xemmai::t_wrapped_view;
-
 template<>
-struct t_type_of<t_attribute> : t_type_of<xraft::t_object>
+struct t_type_of<xemmaix::xrafttv::t_attribute> : t_type_of<xraft::t_object>
 {
-	typedef xraft::xemmai::t_xrafttv t_extension;
+	typedef xemmaix::xrafttv::t_extension t_extension;
 
-	static t_scoped f_construct(::xemmai::t_object* a_class, t_pixel a_foreground, t_pixel a_background)
+	static t_scoped f_construct(t_object* a_class, xraft::t_pixel a_foreground, xraft::t_pixel a_background)
 	{
-		return xraft::xemmai::t_proxy::f_construct(a_class, new t_attribute(a_foreground, a_background));
+		return xemmaix::xraft::t_proxy::f_construct(a_class, new xemmaix::xrafttv::t_attribute(a_foreground, a_background));
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive(t_object* a_this);
+	virtual t_scoped f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<t_text_model> : t_type_of<xraft::t_object>
+struct t_type_of<xemmaix::xrafttv::t_text_model> : t_type_of<xraft::t_object>
 {
-	typedef xraft::xemmai::t_xrafttv t_extension;
+	typedef xemmaix::xrafttv::t_extension t_extension;
 
-	static t_scoped f_construct(::xemmai::t_object* a_class)
+	static t_scoped f_construct(t_object* a_class)
 	{
-		return xraft::xemmai::t_proxy::f_construct(a_class, new t_text_model());
+		return xemmaix::xraft::t_proxy::f_construct(a_class, new xemmaix::xrafttv::t_text_model());
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive(t_object* a_this);
+	virtual t_scoped f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<t_wrapped_view> : t_type_of<xraft::t_object>
+struct t_type_of<xemmaix::xrafttv::t_wrapped_view> : t_type_of<xraft::t_object>
 {
-	typedef xraft::xemmai::t_xrafttv t_extension;
+	typedef xemmaix::xrafttv::t_extension t_extension;
 
-	static t_scoped f_construct(::xemmai::t_object* a_class)
+	static t_scoped f_construct(t_object* a_class)
 	{
-		return xraft::xemmai::t_proxy::f_construct(a_class, new t_wrapped_view());
+		return xemmaix::xraft::t_proxy::f_construct(a_class, new xemmaix::xrafttv::t_wrapped_view());
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive(t_object* a_this);
+	virtual t_scoped f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }

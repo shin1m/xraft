@@ -1,5 +1,5 @@
-#ifndef XRAFT__XEMMAI__WINDOW_H
-#define XRAFT__XEMMAI__WINDOW_H
+#ifndef XEMMAIX__XRAFT__WINDOW_H
+#define XEMMAIX__XRAFT__WINDOW_H
 
 #include "graphics.h"
 #include "input_context.h"
@@ -9,10 +9,8 @@
 namespace xemmai
 {
 
-using namespace xraft;
-
 template<>
-struct t_type_of<t_cross_mode> : t_enum_of<t_cross_mode, xraft::xemmai::t_extension>
+struct t_type_of<xraft::t_cross_mode> : t_enum_of<xraft::t_cross_mode, xemmaix::xraft::t_extension>
 {
 	static void f_define(t_extension* a_extension);
 
@@ -20,7 +18,7 @@ struct t_type_of<t_cross_mode> : t_enum_of<t_cross_mode, xraft::xemmai::t_extens
 };
 
 template<>
-struct t_type_of<t_cross_detail> : t_enum_of<t_cross_detail, xraft::xemmai::t_extension>
+struct t_type_of<xraft::t_cross_detail> : t_enum_of<xraft::t_cross_detail, xemmaix::xraft::t_extension>
 {
 	static void f_define(t_extension* a_extension);
 
@@ -28,51 +26,51 @@ struct t_type_of<t_cross_detail> : t_enum_of<t_cross_detail, xraft::xemmai::t_ex
 };
 
 template<>
-struct t_type_of<t_window> : t_type_of<t_drawable>
+struct t_type_of<xraft::t_window> : t_type_of<xraft::t_drawable>
 {
-	static void f_add(t_window& a_self, const xraft::t_pointer<t_widget>& a_widget)
+	static void f_add(xraft::t_window& a_self, const xraft::t_pointer<xraft::t_widget>& a_widget)
 	{
 		if (!a_widget) t_throwable::f_throw(L"widget must not be null.");
 		a_self.f_add(a_widget);
 	}
-	static void f_add(t_window& a_self, const xraft::t_pointer<t_widget>& a_widget, size_t a_i)
+	static void f_add(xraft::t_window& a_self, const xraft::t_pointer<xraft::t_widget>& a_widget, size_t a_i)
 	{
 		if (!a_widget) t_throwable::f_throw(L"widget must not be null.");
 		a_self.f_add(a_widget, a_i);
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<t_drawable>::t_type_of;
+	using t_type_of<xraft::t_drawable>::t_type_of;
 };
 
 template<>
-struct t_type_of<t_widget> : t_type_of<t_window>
+struct t_type_of<xraft::t_widget> : t_type_of<xraft::t_window>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<t_window>::t_type_of;
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	using t_type_of<xraft::t_window>::t_type_of;
+	virtual t_type* f_derive(xemmai::t_object* a_this);
+	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<t_shell> : t_type_of<t_window>
+struct t_type_of<xraft::t_shell> : t_type_of<xraft::t_window>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<t_window>::t_type_of;
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	using t_type_of<xraft::t_window>::t_type_of;
+	virtual t_type* f_derive(xemmai::t_object* a_this);
+	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<t_frame> : t_type_of<t_shell>
+struct t_type_of<xraft::t_frame> : t_type_of<xraft::t_shell>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<t_shell>::t_type_of;
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	using t_type_of<xraft::t_shell>::t_type_of;
+	virtual t_type* f_derive(xemmai::t_object* a_this);
+	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }

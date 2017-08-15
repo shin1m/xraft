@@ -1,15 +1,13 @@
-#ifndef XRAFT__XEMMAI__OBJECT_H
-#define XRAFT__XEMMAI__OBJECT_H
+#ifndef XEMMAIX__XRAFT__OBJECT_H
+#define XEMMAIX__XRAFT__OBJECT_H
 
 #include "xraft.h"
 
 namespace xemmai
 {
 
-using namespace xraft;
-
 template<typename T>
-struct t_fundamental<xraft::t_pointer<T> >
+struct t_fundamental<xraft::t_pointer<T>>
 {
 	typedef T t_type;
 };
@@ -22,7 +20,7 @@ struct t_type_of<xraft::t_object> : t_type
 	{
 		static T0* f_call(T1 a_object)
 		{
-			f_application();
+			xraft::f_application();
 			T0* p = static_cast<T0*>(f_object(a_object)->f_pointer());
 			if (!p) t_throwable::f_throw(L"already destroyed.");
 			return p;
@@ -110,52 +108,52 @@ struct t_type_of<xraft::t_object> : t_type
 			}
 		}
 	};
-	typedef xraft::xemmai::t_extension t_extension;
+	typedef xemmaix::xraft::t_extension t_extension;
 
 	template<typename T_extension, typename T>
 	static t_scoped f_transfer(T_extension* a_extension, const xraft::t_pointer<T>& a_value)
 	{
-		return xraft::xemmai::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), static_cast<T*>(a_value));
+		return xemmaix::xraft::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), static_cast<T*>(a_value));
 	}
 	template<typename T_extension, typename T>
 	static t_scoped f_transfer(T_extension* a_extension, T* a_value)
 	{
-		return xraft::xemmai::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), a_value);
+		return xemmaix::xraft::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), a_value);
 	}
 	static void f_acquire(xraft::t_object& a_self)
 	{
-		static_cast<xraft::xemmai::t_proxy*>(a_self.f_user())->f_acquire();
+		static_cast<xemmaix::xraft::t_proxy*>(a_self.f_user())->f_acquire();
 	}
 	static void f_release(xraft::t_object& a_self)
 	{
-		static_cast<xraft::xemmai::t_proxy*>(a_self.f_user())->f_release();
+		static_cast<xemmaix::xraft::t_proxy*>(a_self.f_user())->f_release();
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type::t_type;
-	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive(::xemmai::t_object* a_this);
-	XRAFT__XEMMAI__EXPORT virtual void f_finalize(::xemmai::t_object* a_this);
-	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
-	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive(xemmai::t_object* a_this);
+	XRAFT__XEMMAI__EXPORT virtual void f_finalize(xemmai::t_object* a_this);
+	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }
 
-namespace xraft
+namespace xemmaix
 {
 
-namespace xemmai
+namespace xraft
 {
 
 inline void t_proxy::f_acquire()
 {
-	if (v_n <= 0) f_as<xraft::t_object*>(v_object)->f_acquire();
+	if (v_n <= 0) f_as<::xraft::t_object*>(v_object)->f_acquire();
 	++v_n;
 }
 
 inline void t_proxy::f_release()
 {
-	if (v_n > 0 && --v_n <= 0) f_as<xraft::t_object*>(v_object)->f_release();
+	if (v_n > 0 && --v_n <= 0) f_as<::xraft::t_object*>(v_object)->f_release();
 }
 
 }

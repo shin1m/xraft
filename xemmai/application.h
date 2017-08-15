@@ -1,18 +1,18 @@
-#ifndef XRAFT__XEMMAI__APPLICATION_H
-#define XRAFT__XEMMAI__APPLICATION_H
+#ifndef XEMMAIX__XRAFT__APPLICATION_H
+#define XEMMAIX__XRAFT__APPLICATION_H
 
 #include "window.h"
 #include <xemmai/thread.h>
 
+namespace xemmaix
+{
+
 namespace xraft
 {
 
-namespace xemmai
-{
+using namespace xemmai;
 
-using namespace ::xemmai;
-
-class t_application : public xraft::t_application, public t_entry
+class t_application : public ::xraft::t_application, public t_entry
 {
 	friend class t_proxy;
 
@@ -33,7 +33,7 @@ public:
 		virtual void operator()();
 	};
 
-	t_application(t_extension* a_extension, ::xemmai::t_object* a_arguments);
+	t_application(t_extension* a_extension, xemmai::t_object* a_arguments);
 	~t_application()
 	{
 		while (v_next != this) v_next->f_dispose();
@@ -51,10 +51,8 @@ public:
 namespace xemmai
 {
 
-using namespace xraft;
-
 template<>
-struct t_type_of<t_application> : t_type
+struct t_type_of<xraft::t_application> : t_type
 {
 	template<typename T0, typename T1>
 	struct t_as
@@ -92,19 +90,19 @@ struct t_type_of<t_application> : t_type
 			return *p;
 		}
 	};
-	typedef xraft::xemmai::t_extension t_extension;
+	typedef xemmaix::xraft::t_extension t_extension;
 
-	static void f_post(t_application& a_self, t_scoped&& a_callable)
+	static void f_post(xraft::t_application& a_self, t_scoped&& a_callable)
 	{
 		t_thread::f_cache_release();
-		a_self.f_post(new xraft::xemmai::t_application::t_post(std::move(a_callable)));
+		a_self.f_post(new xemmaix::xraft::t_application::t_post(std::move(a_callable)));
 	}
-	static void f_add(t_application& a_self, const xraft::t_pointer<t_shell>& a_shell)
+	static void f_add(xraft::t_application& a_self, const xraft::t_pointer<xraft::t_shell>& a_shell)
 	{
 		if (!a_shell) t_throwable::f_throw(L"shell must not be null.");
 		a_self.f_add(a_shell);
 	}
-	static void f_add(t_application& a_self, const xraft::t_pointer<t_shell>& a_shell, size_t a_i)
+	static void f_add(xraft::t_application& a_self, const xraft::t_pointer<xraft::t_shell>& a_shell, size_t a_i)
 	{
 		if (!a_shell) t_throwable::f_throw(L"shell must not be null.");
 		a_self.f_add(a_shell, a_i);
@@ -115,8 +113,8 @@ struct t_type_of<t_application> : t_type
 	{
 		v_shared = true;
 	}
-	virtual t_type* f_derive(::xemmai::t_object* a_this);
-	virtual t_scoped f_construct(::xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive(xemmai::t_object* a_this);
+	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
 };
 
 }
