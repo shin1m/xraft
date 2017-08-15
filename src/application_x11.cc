@@ -63,7 +63,6 @@ void t_application::f_loop()
 		t_input_context::f_negotiate();
 		if (v_loop < current) return;
 		t_window::f_validate();
-		XSync(v_display, False);
 		int n = XPending(v_display);
 		if (n <= 0) {
 			f_wait();
