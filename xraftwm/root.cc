@@ -113,7 +113,7 @@ t_root::t_root()
 		const_cast<char*>("WM_COLORMAP_WINDOWS"),
 		wm_sn
 	};
-	Atom atoms[5];
+	Atom atoms[sizeof(names) / sizeof(char*)];
 	XInternAtoms(display, names, sizeof(atoms) / sizeof(Atom), False, atoms);
 	WM_STATE = atoms[0];
 	WM_CHANGE_STATE = atoms[1];

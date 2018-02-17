@@ -196,13 +196,11 @@ void t_client::f_focus()
 	Display* display = application->f_x11_display();
 	XInstallColormap(display, v_colormap);
 	Time time = application->f_x11_time();
-	if (v_input == True) {
+//	if (v_input == True)
 		XSetInputFocus(display, v_client, RevertToPointerRoot, time);
-		if (v_take_focus) f_send_wm_protocols(f_root()->WM_TAKE_FOCUS, time);
-	} else {
-		XSetInputFocus(display, PointerRoot, RevertToNone, time);
-		if (v_take_focus) f_send_wm_protocols(f_root()->WM_TAKE_FOCUS, time);
-	}
+//	else
+//		XSetInputFocus(display, PointerRoot, RevertToNone, time);
+	if (v_take_focus) f_send_wm_protocols(f_root()->WM_TAKE_FOCUS, time);
 }
 
 void t_client::f_configure(const XConfigureRequestEvent& a_xconfigurerequest)
@@ -327,7 +325,7 @@ void t_client::f_process(XEvent& a_event)
 		f_revoke();
 		break;
 	case UnmapNotify:
-std::printf("UnmapNotify: this=%p, a_event.xunmap.serial=%lu, v_serial=%lu\n", this, a_event.xunmap.serial, v_serial);
+std::fprintf(stderr, "UnmapNotify: this=%p, a_event.xunmap.serial=%lu, v_serial=%lu\n", this, a_event.xunmap.serial, v_serial);
 		if (a_event.xunmap.serial == v_serial)
 			v_serial = 0;
 		else
@@ -415,6 +413,11 @@ void t_client::f_attach(Window a_window, const XWindowAttributes& a_attributes)
 	f_fetch_wm_protocols();
 	XGetTransientForHint(display, v_client, &v_transient_for);
 	t_point gravity = f_gravity();
+std::fprintf(stderr, "attributes: (%d, %d)-(%d, %d)\n", a_attributes.x, a_attributes.y, a_attributes.width, a_attributes.height);
+std::fprintf(stderr, "input: %d\n", v_input);
+std::fprintf(stderr, "take focus: %d\n", v_take_focus);
+std::fprintf(stderr, "transient for: %x\n", v_transient_for);
+std::fprintf(stderr, "gravity: %d -> (%d, %d)\n", v_gravity, gravity.v_x, gravity.v_y);
 	t_widget::f_move(t_rectangle(a_attributes.x - gravity.v_x, a_attributes.y - gravity.v_y, v_width + v_borders[0] + v_borders[2], v_shaded ? v_borders[1] + v_borders[3] : v_height + v_borders[1] + v_borders[3]));
 	f_root()->f_add(this);
 	switch (wm_state) {
@@ -527,7 +530,7 @@ void t_client::f_hide()
 	if (v_serial == 0) {
 		Display* display = f_application()->f_x11_display();
 		v_serial = NextRequest(display);
-std::printf("XUnmapWindow: %lu\n", v_serial);
+std::fprintf(stderr, "XUnmapWindow: %lu\n", v_serial);
 		XUnmapWindow(display, v_client);
 	}
 	t_widget::f_hide();
