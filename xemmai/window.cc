@@ -1,9 +1,6 @@
 #include "window.h"
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 struct t_widget : ::xraft::t_widget, t_wrapper<t_widget>
@@ -86,8 +83,6 @@ struct t_frame : ::xraft::t_frame, t_wrapper<t_frame>
 		f_self(this)->f_get(extension->v_symbol_on_close)();
 	}
 };
-
-}
 
 }
 

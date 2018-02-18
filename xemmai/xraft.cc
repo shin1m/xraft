@@ -5,16 +5,11 @@
 #include "region.h"
 #include "timer.h"
 
-namespace xemmaix
+namespace xemmaix::xraft
 {
 
-namespace xraft
+t_entry::t_entry() : v_previous(static_cast<t_application*>(f_application())), v_next(v_previous->v_next)
 {
-
-t_entry::t_entry()
-{
-	v_previous = static_cast<t_application*>(f_application());
-	v_next = v_previous->v_next;
 	v_previous->v_next = v_next->v_previous = this;
 }
 
@@ -169,8 +164,6 @@ void t_extension::f_scan(t_scan a_scan)
 	a_scan(v_type_opengl_format);
 	a_scan(v_type_opengl_widget);
 	a_scan(v_type_opengl_context);
-}
-
 }
 
 }

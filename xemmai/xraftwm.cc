@@ -4,10 +4,7 @@
 #include <xraftwm/common.h>
 #include <xemmai/array.h>
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 using namespace xemmai;
@@ -137,8 +134,6 @@ template<>
 inline xemmai::t_object* t_xraftwm::f_type<t_root>() const
 {
 	return v_type_root;
-}
-
 }
 
 }

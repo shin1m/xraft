@@ -4,10 +4,7 @@
 #include <xemmaix/cairo/context.h>
 #include <xraft/cairo.h>
 
-namespace xemmaix
-{
-
-namespace xraftcairo
+namespace xemmaix::xraftcairo
 {
 
 using namespace xraft;
@@ -74,8 +71,6 @@ public:
 		return v_cairo->f_as(a_value);
 	}
 };
-
-}
 
 }
 

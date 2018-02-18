@@ -4,10 +4,7 @@
 #include "window.h"
 #include <xemmai/thread.h>
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 using namespace xemmai;
@@ -43,8 +40,6 @@ public:
 		return v_extension;
 	}
 };
-
-}
 
 }
 

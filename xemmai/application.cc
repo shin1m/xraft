@@ -1,9 +1,6 @@
 #include "application.h"
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 namespace
@@ -53,8 +50,6 @@ void t_application::t_post::operator()()
 
 t_application::t_application(t_extension* a_extension, xemmai::t_object* a_arguments) : ::xraft::t_application(t_arguments(a_arguments)), t_entry(false), v_extension(a_extension)
 {
-}
-
 }
 
 }

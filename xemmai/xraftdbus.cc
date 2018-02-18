@@ -2,10 +2,7 @@
 
 #include "application.h"
 
-namespace xemmaix
-{
-
-namespace xraftdbus
+namespace xemmaix::xraftdbus
 {
 
 using namespace xemmai;
@@ -28,8 +25,6 @@ public:
 	{
 	}
 };
-
-}
 
 }
 

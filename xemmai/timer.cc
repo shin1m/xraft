@@ -1,9 +1,6 @@
 #include "timer.h"
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 struct t_timer : ::xraft::t_timer, t_wrapper<t_timer>
@@ -23,8 +20,6 @@ struct t_timer : ::xraft::t_timer, t_wrapper<t_timer>
 		v_callable();
 	}
 };
-
-}
 
 }
 

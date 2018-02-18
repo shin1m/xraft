@@ -1,9 +1,6 @@
 #include "opengl.h"
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 struct t_opengl_widget : ::xraft::t_opengl_widget, t_wrapper<t_opengl_widget>
@@ -44,8 +41,6 @@ struct t_opengl_widget : ::xraft::t_opengl_widget, t_wrapper<t_opengl_widget>
 		f_self(this)->f_get(extension->v_symbol_on_destroy)();
 	}
 };
-
-}
 
 }
 
