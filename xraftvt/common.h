@@ -13,8 +13,8 @@ struct t_attribute
 	unsigned char v_color;
 
 	t_attribute() = default;
-	t_attribute(bool a_bold, bool a_underline, bool a_blink, bool a_reverse, int a_foreground, int a_background) :
-	v_attribute((a_bold ? 1 : 0) | (a_underline ? 2 : 0) | (a_blink ? 4 : 0) | (a_reverse ? 8 : 0)), v_color((a_foreground << 4) | (a_background))
+	t_attribute(bool a_bold, bool a_faint, bool a_underlined, bool a_blink, bool a_inverse, int a_foreground, int a_background) :
+	v_attribute((a_bold ? 1 : 0) | (a_faint ? 2 : 0) | (a_underlined ? 4 : 0) | (a_blink ? 8 : 0) | (a_inverse ? 16 : 0)), v_color((a_foreground << 4) | (a_background))
 	{
 	}
 	bool operator==(const t_attribute& a_x) const
@@ -25,49 +25,57 @@ struct t_attribute
 	{
 		return (v_attribute & 1) != 0;
 	}
-	void f_bold__(bool a_bold)
+	void f_bold__(bool a_value)
 	{
-		v_attribute = v_attribute & 0xfe | (a_bold ? 1 : 0);
+		v_attribute = v_attribute & 0xfe | (a_value ? 1 : 0);
 	}
-	bool f_underline() const
+	bool f_faint() const
 	{
 		return (v_attribute & 2) != 0;
 	}
-	void f_underline__(bool a_underline)
+	void f_faint__(bool a_value)
 	{
-		v_attribute = v_attribute & 0xfd | (a_underline ? 2 : 0);
+		v_attribute = v_attribute & 0xfd | (a_value ? 2 : 0);
 	}
-	bool f_blink() const
+	bool f_underlined() const
 	{
 		return (v_attribute & 4) != 0;
 	}
-	void f_blink__(bool a_blink)
+	void f_underlined__(bool a_value)
 	{
-		v_attribute = v_attribute & 0xfb | (a_blink ? 4 : 0);
+		v_attribute = v_attribute & 0xfb | (a_value ? 4 : 0);
 	}
-	bool f_reverse() const
+	bool f_blink() const
 	{
 		return (v_attribute & 8) != 0;
 	}
-	void f_reverse__(bool a_reverse)
+	void f_blink__(bool a_value)
 	{
-		v_attribute = v_attribute & 0xf7 | (a_reverse ? 8 : 0);
+		v_attribute = v_attribute & 0xf7 | (a_value ? 8 : 0);
+	}
+	bool f_inverse() const
+	{
+		return (v_attribute & 16) != 0;
+	}
+	void f_inverse__(bool a_value)
+	{
+		v_attribute = v_attribute & 0xef | (a_value ? 16 : 0);
 	}
 	int f_foreground() const
 	{
 		return v_color >> 4;
 	}
-	void f_foreground__(int a_foreground)
+	void f_foreground__(int a_value)
 	{
-		v_color = v_color & 0x0f | (a_foreground << 4);
+		v_color = v_color & 0x0f | (a_value << 4);
 	}
 	int f_background() const
 	{
 		return v_color & 0x0f;
 	}
-	void f_background__(int a_background)
+	void f_background__(int a_value)
 	{
-		v_color = v_color & 0xf0 | a_background;
+		v_color = v_color & 0xf0 | a_value;
 	}
 };
 
@@ -155,7 +163,7 @@ public:
 
 class t_content : public t_widget
 {
-	t_pixel v_pixels[32];
+	t_pixel v_pixels[80];
 	t_pointer<t_font> v_font;
 	t_extent v_unit;
 #ifdef XRAFT_TRANSPARENT
@@ -173,7 +181,7 @@ class t_content : public t_widget
 	void f_scroll(int a_y, unsigned a_height, int a_dy);
 
 protected:
-	::t_attribute v_attribute{false, false, false, false, 0, 7};
+	::t_attribute v_attribute{false, false, false, false, false, 0, 1};
 	unsigned v_cursor_x = 0;
 	unsigned v_cursor_y = 0;
 
@@ -351,6 +359,10 @@ class t_terminal : public t_content, protected t_runnable
 	int v_parameters[16];
 	int v_parameters_size;
 
+	int f_parameter(size_t a_i, int a_default) const
+	{
+		return v_parameters_size < a_i + 1 || v_parameters[a_i] < a_default ? a_default : v_parameters[a_i];
+	}
 	void f_scroll();
 	void f_back_space();
 	void f_tab_stop_forward(unsigned a_n);
@@ -369,8 +381,9 @@ class t_terminal : public t_content, protected t_runnable
 	void f_cursor_backward();
 	void f_cursor_next_line();
 	void f_cursor_preceding_line();
-	void f_cursor_character_absolute();
+	void f_cursor_character_absolute(size_t a_i = 0);
 	void f_cursor_position();
+	void f_line_position_absolute();
 	void f_erase_display();
 	void f_erase_line();
 	void f_erase_character();
@@ -378,6 +391,10 @@ class t_terminal : public t_content, protected t_runnable
 	void f_delete_line();
 	void f_insert_character();
 	void f_delete_character();
+	using t_content::f_scroll_up;
+	void f_scroll_up();
+	using t_content::f_scroll_down;
+	void f_scroll_down();
 	void f_attribute();
 	void f_mode(bool a_mode);
 	void f_scroll_region();

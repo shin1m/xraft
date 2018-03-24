@@ -15,7 +15,7 @@ void t_content::f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row)
 	if (v_pixmap != None) {
 		a_g.f_draw(0, a_y, v_pixmap, v_origin.v_x, v_origin.v_y + a_y, width, v_unit.v_height);
 	} else {
-		a_g.f_color(v_pixels[7]);
+		a_g.f_color(v_pixels[1]);
 		a_g.f_fill(0, a_y, width, v_unit.v_height);
 	}
 #endif
@@ -33,8 +33,9 @@ void t_content::f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row)
 		} while (i < a_row->v_size && cells[i].v_a == a);
 		unsigned w = i * v_unit.v_width - x;
 		const t_pixel* pixels = v_pixels;
-		if (a.f_blink()) pixels += 8;
-		if (a.f_reverse()) pixels += 16;
+		if (a.f_faint()) pixels += 10;
+		if (a.f_blink()) pixels += 20;
+		if (a.f_inverse()) pixels += 40;
 #ifdef XRAFT_TRANSPARENT
 		Display* display = f_application()->f_x11_display();
 		if (pixels[a.f_background()] != BlackPixel(display, DefaultScreen(display)))
@@ -46,11 +47,11 @@ void t_content::f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row)
 		a_g.f_color(pixels[a.f_foreground()]);
 		a_g.f_draw(x, y, v_cs, n);
 		if (a.f_bold()) a_g.f_draw(x + 1, y, v_cs, n);
-		if (a.f_underline()) a_g.f_draw(x, u, w, 1);
+		if (a.f_underlined()) a_g.f_draw(x, u, w, 1);
 		x += w;
 	}
 #ifndef XRAFT_TRANSPARENT
-	a_g.f_color(v_pixels[7]);
+	a_g.f_color(v_pixels[1]);
 	a_g.f_fill(x, a_y, width - x, v_unit.v_height);
 #endif
 }
@@ -60,8 +61,9 @@ void t_content::f_draw_cursor(t_graphics& a_g, int a_x, int a_y, const t_cell& a
 	wchar_t c = a_cell.v_c;
 	::t_attribute a = a_cell.v_a;
 	const t_pixel* pixels = v_pixels;
-	if (a.f_blink()) pixels += 8;
-	if (a.f_reverse()) pixels += 16;
+	if (a.f_faint()) pixels += 10;
+	if (a.f_blink()) pixels += 20;
+	if (a.f_inverse()) pixels += 40;
 	a_g.f_color(pixels[a.f_foreground()]);
 	if (c == L'\0') {
 		unsigned width = v_unit.v_width / 2;
@@ -80,7 +82,7 @@ void t_content::f_draw_cursor(t_graphics& a_g, int a_x, int a_y, const t_cell& a
 			int y = a_y + v_font->f_ascent();
 			a_g.f_draw(a_x, y, &c, 1);
 			if (a.f_bold()) a_g.f_draw(a_x + 1, y, &c, 1);
-			if (a.f_underline()) a_g.f_draw(a_x, a_y + v_unit.v_height - 1, width, 1);
+			if (a.f_underlined()) a_g.f_draw(a_x, a_y + v_unit.v_height - 1, width, 1);
 		} else {
 			a_g.f_draw(a_x, a_y, width - 1, v_unit.v_height - 1);
 		}
@@ -167,9 +169,9 @@ void t_content::f_on_paint(t_graphics& a_g)
 		}
 	}
 #ifdef XRAFT_TRANSPARENT
-	if (v_pixmap == None) a_g.f_color(v_pixels[7]);
+	if (v_pixmap == None) a_g.f_color(v_pixels[1]);
 #else
-	a_g.f_color(v_pixels[7]);
+	a_g.f_color(v_pixels[1]);
 #endif
 	y = (v_buffer.f_log_size() + v_buffer.f_height()) * v_unit.v_height - v_position;
 	if (a_g.f_invalid(0, y, extent.v_width, extent.v_height - y))
@@ -190,7 +192,7 @@ void t_content::f_on_paint(t_graphics& a_g)
 		if (v_cursor_x < row->v_size)
 			f_draw_cursor(a_g, x, y, row->v_cells[v_cursor_x]);
 		else
-			f_draw_cursor(a_g, x, y, t_cell(L' ', ::t_attribute(false, false, false, false, 0, 7)));
+			f_draw_cursor(a_g, x, y, {L' ', {false, false, false, false, false, 0, 1}});
 	}
 }
 
@@ -293,20 +295,6 @@ v_buffer(a_log, a_width, a_height), v_cs(new wchar_t[a_width])
 	const t_color colors[] = {
 #ifdef XRAFT_TRANSPARENT
 		t_color(255, 255, 255),
-		t_color(255, 63, 63),
-		t_color(63, 255, 63),
-		t_color(255, 191, 63),
-		t_color(63, 127, 255),
-		t_color(255, 63, 255),
-		t_color(63, 255, 255),
-		t_color(0, 0, 0),
-		t_color(255, 255, 255),
-		t_color(255, 63, 63),
-		t_color(63, 255, 63),
-		t_color(255, 191, 63),
-		t_color(63, 127, 255),
-		t_color(255, 63, 255),
-		t_color(63, 255, 255),
 		t_color(0, 0, 0),
 		t_color(0, 0, 0),
 		t_color(255, 63, 63),
@@ -316,6 +304,20 @@ v_buffer(a_log, a_width, a_height), v_cs(new wchar_t[a_width])
 		t_color(255, 63, 255),
 		t_color(63, 255, 255),
 		t_color(255, 255, 255),
+
+		t_color(127, 127, 127),
+		t_color(0, 0, 0),
+		t_color(63, 63, 63),
+		t_color(127, 31, 31),
+		t_color(31, 127, 31),
+		t_color(127, 95, 31),
+		t_color(31, 63, 127),
+		t_color(127, 31, 127),
+		t_color(31, 127, 127),
+		t_color(127, 127, 127),
+
+		t_color(255, 255, 255),
+		t_color(0, 0, 0),
 		t_color(0, 0, 0),
 		t_color(255, 63, 63),
 		t_color(63, 255, 63),
@@ -324,23 +326,109 @@ v_buffer(a_log, a_width, a_height), v_cs(new wchar_t[a_width])
 		t_color(255, 63, 255),
 		t_color(63, 255, 255),
 		t_color(255, 255, 255),
+
+		t_color(127, 127, 127),
+		t_color(0, 0, 0),
+		t_color(63, 63, 63),
+		t_color(127, 31, 31),
+		t_color(31, 127, 31),
+		t_color(127, 95, 31),
+		t_color(31, 63, 127),
+		t_color(127, 31, 127),
+		t_color(31, 127, 127),
+		t_color(127, 127, 127),
+
+		t_color(0, 0, 0),
+		t_color(255, 255, 255),
+		t_color(0, 0, 0),
+		t_color(255, 63, 63),
+		t_color(63, 255, 63),
+		t_color(255, 191, 63),
+		t_color(63, 127, 255),
+		t_color(255, 63, 255),
+		t_color(63, 255, 255),
+		t_color(255, 255, 255),
+
+		t_color(0, 0, 0),
+		t_color(127, 127, 127),
+		t_color(63, 63, 63),
+		t_color(127, 31, 31),
+		t_color(31, 127, 31),
+		t_color(127, 95, 31),
+		t_color(31, 63, 127),
+		t_color(127, 31, 127),
+		t_color(31, 127, 127),
+		t_color(127, 127, 127),
+
+		t_color(0, 0, 0),
+		t_color(255, 255, 255),
+		t_color(0, 0, 0),
+		t_color(255, 63, 63),
+		t_color(63, 255, 63),
+		t_color(255, 191, 63),
+		t_color(63, 127, 255),
+		t_color(255, 63, 255),
+		t_color(63, 255, 255),
+		t_color(255, 255, 255),
+
+		t_color(0, 0, 0),
+		t_color(127, 127, 127),
+		t_color(63, 63, 63),
+		t_color(127, 31, 31),
+		t_color(31, 127, 31),
+		t_color(127, 95, 31),
+		t_color(31, 63, 127),
+		t_color(127, 31, 127),
+		t_color(31, 127, 127),
+		t_color(127, 127, 127),
 #else
+		t_color("black"), t_color("white"),
 		t_color("black"), t_color("red"),
-		t_color("green"), t_color("yellow"),
+		t_color("green"), t_color("goldenrod"),
 		t_color("blue"), t_color("magenta"),
 		t_color("cyan"), t_color("white"),
+
+		t_color("gray"), t_color("white"),
+		t_color("dim gray"), t_color("dark red"),
+		t_color("dark green"), t_color("dark goldenrod"),
+		t_color("dark blue"), t_color("dark magenta"),
+		t_color("dark cyan"), t_color("gray"),
+
+		t_color("black"), t_color("white"),
 		t_color("black"), t_color("red"),
-		t_color("green"), t_color("yellow"),
+		t_color("green"), t_color("goldenrod"),
 		t_color("blue"), t_color("magenta"),
 		t_color("cyan"), t_color("white"),
-		t_color("white"), t_color("red"),
-		t_color("green"), t_color("yellow"),
+
+		t_color("gray"), t_color("white"),
+		t_color("dim gray"), t_color("dark red"),
+		t_color("dark green"), t_color("dark goldenrod"),
+		t_color("dark blue"), t_color("dark magenta"),
+		t_color("dark cyan"), t_color("gray"),
+
+		t_color("white"), t_color("black"),
+		t_color("black"), t_color("red"),
+		t_color("green"), t_color("goldenrod"),
 		t_color("blue"), t_color("magenta"),
-		t_color("cyan"), t_color("black"),
-		t_color("white"), t_color("red"),
-		t_color("green"), t_color("yellow"),
+		t_color("cyan"), t_color("white"),
+
+		t_color("white"), t_color("gray"),
+		t_color("dim gray"), t_color("dark red"),
+		t_color("dark green"), t_color("dark goldenrod"),
+		t_color("dark blue"), t_color("dark magenta"),
+		t_color("dark cyan"), t_color("gray"),
+
+		t_color("white"), t_color("black"),
+		t_color("black"), t_color("red"),
+		t_color("green"), t_color("goldenrod"),
 		t_color("blue"), t_color("magenta"),
-		t_color("cyan"), t_color("black"),
+		t_color("cyan"), t_color("white"),
+
+		t_color("white"), t_color("gray"),
+		t_color("dim gray"), t_color("dark red"),
+		t_color("dark green"), t_color("dark goldenrod"),
+		t_color("dark blue"), t_color("dark magenta"),
+		t_color("dark cyan"), t_color("gray"),
 #endif
 	};
 	for (size_t i = 0; i < sizeof(colors) / sizeof(t_color); ++i) v_pixels[i] = colors[i].f_pixel();

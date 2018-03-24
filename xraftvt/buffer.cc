@@ -17,7 +17,7 @@ void t_row::f_split(unsigned a_x)
 void t_row::f_expand(unsigned a_size)
 {
 	if (a_size <= v_size) return;
-	std::fill(v_cells + v_size, v_cells + a_size, t_cell(L' ', ::t_attribute(false, false, false, false, 0, 7)));
+	std::fill(v_cells + v_size, v_cells + a_size, t_cell(L' ', {false, false, false, false, false, 0, 1}));
 	v_size = a_size;
 }
 
@@ -175,7 +175,7 @@ void t_buffer::f_insert(unsigned a_x, unsigned a_y, unsigned a_n)
 	row->f_expand(a_x);
 	row->f_split(a_x);
 	t_cell* p = row->v_cells;
-	t_cell cell(L' ', ::t_attribute(false, false, false, false, 0, 7));
+	t_cell cell{L' ', {false, false, false, false, false, 0, 1}};
 	if (a_x + a_n >= v_width) {
 		std::fill(p + a_x, p + v_width, cell);
 		row->v_size = v_width;
@@ -226,7 +226,7 @@ void t_buffer::f_erase(unsigned a_x, unsigned a_y, unsigned a_n, bool a_shift)
 			row->v_size -= a_n;
 		} else {
 			p += a_x;
-			std::fill(p, p + a_n, t_cell(L' ', ::t_attribute(false, false, false, false, 0, 7)));
+			std::fill(p, p + a_n, t_cell(L' ', {false, false, false, false, false, 0, 1}));
 		}
 	}
 }

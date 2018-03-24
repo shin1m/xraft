@@ -224,8 +224,7 @@ void t_terminal::f_tab_set()
 
 void t_terminal::f_tab_clear()
 {
-	if (v_parameters_size < 1 || v_parameters[0] == -1) v_parameters[0] = 0;
-	switch (v_parameters[0]) {
+	switch (f_parameter(0, 0)) {
 	case 0:
 		if (v_cursor_x < f_width()) v_tab_stops[v_cursor_x / 8] &= ~(1 << v_cursor_x % 8);
 		break;
@@ -289,36 +288,34 @@ void t_terminal::f_next_line()
 
 void t_terminal::f_cursor_up()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
+	int p0 = f_parameter(0, 1);
 	unsigned top = v_mode_origin ? v_region_begin : 0;
-	if (v_parameters[0] > static_cast<int>(v_cursor_y - top))
+	if (p0 > static_cast<int>(v_cursor_y - top))
 		v_cursor_y = top;
 	else
-		v_cursor_y -= v_parameters[0];
+		v_cursor_y -= p0;
 }
 
 void t_terminal::f_cursor_down()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	v_cursor_y += v_parameters[0];
+	v_cursor_y += f_parameter(0, 1);
 	unsigned bottom = v_mode_origin ? v_region_begin + v_region_size : f_height();
 	if (v_cursor_y >= bottom) v_cursor_y = bottom - 1;
 }
 
 void t_terminal::f_cursor_forward()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	v_cursor_x += v_parameters[0];
+	v_cursor_x += f_parameter(0, 1);
 	if (v_cursor_x >= f_width()) v_cursor_x = f_width() - 1;
 }
 
 void t_terminal::f_cursor_backward()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	if (v_parameters[0] > static_cast<int>(v_cursor_x))
+	int p0 = f_parameter(0, 1);
+	if (p0 > static_cast<int>(v_cursor_x))
 		v_cursor_x = 0;
 	else
-		v_cursor_x -= v_parameters[0];
+		v_cursor_x -= p0;
 }
 
 void t_terminal::f_cursor_next_line()
@@ -333,19 +330,21 @@ void t_terminal::f_cursor_preceding_line()
 	v_cursor_x = 0;
 }
 
-void t_terminal::f_cursor_character_absolute()
+void t_terminal::f_cursor_character_absolute(size_t a_i)
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	v_cursor_x = v_parameters[0] > 0 ? v_parameters[0] - 1 : 0;
+	v_cursor_x = f_parameter(a_i, 1) - 1;
 	if (v_cursor_x >= f_width()) v_cursor_x = f_width() - 1;
 }
 
 void t_terminal::f_cursor_position()
 {
-	while (v_parameters_size < 2) v_parameters[v_parameters_size++] = 1;
-	v_cursor_x = v_parameters[1] > 0 ? v_parameters[1] - 1 : 0;
-	v_cursor_y = v_parameters[0] > 0 ? v_parameters[0] - 1 : 0;
-	if (v_cursor_x >= f_width()) v_cursor_x = f_width() - 1;
+	f_line_position_absolute();
+	f_cursor_character_absolute(1);
+}
+
+void t_terminal::f_line_position_absolute()
+{
+	v_cursor_y = f_parameter(0, 1) - 1;
 	if (v_mode_origin) v_cursor_y += v_region_begin;
 	unsigned bottom = v_mode_origin ? v_region_begin + v_region_size : f_height();
 	if (v_cursor_y >= bottom) v_cursor_y = bottom - 1;
@@ -353,9 +352,7 @@ void t_terminal::f_cursor_position()
 
 void t_terminal::f_erase_display()
 {
-	if (v_parameters_size < 1) v_parameters[0] = 0;
-	switch (v_parameters[0]) {
-	case -1:
+	switch (f_parameter(0, 0)) {
 	case 0:
 		f_erase(v_cursor_x, v_cursor_y, f_width() - v_cursor_x, false);
 		f_erase(v_cursor_y + 1, f_height() - v_cursor_y - 1);
@@ -372,9 +369,7 @@ void t_terminal::f_erase_display()
 
 void t_terminal::f_erase_line()
 {
-	if (v_parameters_size < 1) v_parameters[0] = 0;
-	switch (v_parameters[0]) {
-	case -1:
+	switch (f_parameter(0, 0)) {
 	case 0:
 		f_erase(v_cursor_x, v_cursor_y, f_width() - v_cursor_x, false);
 		break;
@@ -389,39 +384,45 @@ void t_terminal::f_erase_line()
 
 void t_terminal::f_erase_character()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	if (v_cursor_x + v_parameters[0] > f_width()) v_parameters[0] = f_width() - v_cursor_x;
-	f_erase(v_cursor_x, v_cursor_y, v_parameters[0], false);
+	int p0 = f_parameter(0, 1);
+	if (v_cursor_x + p0 > f_width()) p0 = f_width() - v_cursor_x;
+	f_erase(v_cursor_x, v_cursor_y, p0, false);
 }
 
 void t_terminal::f_insert_line()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
 	unsigned bottom = v_region_begin + v_region_size;
 	if (v_cursor_y < v_region_begin || v_cursor_y >= bottom) return;
-	f_scroll_down(v_cursor_y, bottom - v_cursor_y, v_parameters[0]);
+	f_scroll_down(v_cursor_y, bottom - v_cursor_y, f_parameter(0, 1));
 	v_cursor_x = 0;
 }
 
 void t_terminal::f_delete_line()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
 	unsigned bottom = v_region_begin + v_region_size;
 	if (v_cursor_y < v_region_begin || v_cursor_y >= bottom) return;
-	f_scroll_up(v_cursor_y, bottom - v_cursor_y, v_parameters[0]);
+	f_scroll_up(v_cursor_y, bottom - v_cursor_y, f_parameter(0, 1));
 	v_cursor_x = 0;
 }
 
 void t_terminal::f_insert_character()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	f_insert(v_cursor_x, v_cursor_y, v_parameters[0]);
+	f_insert(v_cursor_x, v_cursor_y, f_parameter(0, 1));
 }
 
 void t_terminal::f_delete_character()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	f_erase(v_cursor_x, v_cursor_y, v_parameters[0], true);
+	f_erase(v_cursor_x, v_cursor_y, f_parameter(0, 1), true);
+}
+
+void t_terminal::f_scroll_up()
+{
+	f_scroll_up(v_region_begin, v_region_size, f_parameter(0, 1));
+}
+
+void t_terminal::f_scroll_down()
+{
+	f_scroll_down(v_region_begin, v_region_size, f_parameter(0, 1));
 }
 
 void t_terminal::f_attribute()
@@ -434,31 +435,35 @@ void t_terminal::f_attribute()
 		switch (v_parameters[i]) {
 		case -1:
 		case 0:
-			v_attribute = ::t_attribute(false, false, false, false, 0, 7);
+			v_attribute = {false, false, false, false, false, 0, 1};
 			break;
 		case 1:
 			v_attribute.f_bold__(true);
 			break;
+		case 2:
+			v_attribute.f_faint__(true);
+			break;
 		case 4:
-			v_attribute.f_underline__(true);
+			v_attribute.f_underlined__(true);
 			break;
 		case 5:
 			v_attribute.f_blink__(true);
 			break;
 		case 7:
-			v_attribute.f_reverse__(true);
+			v_attribute.f_inverse__(true);
 			break;
 		case 22:
 			v_attribute.f_bold__(false);
+			v_attribute.f_faint__(false);
 			break;
 		case 24:
-			v_attribute.f_underline__(false);
+			v_attribute.f_underlined__(false);
 			break;
 		case 25:
 			v_attribute.f_blink__(false);
 			break;
 		case 27:
-			v_attribute.f_reverse__(false);
+			v_attribute.f_inverse__(false);
 			break;
 		case 30:
 		case 31:
@@ -468,7 +473,7 @@ void t_terminal::f_attribute()
 		case 35:
 		case 36:
 		case 37:
-			v_attribute.f_foreground__(v_parameters[i] - 30);
+			v_attribute.f_foreground__(v_parameters[i] - 28);
 			break;
 		case 39:
 			v_attribute.f_foreground__(0);
@@ -481,13 +486,13 @@ void t_terminal::f_attribute()
 		case 45:
 		case 46:
 		case 47:
-			v_attribute.f_background__(v_parameters[i] - 40);
+			v_attribute.f_background__(v_parameters[i] - 38);
 			break;
 		case 49:
-			v_attribute.f_background__(7);
+			v_attribute.f_background__(1);
 			break;
 		default:
-std::printf("Unknown attribute: %d\n", v_parameters[i]);
+std::fprintf(stderr, "Unknown attribute: %d\n", v_parameters[i]);
 		}
 	}
 }
@@ -502,11 +507,11 @@ void t_terminal::f_mode(bool a_mode)
 				v_mode_insert = a_mode;
 				break;
 			default:
-std::printf("%s unknown mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
+std::fprintf(stderr, "%s unknown mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 			}
 			break;
 		case e_csi__SECONDARY:
-std::printf("%s unknown secondary mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
+std::fprintf(stderr, "%s unknown secondary mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 			break;
 		default:
 			switch (v_parameters[i]) {
@@ -540,7 +545,7 @@ std::printf("%s unknown secondary mode: %d\n", a_mode ? "Set" : "Reset", v_param
 				}
 				break;
 			default:
-std::printf("%s unknown private mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
+std::fprintf(stderr, "%s unknown private mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 			}
 		}
 	}
@@ -548,13 +553,12 @@ std::printf("%s unknown private mode: %d\n", a_mode ? "Set" : "Reset", v_paramet
 
 void t_terminal::f_scroll_region()
 {
-	if (v_parameters_size < 1 || v_parameters[0] < 1) v_parameters[0] = 1;
-	--v_parameters[0];
-	if (v_parameters_size < 2 || v_parameters[1] < 1) v_parameters[1] = f_height();
-	if (v_parameters[0] > static_cast<int>(f_height()) - 2) v_parameters[0] = f_height() - 2;
-	if (v_parameters[1] < v_parameters[0] + 2) v_parameters[1] = v_parameters[0] + 2;
-	v_region_begin = v_parameters[0];
-	v_region_size = v_parameters[1] - v_parameters[0];
+	int h = f_height();
+	int p0 = std::min(f_parameter(0, 1) - 1, h - 2);
+	int p1 = f_parameter(1, -1);
+	p1 = std::max(p1 < 0 ? h : p1, p0 + 2);
+	v_region_begin = p0;
+	v_region_size = p1 - p0;
 	v_cursor_x = 0;
 	v_cursor_y = v_mode_origin ? v_region_begin : 0;
 }
@@ -597,7 +601,7 @@ void t_terminal::f_control_character(wchar_t a_c)
 		v_state = &t_terminal::f_state_escape;
 		break;
 	default:
-std::printf("Unknown control character: %x\n", a_c);
+std::fprintf(stderr, "Unknown control character: %x\n", a_c);
 	}
 }
 
@@ -646,8 +650,17 @@ void t_terminal::f_control_sequence(wchar_t a_c)
 	case L'P':
 		f_delete_character();
 		break;
+	case L'S':
+		f_scroll_up();
+		break;
+	case L'T':
+		f_scroll_down();
+		break;
 	case L'X':
 		f_erase_character();
+		break;
+	case L'd':
+		f_line_position_absolute();
 		break;
 	case L'f':
 		f_cursor_position();
@@ -668,17 +681,17 @@ void t_terminal::f_control_sequence(wchar_t a_c)
 		f_scroll_region();
 		break;
 	default:
-std::printf("Unknown control sequence:");
+std::fprintf(stderr, "Unknown control sequence:");
 switch (v_csi) {
 case e_csi__SECONDARY:
-	std::printf(" >");
+	std::fprintf(stderr, " >");
 	break;
 case e_csi__PRIVATE:
-	std::printf(" ?");
+	std::fprintf(stderr, " ?");
 	break;
 }
-for (size_t i = 0; i < v_parameters_size; ++i) std::printf(" %d", v_parameters[i]);
-std::printf(" %c\n", a_c);
+for (size_t i = 0; i < v_parameters_size; ++i) std::fprintf(stderr, " %d", v_parameters[i]);
+std::fprintf(stderr, " %c\n", a_c);
 	}
 	v_state = &t_terminal::f_state_default;
 }
@@ -734,7 +747,7 @@ void t_terminal::f_state_escape(wchar_t a_c)
 		v_state = &t_terminal::f_state_csi;
 		return;
 	default:
-std::printf("Unknown escape sequence: %c\n", a_c);
+std::fprintf(stderr, "Unknown escape sequence: %c\n", a_c);
 	}
 	v_state = &t_terminal::f_state_default;
 }
@@ -752,7 +765,7 @@ void t_terminal::f_state_escape_sharp(wchar_t a_c)
 				t_content::f_put(j, i, L'E', false);
 		break;
 	default:
-std::printf("Unknown escape sequence: # %c\n", a_c);
+std::fprintf(stderr, "Unknown escape sequence: # %c\n", a_c);
 	}
 	v_state = &t_terminal::f_state_default;
 }
@@ -767,7 +780,7 @@ void t_terminal::f_state_designate_g0(wchar_t a_c)
 	case L'B':
 		break;
 	default:
-std::printf("Unknown G0 character set: # %c\n", a_c);
+std::fprintf(stderr, "Unknown G0 character set: # %c\n", a_c);
 	}
 	v_state = &t_terminal::f_state_default;
 }
@@ -833,7 +846,7 @@ void t_terminal::f_send(const char* a_cs, size_t a_n)
 	while (a_n > 0) {
 		ssize_t n = write(v_master, a_cs, a_n);
 		if (n == ssize_t(-1)) {
-std::printf("write: %s\n", std::strerror(errno));
+std::fprintf(stderr, "write: %s\n", std::strerror(errno));
 			break;
 		}
 		a_cs += n;
@@ -906,7 +919,7 @@ void t_terminal::operator()()
 {
 	ssize_t n = read(v_master, v_mbs + v_mbn, sizeof(v_mbs) - v_mbn);
 	if (n == ssize_t(-1)) {
-std::printf("read: %s\n", std::strerror(errno));
+std::fprintf(stderr, "read: %s\n", std::strerror(errno));
 		return;
 	}
 	v_mbn += n;
