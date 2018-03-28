@@ -15,14 +15,16 @@ bin_PROGRAMS = xraftvt xrafttt
 #xraftvt_CPPFLAGS = $(AM_CPPFLAGS)
 xraftvt_LDADD = -lutil $(top_srcdir)/src/libxraft.la
 xraftvt_SOURCES = \
-	buffer.cc \
+	buffer.h \
+	terminal.h \
+	window.h \
 	window.cc \
-	terminal.cc \
 	main.cc
 xrafttt_CPPFLAGS = $(AM_CPPFLAGS) -DXRAFT_TRANSPARENT
 xrafttt_LDADD = -lutil $(top_srcdir)/src/libxraft.la
 xrafttt_SOURCES = \
-	buffer.cc \
+	buffer.h \
+	terminal.h \
+	window.h \
 	window.cc \
-	terminal.cc \
 	main.cc

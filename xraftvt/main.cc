@@ -1,15 +1,9 @@
-#include "common.h"
-
-#include <clocale>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include "window.h"
 #include <sys/wait.h>
-#include <sys/poll.h>
-#include <unistd.h>
 #include <pty.h>
 #include <signal.h>
 #ifdef XRAFT_UTMP
+#include <cstring>
 #include <pwd.h>
 #include <utmp.h>
 #endif
@@ -39,56 +33,56 @@ void f_wait(int a_signal)
 uid_t v_euid = geteuid();
 gid_t v_egid = getegid();
 
-void f_log(struct utmp& utmp)
+void f_log(struct utmp& a_utmp)
 {
 	seteuid(v_euid);
 	setegid(v_egid);
 	setutent();
-	pututline(&utmp);
+	pututline(&a_utmp);
 	endutent();
-	updwtmp("/var/log/wtmp", &utmp);
+	updwtmp("/var/log/wtmp", &a_utmp);
 	seteuid(getuid());
 	setegid(getgid());
 }
 
-void f_login(struct utmp& utmp, int a_master)
+void f_login(t_application& a_application, struct utmp& a_utmp, int a_master)
 {
-	utmp.ut_type = UT_UNKNOWN;
-	utmp.ut_pid = getpid();
+	a_utmp.ut_type = UT_UNKNOWN;
+	a_utmp.ut_pid = getpid();
 	const char* line = ptsname(a_master);
 	if (!line || std::strncmp(line, "/dev/", 5) != 0) return;
 	line += 5;
-	std::strncpy(utmp.ut_line, line, UT_LINESIZE);
+	std::strncpy(a_utmp.ut_line, line, UT_LINESIZE);
 	if (std::strncmp(line, "pts/", 4) == 0) {
-		utmp.ut_id[0] = 'p';
-		std::strncpy(utmp.ut_id + 1, line + 4, 3);
+		a_utmp.ut_id[0] = 'p';
+		std::strncpy(a_utmp.ut_id + 1, line + 4, 3);
 	} else if (std::strncmp(line, "tty", 3) == 0) {
-		std::strncpy(utmp.ut_id, line + 3, 4);
+		std::strncpy(a_utmp.ut_id, line + 3, 4);
 	} else {
 		return;
 	}
 	uid_t uid = getuid();
 	struct passwd* passwd = getpwuid(uid);
 	if (passwd)
-		std::strncpy(utmp.ut_user, passwd->pw_name, UT_NAMESIZE);
+		std::strncpy(a_utmp.ut_user, passwd->pw_name, UT_NAMESIZE);
 	else
-		std::snprintf(utmp.ut_user, UT_NAMESIZE, "%d", uid);
-	std::strncpy(utmp.ut_host, DisplayString(xraft::x11::g_display()), UT_HOSTSIZE);
-	time(&utmp.ut_time);
-	utmp.ut_addr = 0;
-	utmp.ut_type = USER_PROCESS;
-	f_log(utmp);
+		std::snprintf(a_utmp.ut_user, UT_NAMESIZE, "%d", uid);
+	std::strncpy(a_utmp.ut_host, DisplayString(a_application.f_x11_display()), UT_HOSTSIZE);
+	a_utmp.ut_time = time(NULL);
+	a_utmp.ut_addr = 0;
+	a_utmp.ut_type = USER_PROCESS;
+	f_log(a_utmp);
 }
 
-void f_logout(struct utmp& utmp)
+void f_logout(struct utmp& a_utmp)
 {
-	if (utmp.ut_type != USER_PROCESS) return;
-	utmp.ut_type = DEAD_PROCESS;
-	std::memset(utmp.ut_line, 0, UT_LINESIZE);
-	std::memset(utmp.ut_user, 0, UT_NAMESIZE);
-	std::memset(utmp.ut_host, 0, UT_HOSTSIZE);
-	utmp.ut_time = 0;
-	f_log(utmp);
+	if (a_utmp.ut_type != USER_PROCESS) return;
+	a_utmp.ut_type = DEAD_PROCESS;
+	std::memset(a_utmp.ut_line, 0, UT_LINESIZE);
+	std::memset(a_utmp.ut_user, 0, UT_NAMESIZE);
+	std::memset(a_utmp.ut_host, 0, UT_HOSTSIZE);
+	a_utmp.ut_time = 0;
+	f_log(a_utmp);
 }
 
 #endif
@@ -105,20 +99,18 @@ int f_main(int argc, char* argv[], int a_master)
 	action.sa_handler = f_wait;
 	sigaction(SIGCHLD, &action, NULL);
 	std::setlocale(LC_ALL, "");
+	std::vector<std::string> arguments(argv, argv + argc);
+	t_application application(arguments);
 #ifdef XRAFT_UTMP
 	struct utmp utmp;
-	f_login(utmp, a_master);
+	f_login(application, utmp, a_master);
 #endif
-	{
-		std::vector<std::string> arguments(argv, argv + argc);
-		t_application application(arguments);
-		t_pointer<t_terminal> terminal = new t_terminal(96, 80, 24, a_master);
-		t_pointer<t_pane> pane = new t_pane(terminal);
-		application.f_add(pane);
-		pane->f_hints(argv[0]);
-		pane->f_show();
-		application.f_run();
-	}
+	t_pointer<t_content> content = new t_content(192, 80, 24, a_master);
+	t_pointer<t_pane> pane = new t_pane(content);
+	application.f_add(pane);
+	pane->f_hints(argv[0]);
+	pane->f_show();
+	application.f_run();
 #ifdef XRAFT_UTMP
 	f_logout(utmp);
 #endif

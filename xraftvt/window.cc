@@ -1,10 +1,207 @@
-#include "common.h"
-
-#include <cstdio>
-#include <cstdlib>
+#include "window.h"
+#include <cstring>
+#include <sys/ioctl.h>
 #ifdef XRAFT_TRANSPARENT
 #include <X11/Xatom.h>
 #endif
+
+t_content::t_code t_content::f_code(t_key a_key)
+{
+	switch (a_key) {
+	case e_key__TAB:
+		return t_code::e_code__TAB;
+	case e_key__BACK_SPACE:
+		return t_code::e_code__BACK_SPACE;
+	case e_key__FIND:
+		return t_code::e_code__FIND;
+	case e_key__INSERT:
+		return t_code::e_code__INSERT;
+	case e_key__EXECUTE:
+		return t_code::e_code__EXECUTE;
+	case e_key__SELECT:
+		return t_code::e_code__SELECT;
+	case e_key__PRIOR:
+		return t_code::e_code__PRIOR;
+	case e_key__NEXT:
+		return t_code::e_code__NEXT;
+	case e_key__HOME:
+		return t_code::e_code__HOME;
+	case e_key__END:
+		return t_code::e_code__END;
+	case e_key__DELETE:
+		return t_code::e_code__DELETE;
+	case e_key__F1:
+		return t_code::e_code__F1;
+	case e_key__F2:
+		return t_code::e_code__F2;
+	case e_key__F3:
+		return t_code::e_code__F3;
+	case e_key__F4:
+		return t_code::e_code__F4;
+	case e_key__F5:
+		return t_code::e_code__F5;
+	case e_key__F6:
+		return t_code::e_code__F6;
+	case e_key__F7:
+		return t_code::e_code__F7;
+	case e_key__F8:
+		return t_code::e_code__F8;
+	case e_key__F9:
+		return t_code::e_code__F9;
+	case e_key__F10:
+		return t_code::e_code__F10;
+	case e_key__F11:
+		return t_code::e_code__F11;
+	case e_key__F12:
+		return t_code::e_code__F12;
+/*
+	case e_key__F13:
+		return t_code::e_code__F13;
+	case e_key__F14:
+		return t_code::e_code__F14;
+	case e_key__F15:
+		return t_code::e_code__F15;
+	case e_key__F16:
+		return t_code::e_code__F16;
+	case e_key__F17:
+		return t_code::e_code__F17;
+	case e_key__F18:
+		return t_code::e_code__F18;
+	case e_key__F19:
+		return t_code::e_code__F19;
+	case e_key__F20:
+		return t_code::e_code__F20;
+*/
+	case e_key__UP:
+		return t_code::e_code__UP;
+	case e_key__DOWN:
+		return t_code::e_code__DOWN;
+	case e_key__RIGHT:
+		return t_code::e_code__RIGHT;
+	case e_key__LEFT:
+		return t_code::e_code__LEFT;
+	case e_key__KP_ENTER:
+		return t_code::e_code__KP_ENTER;
+	case e_key__KP_F1:
+		return t_code::e_code__KP_F1;
+	case e_key__KP_F2:
+		return t_code::e_code__KP_F2;
+	case e_key__KP_F3:
+		return t_code::e_code__KP_F3;
+	case e_key__KP_F4:
+		return t_code::e_code__KP_F4;
+	case e_key__KP_MULTIPLY:
+		return t_code::e_code__KP_MULTIPLY;
+	case e_key__KP_ADD:
+		return t_code::e_code__KP_ADD;
+	case e_key__KP_SEPARATOR:
+		return t_code::e_code__KP_SEPARATOR;
+	case e_key__KP_SUBTRACT:
+		return t_code::e_code__KP_SUBTRACT;
+	case e_key__KP_DECIMAL:
+		return t_code::e_code__KP_DECIMAL;
+	case e_key__KP_DIVIDE:
+		return t_code::e_code__KP_DIVIDE;
+	case e_key__KP_0:
+		return t_code::e_code__KP_0;
+	case e_key__KP_1:
+		return t_code::e_code__KP_1;
+	case e_key__KP_2:
+		return t_code::e_code__KP_2;
+	case e_key__KP_3:
+		return t_code::e_code__KP_3;
+	case e_key__KP_4:
+		return t_code::e_code__KP_4;
+	case e_key__KP_5:
+		return t_code::e_code__KP_5;
+	case e_key__KP_6:
+		return t_code::e_code__KP_6;
+	case e_key__KP_7:
+		return t_code::e_code__KP_7;
+	case e_key__KP_8:
+		return t_code::e_code__KP_8;
+	case e_key__KP_9:
+		return t_code::e_code__KP_9;
+	default:
+		return t_code::e_code__NONE;
+	}
+}
+
+void t_content::f_send(const char* a_cs, size_t a_n)
+{
+	while (a_n > 0) {
+		ssize_t n = write(v_master, a_cs, a_n);
+		if (n == ssize_t(-1)) {
+std::fprintf(stderr, "write: %s\n", std::strerror(errno));
+			break;
+		}
+		a_cs += n;
+		a_n -= n;
+	}
+}
+
+void t_content::f_send(const wchar_t* a_cs, size_t a_n)
+{
+	char mbs[MB_LEN_MAX];
+	std::mbstate_t state;
+	std::memset(&state, 0, sizeof(std::mbstate_t));
+	for (size_t i = 0; i < a_n; ++i) {
+		size_t n = std::wcrtomb(mbs, a_cs[i], &state);
+		if (n != size_t(-1)) f_send(mbs, n);
+	}
+	size_t n = std::wcrtomb(mbs, L'\0', &state);
+	if (n != size_t(-1)) f_send(mbs, n - 1);
+}
+
+bool t_content::f_send(t_modifier a_modifier, t_key a_key)
+{
+	t_code code = f_code(a_key);
+	if (code == t_code::e_code__NONE) return false;
+	size_t i = 0;
+	if ((a_modifier & e_modifier__SHIFT) != 0) i |= 1;
+	if ((a_modifier & e_modifier__CONTROL) != 0) i |= 2;
+	const char* cs = v_buffer.f_code(code, i);
+	if (cs) f_send(cs, std::strlen(cs));
+	return true;
+}
+
+void t_content::operator()()
+{
+	ssize_t n = read(v_master, v_mbs + v_mbn, sizeof(v_mbs) - v_mbn);
+	if (n == ssize_t(-1)) {
+std::fprintf(stderr, "read: %s\n", std::strerror(errno));
+		return;
+	}
+	v_mbn += n;
+	if (v_mbn > 0) {
+		f_invalidate(v_buffer.f_cursor_y(), 1);
+		const char* p = v_mbs;
+		const char* q = v_mbs + v_mbn;
+		while (p < q) {
+			wchar_t c;
+			size_t n = std::mbrtowc(&c, p, q - p, &v_mbstate);
+			if (n == size_t(-2)) {
+				std::copy(p, q, v_mbs);
+				std::memset(&v_mbstate, 0, sizeof(std::mbstate_t));
+				break;
+			} else if (n == size_t(-1)) {
+				std::memset(&v_mbstate, 0, sizeof(std::mbstate_t));
+				++p;
+			} else if (n == 0) {
+				v_buffer(L'\0');
+				++p;
+			} else {
+				v_buffer(c);
+				p += n;
+			}
+		}
+		v_mbn = q - p;
+		f_invalidate(v_buffer.f_cursor_y(), 1);
+		f_application()->f_input_negotiate();
+	} else {
+		f_application()->f_exit();
+	}
+}
 
 void t_content::f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row)
 {
@@ -26,28 +223,28 @@ void t_content::f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row)
 	unsigned i = 0;
 	while (i < a_row->v_size) {
 		unsigned n = 0;
-		::t_attribute a = cells[i].v_a;
+		auto a = cells[i].v_a;
 		do {
 			wchar_t c = cells[i++].v_c;
 			if (c != L'\0') v_cs[n++] = c;
 		} while (i < a_row->v_size && cells[i].v_a == a);
 		unsigned w = i * v_unit.v_width - x;
 		const t_pixel* pixels = v_pixels;
-		if (a.f_faint()) pixels += 10;
-		if (a.f_blink()) pixels += 20;
-		if (a.f_inverse()) pixels += 40;
+		if (a.v_faint) pixels += 10;
+		if (a.v_blink) pixels += 20;
+		if (a.v_inverse) pixels += 40;
 #ifdef XRAFT_TRANSPARENT
 		Display* display = f_application()->f_x11_display();
-		if (pixels[a.f_background()] != BlackPixel(display, DefaultScreen(display)))
+		if (pixels[a.v_background] != BlackPixel(display, DefaultScreen(display)))
 #endif
 		{
-			a_g.f_color(pixels[a.f_background()]);
+			a_g.f_color(pixels[a.v_background]);
 			a_g.f_fill(x, a_y, w, v_unit.v_height);
 		}
-		a_g.f_color(pixels[a.f_foreground()]);
+		a_g.f_color(pixels[a.v_foreground]);
 		a_g.f_draw(x, y, v_cs, n);
-		if (a.f_bold()) a_g.f_draw(x + 1, y, v_cs, n);
-		if (a.f_underlined()) a_g.f_draw(x, u, w, 1);
+		if (a.v_bold) a_g.f_draw(x + 1, y, v_cs, n);
+		if (a.v_underlined) a_g.f_draw(x, u, w, 1);
 		x += w;
 	}
 #ifndef XRAFT_TRANSPARENT
@@ -59,12 +256,12 @@ void t_content::f_draw_row(t_graphics& a_g, int a_y, const t_row* a_row)
 void t_content::f_draw_cursor(t_graphics& a_g, int a_x, int a_y, const t_cell& a_cell)
 {
 	wchar_t c = a_cell.v_c;
-	::t_attribute a = a_cell.v_a;
+	auto a = a_cell.v_a;
 	const t_pixel* pixels = v_pixels;
-	if (a.f_faint()) pixels += 10;
-	if (a.f_blink()) pixels += 20;
-	if (a.f_inverse()) pixels += 40;
-	a_g.f_color(pixels[a.f_foreground()]);
+	if (a.v_faint) pixels += 10;
+	if (a.v_blink) pixels += 20;
+	if (a.v_inverse) pixels += 40;
+	a_g.f_color(pixels[a.v_foreground]);
 	if (c == L'\0') {
 		unsigned width = v_unit.v_width / 2;
 		unsigned height = v_unit.v_height / 2;
@@ -78,11 +275,11 @@ void t_content::f_draw_cursor(t_graphics& a_g, int a_x, int a_y, const t_cell& a
 		unsigned width = wcwidth(c) * v_unit.v_width;
 		if (this == f_application()->f_focus()) {
 			a_g.f_fill(a_x, a_y, width, v_unit.v_height);
-			a_g.f_color(pixels[a.f_background()]);
+			a_g.f_color(pixels[a.v_background]);
 			int y = a_y + v_font->f_ascent();
 			a_g.f_draw(a_x, y, &c, 1);
-			if (a.f_bold()) a_g.f_draw(a_x + 1, y, &c, 1);
-			if (a.f_underlined()) a_g.f_draw(a_x, a_y + v_unit.v_height - 1, width, 1);
+			if (a.v_bold) a_g.f_draw(a_x + 1, y, &c, 1);
+			if (a.v_underlined) a_g.f_draw(a_x, a_y + v_unit.v_height - 1, width, 1);
 		} else {
 			a_g.f_draw(a_x, a_y, width - 1, v_unit.v_height - 1);
 		}
@@ -117,6 +314,12 @@ void t_content::f_scroll(int a_y, unsigned a_height, int a_dy)
 #endif
 }
 
+void t_content::f_log()
+{
+	v_position += v_unit.v_height;
+	f_static_cast<t_pane>(f_parent())->f_invalidate_bar();
+}
+
 t_content::~t_content()
 {
 	delete[] v_cs;
@@ -134,11 +337,14 @@ void t_content::f_on_move()
 		delete[] v_cs;
 		v_cs = new wchar_t[v_buffer.f_width()];
 	}
-	if (v_cursor_x >= v_buffer.f_width()) v_cursor_x = v_buffer.f_width() - 1;
-	if (v_cursor_y >= v_buffer.f_height()) v_cursor_y = v_buffer.f_height() - 1;
 #ifndef XRAFT_TRANSPARENT
-	f_invalidate(v_cursor_y, 1);
+	f_invalidate(v_buffer.f_cursor_y(), 1);
 #endif
+	struct winsize ws;
+	ws.ws_col = v_buffer.f_width();
+	ws.ws_row = v_buffer.f_height();
+	ws.ws_xpixel = ws.ws_ypixel = 0;
+	ioctl(v_master, TIOCSWINSZ, &ws);
 }
 
 void t_content::f_on_paint(t_graphics& a_g)
@@ -185,12 +391,12 @@ void t_content::f_on_paint(t_graphics& a_g)
 #else
 		a_g.f_fill(0, y, extent.v_width, extent.v_height - y);
 #endif
-	y = (v_buffer.f_log_size() + v_cursor_y) * v_unit.v_height - v_position;
+	y = (v_buffer.f_log_size() + v_buffer.f_cursor_y()) * v_unit.v_height - v_position;
 	if (a_g.f_invalid(0, y, extent.v_width, v_unit.v_height)) {
-		int x = v_cursor_x * v_unit.v_width;
-		const t_row* row = v_buffer.f_at(v_cursor_y);
-		if (v_cursor_x < row->v_size)
-			f_draw_cursor(a_g, x, y, row->v_cells[v_cursor_x]);
+		int x = v_buffer.f_cursor_x() * v_unit.v_width;
+		const t_row* row = v_buffer.f_at(v_buffer.f_cursor_y());
+		if (v_buffer.f_cursor_x() < row->v_size)
+			f_draw_cursor(a_g, x, y, row->v_cells[v_buffer.f_cursor_x()]);
 		else
 			f_draw_cursor(a_g, x, y, {L' ', {false, false, false, false, false, 0, 1}});
 	}
@@ -198,17 +404,28 @@ void t_content::f_on_paint(t_graphics& a_g)
 
 void t_content::f_on_focus_enter()
 {
-	f_invalidate(v_cursor_y, 1);
+	f_invalidate(v_buffer.f_cursor_y(), 1);
 }
 
 void t_content::f_on_focus_leave()
 {
-	f_invalidate(v_cursor_y, 1);
+	f_invalidate(v_buffer.f_cursor_y(), 1);
+}
+
+void t_content::f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
+{
+	if (!f_send(a_modifier, a_key) && a_ascii != '\0') f_send(&a_ascii, 1);
+	f_position__(INT_MAX);
+}
+
+void t_content::f_on_input_commit(const wchar_t* a_cs, size_t a_n)
+{
+	f_send(a_cs, a_n);
 }
 
 t_rectangle t_content::f_on_input_spot()
 {
-	return t_rectangle(t_point(v_cursor_x * v_unit.v_width, (v_buffer.f_log_size() + v_cursor_y) * v_unit.v_height - v_position), v_unit);
+	return t_rectangle(t_point(v_buffer.f_cursor_x() * v_unit.v_width, (v_buffer.f_log_size() + v_buffer.f_cursor_y()) * v_unit.v_height - v_position), v_unit);
 }
 
 void t_content::f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x, int a_y)
@@ -223,74 +440,9 @@ void t_content::f_on_button_press(t_modifier a_modifier, t_button a_button, int 
 	}
 }
 
-void t_content::f_scroll_log()
-{
-	f_invalidate(v_cursor_y, 1);
-	if (v_buffer.f_log_size() < v_buffer.f_log_capacity()) {
-		v_position += v_unit.v_height;
-		f_static_cast<t_pane>(f_parent())->f_invalidate_bar();
-	}
-	v_buffer.f_scroll_log();
-	const t_extent& extent = f_geometry();
-#ifdef XRAFT_TRANSPARENT
-	f_invalidate(0, 0, extent.v_width, extent.v_height);
-#else
-	f_scroll(0, 0, extent.v_width, extent.v_height, 0, -v_unit.v_height);
-	f_invalidate(v_cursor_y, 1);
-#endif
-}
-
-void t_content::f_scroll_up(unsigned a_y, unsigned a_height, unsigned a_n)
-{
-	v_buffer.f_scroll_up(a_y, a_height, a_n);
-	if (v_cursor_y >= a_y && v_cursor_y < a_y + static_cast<int>(a_height)) {
-		f_invalidate(v_cursor_y, 1);
-		f_scroll(a_y, a_height, -a_n);
-		f_invalidate(v_cursor_y, 1);
-	} else {
-		f_scroll(a_y, a_height, -a_n);
-	}
-}
-
-void t_content::f_scroll_down(unsigned a_y, unsigned a_height, unsigned a_n)
-{
-	v_buffer.f_scroll_down(a_y, a_height, a_n);
-	if (v_cursor_y >= a_y && v_cursor_y < a_y + static_cast<int>(a_height)) {
-		f_invalidate(v_cursor_y, 1);
-		f_scroll(a_y, a_height, a_n);
-		f_invalidate(v_cursor_y, 1);
-	} else {
-		f_scroll(a_y, a_height, a_n);
-	}
-}
-
-void t_content::f_erase(unsigned a_y, unsigned a_height)
-{
-	v_buffer.f_erase(a_y, a_height);
-	f_invalidate(a_y, a_height);
-}
-
-void t_content::f_insert(unsigned a_x, unsigned a_y, unsigned a_n)
-{
-	v_buffer.f_insert(a_x, a_y, a_n);
-	f_invalidate(a_y, 1);
-}
-
-void t_content::f_put(unsigned a_x, unsigned a_y, wchar_t a_c, bool a_shift)
-{
-	v_buffer.f_put(a_x, a_y, t_cell(a_c, v_attribute), a_shift);
-	f_invalidate(a_y, 1);
-}
-
-void t_content::f_erase(unsigned a_x, unsigned a_y, unsigned a_n, bool a_shift)
-{
-	v_buffer.f_erase(a_x, a_y, a_n, a_shift);
-	f_invalidate(a_y, 1);
-}
-
-t_content::t_content(unsigned a_log, unsigned a_width, unsigned a_height) :
+t_content::t_content(unsigned a_log, unsigned a_width, unsigned a_height, int a_master) :
 v_font(f_application()->f_font()), v_unit(v_font->f_width(), v_font->f_height()),
-v_buffer(a_log, a_width, a_height), v_cs(new wchar_t[a_width])
+v_buffer(*this, a_log, a_width, a_height), v_master(a_master), v_cs(new wchar_t[a_width])
 {
 	const t_color colors[] = {
 #ifdef XRAFT_TRANSPARENT
@@ -449,20 +601,9 @@ v_buffer(a_log, a_width, a_height), v_cs(new wchar_t[a_width])
 #endif
 	f_move(t_rectangle(0, 0, a_width * v_unit.v_width, a_height * v_unit.v_height));
 	f_cursor__(f_application()->f_cursor_ibeam());
-}
-
-#ifdef XRAFT_TRANSPARENT
-void t_content::f_move(const t_rectangle& a_geometry)
-{
-	t_widget::f_move(a_geometry);
-	v_moved = true;
-	f_invalidate(0, 0, a_geometry.v_width, a_geometry.v_height);
-}
-#endif
-
-unsigned t_content::f_content() const
-{
-	return v_buffer.f_log_size() * v_unit.v_height + f_geometry().v_height;
+	f_input_context__(new t_input_context());
+	std::memset(&v_mbstate, 0, sizeof(std::mbstate_t));
+	f_application()->f_poll(v_master, this, 0);
 }
 
 void t_content::f_position__(int a_position)
@@ -481,18 +622,6 @@ void t_content::f_position__(int a_position)
 #endif
 	v_position = a_position;
 	f_static_cast<t_pane>(f_parent())->f_invalidate_bar();
-}
-
-void t_content::f_viewable(int a_y, unsigned a_height)
-{
-	unsigned height = f_geometry().v_height;
-	if (a_y < v_position || a_height > height) {
-		f_position__(a_y);
-	} else {
-		int bottom0 = v_position + height;
-		int bottom1 = a_y + a_height;
-		if (bottom1 > bottom0) f_position__(bottom1 - height);
-	}
 }
 
 t_colors::t_colors(unsigned char a_red, unsigned char a_green, unsigned char a_blue) :
@@ -680,33 +809,4 @@ void t_pane::f_on_deactivate()
 void t_pane::f_on_close()
 {
 	f_application()->f_exit();
-}
-
-t_pane::t_pane(const t_pointer<t_content>& a_content) : v_content(a_content)
-{
-	f_add(v_content);
-	t_rectangle geometry = v_content->f_geometry();
-	geometry.v_width += f_bar_width();
-	geometry.v_height += f_border_width() * 2;
-	f_move(geometry);
-}
-
-void t_pane::f_hints(const char* a_name)
-{
-	const t_extent& unit = v_content->f_unit();
-	XSizeHints hints;
-	hints.flags = PMinSize | PResizeInc | PBaseSize;
-	hints.min_width = f_bar_width() + unit.v_width;
-	hints.min_height = f_border_width() * 2 + unit.v_height;
-	hints.width_inc = unit.v_width;
-	hints.height_inc = unit.v_height;
-	hints.base_width = f_bar_width();
-	hints.base_height = f_border_width() * 2;
-	XmbSetWMProperties(f_application()->f_x11_display(), v_handle, a_name, a_name, NULL, 0, &hints, NULL, NULL);
-}
-
-void t_pane::f_invalidate_bar()
-{
-	const t_extent& extent = f_geometry();
-	f_invalidate(extent.v_width - f_bar_width(), 0, f_bar_width(), extent.v_height);
 }
