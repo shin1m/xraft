@@ -111,10 +111,10 @@ protected:
 	void f_scroll_log()
 	{
 		v_host.f_invalidate(v_cursor_y, 1);
-		bool append = v_log_size < v_log_capacity;
 		t_row* row;
 		auto rows = v_current->v_rows;
-		if (append) {
+		if (v_log_size < v_log_capacity) {
+			v_host.f_log();
 			row = v_log[v_log_size];
 			v_log[v_log_size] = rows[0];
 			++v_log_size;
@@ -130,7 +130,6 @@ protected:
 		rows[v_height - 1] = row;
 		v_host.f_scroll(0, v_height, -1);
 		v_host.f_invalidate(v_cursor_y, 1);
-		if (append) v_host.f_log();
 	}
 	void f_scroll_up(unsigned a_y, unsigned a_height, unsigned a_n)
 	{
