@@ -9,121 +9,121 @@ t_content::t_code t_content::f_code(t_key a_key)
 {
 	switch (a_key) {
 	case e_key__TAB:
-		return t_code::e_code__TAB;
+		return t_code::e_TAB;
 	case e_key__BACK_SPACE:
-		return t_code::e_code__BACK_SPACE;
+		return t_code::e_BACK_SPACE;
 	case e_key__FIND:
-		return t_code::e_code__FIND;
+		return t_code::e_FIND;
 	case e_key__INSERT:
-		return t_code::e_code__INSERT;
+		return t_code::e_INSERT;
 	case e_key__EXECUTE:
-		return t_code::e_code__EXECUTE;
+		return t_code::e_EXECUTE;
 	case e_key__SELECT:
-		return t_code::e_code__SELECT;
+		return t_code::e_SELECT;
 	case e_key__PRIOR:
-		return t_code::e_code__PRIOR;
+		return t_code::e_PRIOR;
 	case e_key__NEXT:
-		return t_code::e_code__NEXT;
+		return t_code::e_NEXT;
 	case e_key__HOME:
-		return t_code::e_code__HOME;
+		return t_code::e_HOME;
 	case e_key__END:
-		return t_code::e_code__END;
+		return t_code::e_END;
 	case e_key__DELETE:
-		return t_code::e_code__DELETE;
+		return t_code::e_DELETE;
 	case e_key__F1:
-		return t_code::e_code__F1;
+		return t_code::e_F1;
 	case e_key__F2:
-		return t_code::e_code__F2;
+		return t_code::e_F2;
 	case e_key__F3:
-		return t_code::e_code__F3;
+		return t_code::e_F3;
 	case e_key__F4:
-		return t_code::e_code__F4;
+		return t_code::e_F4;
 	case e_key__F5:
-		return t_code::e_code__F5;
+		return t_code::e_F5;
 	case e_key__F6:
-		return t_code::e_code__F6;
+		return t_code::e_F6;
 	case e_key__F7:
-		return t_code::e_code__F7;
+		return t_code::e_F7;
 	case e_key__F8:
-		return t_code::e_code__F8;
+		return t_code::e_F8;
 	case e_key__F9:
-		return t_code::e_code__F9;
+		return t_code::e_F9;
 	case e_key__F10:
-		return t_code::e_code__F10;
+		return t_code::e_F10;
 	case e_key__F11:
-		return t_code::e_code__F11;
+		return t_code::e_F11;
 	case e_key__F12:
-		return t_code::e_code__F12;
+		return t_code::e_F12;
 /*
 	case e_key__F13:
-		return t_code::e_code__F13;
+		return t_code::e_F13;
 	case e_key__F14:
-		return t_code::e_code__F14;
+		return t_code::e_F14;
 	case e_key__F15:
-		return t_code::e_code__F15;
+		return t_code::e_F15;
 	case e_key__F16:
-		return t_code::e_code__F16;
+		return t_code::e_F16;
 	case e_key__F17:
-		return t_code::e_code__F17;
+		return t_code::e_F17;
 	case e_key__F18:
-		return t_code::e_code__F18;
+		return t_code::e_F18;
 	case e_key__F19:
-		return t_code::e_code__F19;
+		return t_code::e_F19;
 	case e_key__F20:
-		return t_code::e_code__F20;
+		return t_code::e_F20;
 */
 	case e_key__UP:
-		return t_code::e_code__UP;
+		return t_code::e_UP;
 	case e_key__DOWN:
-		return t_code::e_code__DOWN;
+		return t_code::e_DOWN;
 	case e_key__RIGHT:
-		return t_code::e_code__RIGHT;
+		return t_code::e_RIGHT;
 	case e_key__LEFT:
-		return t_code::e_code__LEFT;
+		return t_code::e_LEFT;
 	case e_key__KP_ENTER:
-		return t_code::e_code__KP_ENTER;
+		return t_code::e_KP_ENTER;
 	case e_key__KP_F1:
-		return t_code::e_code__KP_F1;
+		return t_code::e_KP_F1;
 	case e_key__KP_F2:
-		return t_code::e_code__KP_F2;
+		return t_code::e_KP_F2;
 	case e_key__KP_F3:
-		return t_code::e_code__KP_F3;
+		return t_code::e_KP_F3;
 	case e_key__KP_F4:
-		return t_code::e_code__KP_F4;
+		return t_code::e_KP_F4;
 	case e_key__KP_MULTIPLY:
-		return t_code::e_code__KP_MULTIPLY;
+		return t_code::e_KP_MULTIPLY;
 	case e_key__KP_ADD:
-		return t_code::e_code__KP_ADD;
+		return t_code::e_KP_ADD;
 	case e_key__KP_SEPARATOR:
-		return t_code::e_code__KP_SEPARATOR;
+		return t_code::e_KP_SEPARATOR;
 	case e_key__KP_SUBTRACT:
-		return t_code::e_code__KP_SUBTRACT;
+		return t_code::e_KP_SUBTRACT;
 	case e_key__KP_DECIMAL:
-		return t_code::e_code__KP_DECIMAL;
+		return t_code::e_KP_DECIMAL;
 	case e_key__KP_DIVIDE:
-		return t_code::e_code__KP_DIVIDE;
+		return t_code::e_KP_DIVIDE;
 	case e_key__KP_0:
-		return t_code::e_code__KP_0;
+		return t_code::e_KP_0;
 	case e_key__KP_1:
-		return t_code::e_code__KP_1;
+		return t_code::e_KP_1;
 	case e_key__KP_2:
-		return t_code::e_code__KP_2;
+		return t_code::e_KP_2;
 	case e_key__KP_3:
-		return t_code::e_code__KP_3;
+		return t_code::e_KP_3;
 	case e_key__KP_4:
-		return t_code::e_code__KP_4;
+		return t_code::e_KP_4;
 	case e_key__KP_5:
-		return t_code::e_code__KP_5;
+		return t_code::e_KP_5;
 	case e_key__KP_6:
-		return t_code::e_code__KP_6;
+		return t_code::e_KP_6;
 	case e_key__KP_7:
-		return t_code::e_code__KP_7;
+		return t_code::e_KP_7;
 	case e_key__KP_8:
-		return t_code::e_code__KP_8;
+		return t_code::e_KP_8;
 	case e_key__KP_9:
-		return t_code::e_code__KP_9;
+		return t_code::e_KP_9;
 	default:
-		return t_code::e_code__NONE;
+		return t_code::e_NONE;
 	}
 }
 
@@ -156,7 +156,7 @@ void t_content::f_send(const wchar_t* a_cs, size_t a_n)
 bool t_content::f_send(t_modifier a_modifier, t_key a_key)
 {
 	t_code code = f_code(a_key);
-	if (code == t_code::e_code__NONE) return false;
+	if (code == t_code::e_NONE) return false;
 	size_t i = 0;
 	if ((a_modifier & e_modifier__SHIFT) != 0) i |= 1;
 	if ((a_modifier & e_modifier__CONTROL) != 0) i |= 2;

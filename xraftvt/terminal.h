@@ -17,9 +17,9 @@ class t_terminal : public t_buffer<T_host>
 	using t_buffer<T_host>::f_scroll_up;
 	using t_buffer<T_host>::f_erase;
 
-	enum t_csi
+	enum class t_csi
 	{
-		e_csi__PRIMARY, e_csi__SECONDARY, e_csi__PRIVATE
+		e_PRIMARY, e_SECONDARY, e_PRIVATE
 	};
 
 	typedef void (t_terminal::*t_state)(wchar_t a_c);
@@ -313,7 +313,7 @@ std::fprintf(stderr, "Unknown attribute: %d\n", v_parameters[i]);
 	{
 		for (int i = 0; i < v_parameters_size; ++i) {
 			switch (v_csi) {
-			case e_csi__PRIMARY:
+			case t_csi::e_PRIMARY:
 				switch (v_parameters[i]) {
 				case 4:
 					v_mode_insert = a_mode;
@@ -322,7 +322,7 @@ std::fprintf(stderr, "Unknown attribute: %d\n", v_parameters[i]);
 std::fprintf(stderr, "%s unknown mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 				}
 				break;
-			case e_csi__SECONDARY:
+			case t_csi::e_SECONDARY:
 std::fprintf(stderr, "%s unknown secondary mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 				break;
 			default:
@@ -492,10 +492,10 @@ std::fprintf(stderr, "Unknown control character: %x\n", a_c);
 		default:
 std::fprintf(stderr, "Unknown control sequence:");
 switch (v_csi) {
-case e_csi__SECONDARY:
+case t_csi::e_SECONDARY:
 	std::fprintf(stderr, " >");
 	break;
-case e_csi__PRIVATE:
+case t_csi::e_PRIVATE:
 	std::fprintf(stderr, " ?");
 	break;
 }
@@ -549,7 +549,7 @@ std::fprintf(stderr, " %c\n", a_c);
 			f_reverse_index();
 			break;
 		case L'[':
-			v_csi = e_csi__PRIMARY;
+			v_csi = t_csi::e_PRIMARY;
 			v_parameters_size = 0;
 			v_state = &t_terminal::f_state_csi;
 			return;
@@ -602,10 +602,10 @@ std::fprintf(stderr, "Unknown G0 character set: # %c\n", a_c);
 				v_parameters[v_parameters_size++] = -1;
 				break;
 			case L'>':
-				v_csi = e_csi__SECONDARY;
+				v_csi = t_csi::e_SECONDARY;
 				break;
 			case L'?':
-				v_csi = e_csi__PRIVATE;
+				v_csi = t_csi::e_PRIVATE;
 				break;
 			default:
 				f_control_sequence(a_c);
@@ -644,30 +644,28 @@ std::fprintf(stderr, "Unknown G0 character set: # %c\n", a_c);
 	}
 
 public:
-	enum t_code
+	enum class t_code
 	{
-		e_code__TAB, e_code__BACK_SPACE,
-		e_code__FIND, e_code__INSERT, e_code__EXECUTE, e_code__SELECT,
-		e_code__PRIOR, e_code__NEXT, e_code__HOME, e_code__END,
-		e_code__DELETE,
-		e_code__F1, e_code__F2, e_code__F3, e_code__F4,
-		e_code__F5, e_code__F6, e_code__F7, e_code__F8,
-		e_code__F9, e_code__F10, e_code__F11, e_code__F12,
-		e_code__F13, e_code__F14, e_code__F15, e_code__F16,
-		e_code__F17, e_code__F18, e_code__F19, e_code__F20,
-		e_code__UP, e_code__DOWN, e_code__RIGHT, e_code__LEFT,
-		e_code__KP_ENTER,
-		e_code__KP_F1, e_code__KP_F2, e_code__KP_F3, e_code__KP_F4,
-		e_code__KP_MULTIPLY, e_code__KP_ADD, e_code__KP_SEPARATOR,
-		e_code__KP_SUBTRACT, e_code__KP_DECIMAL, e_code__KP_DIVIDE,
-		e_code__KP_0, e_code__KP_1, e_code__KP_2, e_code__KP_3,
-		e_code__KP_4, e_code__KP_5, e_code__KP_6, e_code__KP_7,
-		e_code__KP_8, e_code__KP_9,
-		e_code__NONE
+		e_TAB, e_BACK_SPACE,
+		e_FIND, e_INSERT, e_EXECUTE, e_SELECT,
+		e_PRIOR, e_NEXT, e_HOME, e_END,
+		e_DELETE,
+		e_F1, e_F2, e_F3, e_F4, e_F5,
+		e_F6, e_F7, e_F8, e_F9, e_F10,
+		e_F11, e_F12, e_F13, e_F14, e_F15,
+		e_F16, e_F17, e_F18, e_F19, e_F20,
+		e_UP, e_DOWN, e_RIGHT, e_LEFT,
+		e_KP_ENTER,
+		e_KP_F1, e_KP_F2, e_KP_F3, e_KP_F4,
+		e_KP_MULTIPLY, e_KP_ADD, e_KP_SEPARATOR,
+		e_KP_SUBTRACT, e_KP_DECIMAL, e_KP_DIVIDE,
+		e_KP_0, e_KP_1, e_KP_2, e_KP_3, e_KP_4,
+		e_KP_5, e_KP_6, e_KP_7, e_KP_8, e_KP_9,
+		e_NONE
 	};
 
 private:
-	static const char* v_codes[e_code__NONE][4];
+	static const char* v_codes[static_cast<size_t>(t_code::e_NONE)][4];
 
 public:
 	using t_buffer<T_host>::f_width;
@@ -697,9 +695,9 @@ public:
 	}
 	const char* f_code(t_code a_code, size_t a_shift) const
 	{
-		if (v_mode_application_keypad && a_code >= e_code__KP_ENTER) a_shift = 3;
-		if (v_mode_application_cursor && a_code >= e_code__UP && a_code <= e_code__LEFT) a_shift = 3;
-		return v_codes[a_code][a_shift];
+		if (v_mode_application_keypad && a_code >= t_code::e_KP_ENTER) a_shift = 3;
+		if (v_mode_application_cursor && a_code >= t_code::e_UP && a_code <= t_code::e_LEFT) a_shift = 3;
+		return v_codes[static_cast<size_t>(a_code)][a_shift];
 	}
 	void operator()(wchar_t a_c)
 	{
@@ -708,7 +706,7 @@ public:
 };
 
 template<typename T_host>
-const char* t_terminal<T_host>::v_codes[e_code__NONE][4] = {
+const char* t_terminal<T_host>::v_codes[][4] = {
 	// Normal, Shift, Control, Control + Shift
 	{"\t", "\x1b[Z", "\t", "\x1b[Z"}, // Tab
 	{"\b", "\x7f", "\x7f", "\x7f"}, // BackSpace
