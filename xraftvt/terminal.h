@@ -27,8 +27,8 @@ class t_terminal : public t_buffer<T_host>
 	bool v_mode_insert = false;
 	bool v_mode_origin = false;
 	bool v_mode_wraparound = true;
-	bool v_mode_application_keypad = false;
 	bool v_mode_application_cursor = false;
+	bool v_mode_application_keypad = false;
 	unsigned char* v_tab_stops;
 	unsigned v_region_begin = 0;
 	unsigned v_region_size;
@@ -646,17 +646,22 @@ std::fprintf(stderr, "Unknown G0 character set: # %c\n", a_c);
 public:
 	enum class t_code
 	{
-		e_TAB, e_BACK_SPACE,
-		e_FIND, e_INSERT, e_EXECUTE, e_SELECT,
-		e_PRIOR, e_NEXT, e_HOME, e_END,
+		e_BACK_SPACE, e_TAB,
+		e_F1, e_F2, e_F3, e_F4,
+		e_F5, e_F6, e_F7, e_F8,
+		e_F9, e_F10, e_F11, e_F12,
+		e_F13, e_F14, e_F15, e_F16,
+		e_F17, e_F18, e_F19, e_F20,
+		e_F21, e_F22, e_F23, e_F24,
 		e_DELETE,
-		e_F1, e_F2, e_F3, e_F4, e_F5,
-		e_F6, e_F7, e_F8, e_F9, e_F10,
-		e_F11, e_F12, e_F13, e_F14, e_F15,
-		e_F16, e_F17, e_F18, e_F19, e_F20,
-		e_UP, e_DOWN, e_RIGHT, e_LEFT,
-		e_KP_ENTER,
+		e_HOME, e_LEFT, e_UP, e_RIGHT, e_DOWN,
+		e_PRIOR, e_NEXT, e_END, e_BEGIN,
+		e_INSERT,
+		e_KP_SPACE, e_KP_TAB, e_KP_ENTER,
 		e_KP_F1, e_KP_F2, e_KP_F3, e_KP_F4,
+		e_KP_HOME, e_KP_LEFT, e_KP_UP, e_KP_RIGHT, e_KP_DOWN,
+		e_KP_PRIOR, e_KP_NEXT, e_KP_END, e_KP_BEGIN,
+		e_KP_INSERT, e_KP_DELETE, e_KP_EQUAL,
 		e_KP_MULTIPLY, e_KP_ADD, e_KP_SEPARATOR,
 		e_KP_SUBTRACT, e_KP_DECIMAL, e_KP_DIVIDE,
 		e_KP_0, e_KP_1, e_KP_2, e_KP_3, e_KP_4,
@@ -665,7 +670,7 @@ public:
 	};
 
 private:
-	static const char* v_codes[static_cast<size_t>(t_code::e_NONE)][4];
+	static const char* v_codes[static_cast<size_t>(t_code::e_NONE)][6];
 
 public:
 	using t_buffer<T_host>::f_width;
@@ -695,9 +700,12 @@ public:
 	}
 	const char* f_code(t_code a_code, size_t a_shift) const
 	{
-		if (v_mode_application_keypad && a_code >= t_code::e_KP_ENTER) a_shift = 3;
-		if (v_mode_application_cursor && a_code >= t_code::e_UP && a_code <= t_code::e_LEFT) a_shift = 3;
-		return v_codes[static_cast<size_t>(a_code)][a_shift];
+		auto p = v_codes[static_cast<size_t>(a_code)];
+		if (a_shift == 0) {
+			if (v_mode_application_cursor && p[4]) return p[4];
+			if (v_mode_application_keypad && p[5]) return p[5];
+		}
+		return p[a_shift];
 	}
 	void operator()(wchar_t a_c)
 	{
@@ -706,65 +714,80 @@ public:
 };
 
 template<typename T_host>
-const char* t_terminal<T_host>::v_codes[][4] = {
+const char* t_terminal<T_host>::v_codes[][6] = {
 	// Normal, Shift, Control, Control + Shift
-	{"\t", "\x1b[Z", "\t", "\x1b[Z"}, // Tab
-	{"\b", "\x7f", "\x7f", "\x7f"}, // BackSpace
-	{"\x1b[1~", "\x1b[1$", "\x1b[1^", "\x1b[1@"}, // Find
-	{"\x1b[2~", "\x1b[2$"/*paste*/, "\x1b[2^", "\x1b[2@"}, // Insert
-	{"\x1b[3~", "\x1b[3$", "\x1b[3^", "\x1b[3@"}, // Execute
-	{"\x1b[4~", "\x1b[4$", "\x1b[4^", "\x1b[4@"}, // Select
-	{"\x1b[5~", "\x1b[5$"/*scroll-up*/, "\x1b[5^", "\x1b[5@"}, // Prior
-	{"\x1b[6~", "\x1b[6$"/*scroll-down*/, "\x1b[6^", "\x1b[6@"}, // Next
-	{"\x1b[7~", "\x1b[7$", "\x1b[7^", "\x1b[7@"}, // Home
-	{"\x1b[8~", "\x1b[8$", "\x1b[8^", "\x1b[8@"}, // End
-	{"\x1b[3~", "\x1b[3$", "\x1b[3^", "\x1b[3@"}, // Delete
-	{"\x1b[11~", "\x1b[23~", "\x1b[11^", "\x1b[23^"}, // F1
-	{"\x1b[12~", "\x1b[24~", "\x1b[12^", "\x1b[24^"}, // F2
-	{"\x1b[13~", "\x1b[25~", "\x1b[13^", "\x1b[25^"}, // F3
-	{"\x1b[14~", "\x1b[26~", "\x1b[14^", "\x1b[26^"}, // F4
-	{"\x1b[15~", "\x1b[28~", "\x1b[15^", "\x1b[28^"}, // F5
-	{"\x1b[17~", "\x1b[29~", "\x1b[17^", "\x1b[29^"}, // F6
-	{"\x1b[18~", "\x1b[31~", "\x1b[18^", "\x1b[31^"}, // F7
-	{"\x1b[19~", "\x1b[32~", "\x1b[19^", "\x1b[32^"}, // F8
-	{"\x1b[20~", "\x1b[33~", "\x1b[20^", "\x1b[33^"}, // F9
-	{"\x1b[21~", "\x1b[34~", "\x1b[21^", "\x1b[34^"}, // F10
-	{"\x1b[23~", "\x1b[23$", "\x1b[23^", "\x1b[23@"}, // F11
-	{"\x1b[24~", "\x1b[24$", "\x1b[24^", "\x1b[24@"}, // F12
-	{"\x1b[25~", "\x1b[25$", "\x1b[25^", "\x1b[25@"}, // F13
-	{"\x1b[26~", "\x1b[26$", "\x1b[26^", "\x1b[26@"}, // F14
-	{"\x1b[28~", "\x1b[28$", "\x1b[28^", "\x1b[28@"}, // F15
-	{"\x1b[29~", "\x1b[29$", "\x1b[29^", "\x1b[29@"}, // F16
-	{"\x1b[31~", "\x1b[31$", "\x1b[31^", "\x1b[31@"}, // F17
-	{"\x1b[32~", "\x1b[32$", "\x1b[32^", "\x1b[32@"}, // F18
-	{"\x1b[33~", "\x1b[33$", "\x1b[33^", "\x1b[33@"}, // F19
-	{"\x1b[34~", "\x1b[34$", "\x1b[34^", "\x1b[34@"}, // F20
-	// Normal, Shift, Control, Application
-	{"\x1b[A", "\x1b[a", "\x1bOa", "\x1bOA"}, // Up
-	{"\x1b[B", "\x1b[b", "\x1bOb", "\x1bOB"}, // Down
-	{"\x1b[C", "\x1b[c", "\x1bOc", "\x1bOC"}, // Right
-	{"\x1b[D", "\x1b[d", "\x1bOd", "\x1bOD"}, // Left
-	{"\r", 0, 0, "\x1bOM"}, // KP_Enter
-	{"\x1bOP", 0, 0, "\x1bOP"}, // KP_F1
-	{"\x1bOQ", 0, 0, "\x1bOQ"}, // KP_F2
-	{"\x1bOR", 0, 0, "\x1bOR"}, // KP_F3
-	{"\x1bOS", 0, 0, "\x1bOS"}, // KP_F4
-	{"*", 0, 0, "\x1bOj"}, // KP_Multiply
-	{"+", 0, 0, "\x1bOk"}, // KP_Add
-	{",", 0, 0, "\x1bOl"}, // KP_Separator
-	{"-", 0, 0, "\x1bOm"}, // KP_Subtract
-	{".", 0, 0, "\x1bOn"}, // KP_Decimal
-	{"/", 0, 0, "\x1bOo"}, // KP_Divide
-	{"0", 0, 0, "\x1bOp"}, // KP_0
-	{"1", 0, 0, "\x1bOq"}, // KP_1
-	{"2", 0, 0, "\x1bOr"}, // KP_2
-	{"3", 0, 0, "\x1bOs"}, // KP_3
-	{"4", 0, 0, "\x1bOt"}, // KP_4
-	{"5", 0, 0, "\x1bOu"}, // KP_5
-	{"6", 0, 0, "\x1bOv"}, // KP_6
-	{"7", 0, 0, "\x1bOw"}, // KP_7
-	{"8", 0, 0, "\x1bOx"}, // KP_8
-	{"9", 0, 0, "\x1bOy"}, // KP_9
+	{"\b", "\b", "\x7f", "\x7f", 0, 0}, // e_BACK_SPACE
+	{"\t", "\x1b[Z", "\t", "\x1b[Z", 0, 0}, // e_TAB
+	{"\x1bOP", "\x1b[1;2P", "\x1b[1;5P", "\x1b[1;6P", 0, 0}, // e_F1
+	{"\x1bOQ", "\x1b[1;2Q", "\x1b[1;5Q", "\x1b[1;6Q", 0, 0}, // e_F2
+	{"\x1bOR", "\x1b[1;2R", "\x1b[1;5R", "\x1b[1;6R", 0, 0}, // e_F3
+	{"\x1bOS", "\x1b[1;2S", "\x1b[1;5S", "\x1b[1;6S", 0, 0}, // e_F4
+	{"\x1b[15~", "\x1b[15;2~", "\x1b[15;5~", "\x1b[15;6~", 0, 0}, // e_F5
+	{"\x1b[17~", "\x1b[17;2~", "\x1b[17;5~", "\x1b[17;6~", 0, 0}, // e_F6
+	{"\x1b[18~", "\x1b[18;2~", "\x1b[18;5~", "\x1b[18;6~", 0, 0}, // e_F7
+	{"\x1b[19~", "\x1b[19;2~", "\x1b[19;5~", "\x1b[19;6~", 0, 0}, // e_F8
+	{"\x1b[20~", "\x1b[20;2~", "\x1b[20;5~", "\x1b[20;6~", 0, 0}, // e_F9
+	{"\x1b[21~", "\x1b[21;2~", "\x1b[21;5~", "\x1b[21;6~", 0, 0}, // e_F10
+	{"\x1b[23~", "\x1b[23;2~", "\x1b[23;5~", "\x1b[23;6~", 0, 0}, // e_F11
+	{"\x1b[24~", "\x1b[24;2~", "\x1b[24;5~", "\x1b[24;6~", 0, 0}, // e_F12
+	{"\x1b[1;2P", "\x1b[1;5P", "\x1b[1;6P", "\x1b[1;3P", 0, 0}, // e_F13
+	{"\x1b[1;2Q", "\x1b[1;5Q", "\x1b[1;6Q", "\x1b[1;3Q", 0, 0}, // e_F14
+	{"\x1b[1;2R", "\x1b[1;5R", "\x1b[1;6R", "\x1b[1;3R", 0, 0}, // e_F15
+	{"\x1b[1;2S", "\x1b[1;5S", "\x1b[1;6S", "\x1b[1;3S", 0, 0}, // e_F16
+	{"\x1b[15;2~", "\x1b[15;5~", "\x1b[15;6~", "\x1b[15;3~", 0, 0}, // e_F17
+	{"\x1b[17;2~", "\x1b[17;5~", "\x1b[17;6~", "\x1b[17;3~", 0, 0}, // e_F18
+	{"\x1b[18;2~", "\x1b[18;5~", "\x1b[18;6~", "\x1b[18;3~", 0, 0}, // e_F19
+	{"\x1b[19;2~", "\x1b[19;5~", "\x1b[19;6~", "\x1b[19;3~", 0, 0}, // e_F20
+	{"\x1b[20;2~", "\x1b[20;5~", "\x1b[20;6~", "\x1b[20;3~", 0, 0}, // e_F21
+	{"\x1b[21;2~", "\x1b[21;5~", "\x1b[21;6~", "\x1b[21;3~", 0, 0}, // e_F22
+	{"\x1b[23;2~", "\x1b[23;5~", "\x1b[23;6~", "\x1b[23;3~", 0, 0}, // e_F23
+	{"\x1b[24;2~", "\x1b[24;5~", "\x1b[24;6~", "\x1b[24;3~", 0, 0}, // e_F24
+	{"\x1b[3~", "\x1b[3;2~", "\x1b[3;5~", "\x1b[3;6~", 0, 0}, // e_DELETE
+	{"\x1b[H", "\x1b[1;2H", "\x1b[1;5H", "\x1b[1;6H", "\x1bOH", 0}, // e_HOME
+	{"\x1b[D", "\x1b[1;2D", "\x1b[1;5D", "\x1b[1;6D", "\x1bOD", 0}, // e_LEFT
+	{"\x1b[A", "\x1b[1;2A", "\x1b[1;5A", "\x1b[1;6A", "\x1bOA", 0}, // e_UP
+	{"\x1b[C", "\x1b[1;2C", "\x1b[1;5C", "\x1b[1;6C", "\x1bOC", 0}, // e_RIGHT
+	{"\x1b[B", "\x1b[1;2B", "\x1b[1;5B", "\x1b[1;6B", "\x1bOB", 0}, // e_DOWN
+	{"\x1b[5~", "\x1b[5;2~", "\x1b[5;5~", "\x1b[5;6~", 0, 0}, // e_PRIOR
+	{"\x1b[6~", "\x1b[6;2~", "\x1b[6;5~", "\x1b[6;6~", 0, 0}, // e_NEXT
+	{"\x1b[F", "\x1b[1;2F", "\x1b[1;5F", "\x1b[1;6F", "\x1bOF", 0}, // e_END
+	{"\x1b[E", "\x1b[1;2E", "\x1b[1;5E", "\x1b[1;6E", 0, 0}, // e_BEGIN
+	{"\x1b[2~", "\x1b[2;2~", "\x1b[2;5~", "\x1b[2;6~", 0, 0}, // e_INSERT
+	{" ", "\x1b[1;2 ", "\x1b[1;5 ", "\x1b[1;6 ", 0, "\x1bO "}, // e_KP_SPACE
+	{"\t", "\x1b[1;2I", "\x1b[1;5I", "\x1b[1;6I", 0, "\x1bOI"}, // e_KP_TAB
+	{"\r", "\x1b[1;2M", "\x1b[1;5M", "\x1b[1;6M", 0, "\x1bOM"}, // e_KP_ENTER
+	{"\x1bOP", "\x1b[1;2P", "\x1b[1;5P", "\x1b[1;6P", 0, "\x1bOP"}, // KP_F1
+	{"\x1bOQ", "\x1b[1;2Q", "\x1b[1;5Q", "\x1b[1;6Q", 0, "\x1bOQ"}, // KP_F2
+	{"\x1bOR", "\x1b[1;2R", "\x1b[1;5R", "\x1b[1;6R", 0, "\x1bOR"}, // KP_F3
+	{"\x1bOS", "\x1b[1;2S", "\x1b[1;5S", "\x1b[1;6S", 0, "\x1bOS"}, // KP_F4
+	{"\x1bOH", "\x1b[1;2H", "\x1b[1;5H", "\x1b[1;6H", 0, "\x1bOH"}, // e_KP_HOME
+	{"\x1b[D", "\x1b[1;2D", "\x1b[1;5D", "\x1b[1;6D", 0, "\x1b[D"}, // e_KP_LEFT
+	{"\x1b[A", "\x1b[1;2A", "\x1b[1;5A", "\x1b[1;6A", 0, "\x1b[A"}, // e_KP_UP
+	{"\x1b[C", "\x1b[1;2C", "\x1b[1;5C", "\x1b[1;6C", 0, "\x1b[C"}, // e_KP_RIGHT
+	{"\x1b[B", "\x1b[1;2B", "\x1b[1;5B", "\x1b[1;6B", 0, "\x1b[B"}, // e_KP_DOWN
+	{"\x1b[5~", "\x1b[5;2~", "\x1b[5;5~", "\x1b[5;6~", 0, "\x1b[5~"}, // e_KP_PRIOR
+	{"\x1b[6~", "\x1b[6;2~", "\x1b[6;5~", "\x1b[6;6~", 0, "\x1b[6~"}, // e_KP_NEXT
+	{"\x1bOF", "\x1b[1;2F", "\x1b[1;5F", "\x1b[1;6F", 0, "\x1bOF"}, // e_KP_END
+	{"\x1b[E", "\x1b[1;2E", "\x1b[1;5E", "\x1b[1;6E", 0, "\x1b[E"}, // e_KP_BEGIN
+	{"\x1b[2~", "\x1b[2;2~", "\x1b[2;5~", "\x1b[2;6~", 0, "\x1b[2~"}, // e_KP_INSERT
+	{"\x1b[3~", "\x1b[3;2~", "\x1b[3;5~", "\x1b[3;6~", 0, "\x1b[3~"}, // e_KP_DELETE
+	{"~", "\x1b[1;2X", "\x1b[1;5X", "\x1b[1;6X", 0, "\x1bOX"}, // e_KP_EQUAL
+	{"*", "\x1b[1;2j", "\x1b[1;5j", "\x1b[1;6j", 0, "\x1bOj"}, // e_KP_MULTIPLY
+	{"+", "\x1b[1;2k", "\x1b[1;5k", "\x1b[1;6k", 0, "\x1bOk"}, // e_KP_ADD
+	{",", "\x1b[1;2l", "\x1b[1;5l", "\x1b[1;6l", 0, "\x1bOl"}, // e_KP_SEPARATOR
+	{"-", "\x1b[1;2m", "\x1b[1;5m", "\x1b[1;6m", 0, "\x1bOm"}, // e_KP_SUBTRACT
+	{".", "\x1b[3;2~", "\x1b[3;5~", "\x1b[3;6~", 0, "\x1b[3~"}, // e_KP_DECIMAL
+	{"/", "\x1b[1;2o", "\x1b[1;5o", "\x1b[1;6o", 0, "\x1bOo"}, // e_KP_DIVIDE
+	{"0", "\x1b[2;2~", "\x1b[2;5~", "\x1b[2;6~", 0, "\x1b[2~"}, // e_KP_0
+	{"1", "\x1b[1;2F", "\x1b[1;5F", "\x1b[1;6F", 0, "\x1bOF"}, // e_KP_1
+	{"2", "\x1b[1;2B", "\x1b[1;5B", "\x1b[1;6B", 0, "\x1b[B"}, // e_KP_2
+	{"3", "\x1b[6;2~", "\x1b[6;5~", "\x1b[6;6~", 0, "\x1b[6~"}, // e_KP_3
+	{"4", "\x1b[1;2D", "\x1b[1;5D", "\x1b[1;6D", 0, "\x1b[D"}, // e_KP_4
+	{"5", "\x1b[1;2E", "\x1b[1;5E", "\x1b[1;6E", 0, "\x1b[E"}, // e_KP_5
+	{"6", "\x1b[1;2C", "\x1b[1;5C", "\x1b[1;6C", 0, "\x1b[C"}, // e_KP_6
+	{"7", "\x1b[1;2H", "\x1b[1;5H", "\x1b[1;6H", 0, "\x1bOH"}, // e_KP_7
+	{"8", "\x1b[1;2A", "\x1b[1;5A", "\x1b[1;6A", 0, "\x1b[A"}, // e_KP_8
+	{"9", "\x1b[5;2~", "\x1b[5;5~", "\x1b[5;6~", 0, "\x1b[5~"}, // e_KP_9
 };
 
 #endif

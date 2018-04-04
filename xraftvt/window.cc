@@ -8,28 +8,10 @@
 t_content::t_code t_content::f_code(t_key a_key)
 {
 	switch (a_key) {
-	case e_key__TAB:
-		return t_code::e_TAB;
 	case e_key__BACK_SPACE:
 		return t_code::e_BACK_SPACE;
-	case e_key__FIND:
-		return t_code::e_FIND;
-	case e_key__INSERT:
-		return t_code::e_INSERT;
-	case e_key__EXECUTE:
-		return t_code::e_EXECUTE;
-	case e_key__SELECT:
-		return t_code::e_SELECT;
-	case e_key__PRIOR:
-		return t_code::e_PRIOR;
-	case e_key__NEXT:
-		return t_code::e_NEXT;
-	case e_key__HOME:
-		return t_code::e_HOME;
-	case e_key__END:
-		return t_code::e_END;
-	case e_key__DELETE:
-		return t_code::e_DELETE;
+	case e_key__TAB:
+		return t_code::e_TAB;
 	case e_key__F1:
 		return t_code::e_F1;
 	case e_key__F2:
@@ -54,7 +36,6 @@ t_content::t_code t_content::f_code(t_key a_key)
 		return t_code::e_F11;
 	case e_key__F12:
 		return t_code::e_F12;
-/*
 	case e_key__F13:
 		return t_code::e_F13;
 	case e_key__F14:
@@ -71,15 +52,40 @@ t_content::t_code t_content::f_code(t_key a_key)
 		return t_code::e_F19;
 	case e_key__F20:
 		return t_code::e_F20;
-*/
-	case e_key__UP:
-		return t_code::e_UP;
-	case e_key__DOWN:
-		return t_code::e_DOWN;
-	case e_key__RIGHT:
-		return t_code::e_RIGHT;
+	case e_key__F21:
+		return t_code::e_F21;
+	case e_key__F22:
+		return t_code::e_F22;
+	case e_key__F23:
+		return t_code::e_F23;
+	case e_key__F24:
+		return t_code::e_F24;
+	case e_key__DELETE:
+		return t_code::e_DELETE;
+	case e_key__HOME:
+		return t_code::e_HOME;
 	case e_key__LEFT:
 		return t_code::e_LEFT;
+	case e_key__UP:
+		return t_code::e_UP;
+	case e_key__RIGHT:
+		return t_code::e_RIGHT;
+	case e_key__DOWN:
+		return t_code::e_DOWN;
+	case e_key__PRIOR:
+		return t_code::e_PRIOR;
+	case e_key__NEXT:
+		return t_code::e_NEXT;
+	case e_key__END:
+		return t_code::e_END;
+	case e_key__BEGIN:
+		return t_code::e_BEGIN;
+	case e_key__INSERT:
+		return t_code::e_INSERT;
+	case e_key__KP_SPACE:
+		return t_code::e_KP_SPACE;
+	case e_key__KP_TAB:
+		return t_code::e_KP_TAB;
 	case e_key__KP_ENTER:
 		return t_code::e_KP_ENTER;
 	case e_key__KP_F1:
@@ -90,6 +96,30 @@ t_content::t_code t_content::f_code(t_key a_key)
 		return t_code::e_KP_F3;
 	case e_key__KP_F4:
 		return t_code::e_KP_F4;
+	case e_key__KP_HOME:
+		return t_code::e_KP_HOME;
+	case e_key__KP_LEFT:
+		return t_code::e_KP_LEFT;
+	case e_key__KP_UP:
+		return t_code::e_KP_UP;
+	case e_key__KP_RIGHT:
+		return t_code::e_KP_RIGHT;
+	case e_key__KP_DOWN:
+		return t_code::e_KP_DOWN;
+	case e_key__KP_PRIOR:
+		return t_code::e_KP_PRIOR;
+	case e_key__KP_NEXT:
+		return t_code::e_KP_NEXT;
+	case e_key__KP_END:
+		return t_code::e_KP_END;
+	case e_key__KP_BEGIN:
+		return t_code::e_KP_BEGIN;
+	case e_key__KP_INSERT:
+		return t_code::e_KP_INSERT;
+	case e_key__KP_DELETE:
+		return t_code::e_KP_DELETE;
+	case e_key__KP_EQUAL:
+		return t_code::e_KP_EQUAL;
 	case e_key__KP_MULTIPLY:
 		return t_code::e_KP_MULTIPLY;
 	case e_key__KP_ADD:
@@ -161,7 +191,7 @@ bool t_content::f_send(t_modifier a_modifier, t_key a_key)
 	if ((a_modifier & e_modifier__SHIFT) != 0) i |= 1;
 	if ((a_modifier & e_modifier__CONTROL) != 0) i |= 2;
 	const char* cs = v_buffer.f_code(code, i);
-	if (cs) f_send(cs, std::strlen(cs));
+	f_send(cs, std::strlen(cs));
 	return true;
 }
 
