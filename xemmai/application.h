@@ -49,40 +49,24 @@ namespace xemmai
 template<>
 struct t_type_of<xraft::t_application> : t_type
 {
-	template<typename T0, typename T1>
+	template<typename T0>
 	struct t_as
 	{
-		typedef T0 t_type;
-
-		static T0 f_call(T1 a_object)
+		template<typename T1>
+		static T0 f_call(T1&& a_object)
 		{
-			T0* p = static_cast<T0*>(f_object(a_object)->f_pointer());
-			if (!p) t_throwable::f_throw(L"already destroyed.");
-			return *p;
+			return *t_as<typename t_fundamental<T0>::t_type*>::f_call(std::forward<T1>(a_object));
 		}
 	};
-	template<typename T0, typename T1>
-	struct t_as<T0*, T1>
+	template<typename T0>
+	struct t_as<T0*>
 	{
-		typedef T0* t_type;
-
-		static T0* f_call(T1 a_object)
+		template<typename T1>
+		static T0* f_call(T1&& a_object)
 		{
-			T0* p = static_cast<T0*>(f_object(a_object)->f_pointer());
+			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
 			if (!p) t_throwable::f_throw(L"already destroyed.");
 			return p;
-		}
-	};
-	template<typename T0, typename T1>
-	struct t_as<T0&, T1>
-	{
-		typedef T0& t_type;
-
-		static T0& f_call(T1 a_object)
-		{
-			T0* p = static_cast<T0*>(f_object(a_object)->f_pointer());
-			if (!p) t_throwable::f_throw(L"already destroyed.");
-			return *p;
 		}
 	};
 	typedef xemmaix::xraft::t_extension t_extension;
