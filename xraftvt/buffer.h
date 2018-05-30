@@ -128,7 +128,7 @@ protected:
 		row->v_size = 0;
 		row->v_wrapped = false;
 		rows[v_height - 1] = row;
-		v_host.f_scroll(0, v_height, -1);
+		v_host.f_scroll(-v_log_size, v_log_size + v_height, -1);
 		v_host.f_invalidate(v_cursor_y, 1);
 	}
 	void f_scroll_up(unsigned a_y, unsigned a_height, unsigned a_n)
