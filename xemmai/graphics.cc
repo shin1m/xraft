@@ -22,9 +22,9 @@ void t_type_of<xraft::t_font>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_font>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_font>::f_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(xemmai::t_object*, const std::wstring&), f_construct>::t_bind<xraft::t_font>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*, const std::wstring&), f_construct>::t_bind<xraft::t_font>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xraft::t_color>::f_define(t_extension* a_extension)
@@ -39,9 +39,9 @@ void t_type_of<xraft::t_color>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_color>::f_derive(t_object* a_this)
+t_type* t_type_of<xraft::t_color>::f_derive()
 {
-	return new t_type_of(v_module, a_this);
+	return new t_type_of(v_module, this);
 }
 
 void t_type_of<xraft::t_color>::f_finalize(t_object* a_this)
@@ -49,21 +49,21 @@ void t_type_of<xraft::t_color>::f_finalize(t_object* a_this)
 	delete &f_as<xraft::t_color&>(a_this);
 }
 
-t_scoped t_type_of<xraft::t_color>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_color>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 #ifdef XRAFT_X11
 	return t_overload<
-		t_construct_with<t_scoped(*)(xemmai::t_object*, const std::wstring&), f_construct>,
-		t_construct_with<t_scoped(*)(xemmai::t_object*, size_t, size_t, size_t), f_construct>
-	>::t_bind<xraft::t_color>::f_do(a_class, a_stack, a_n);
+		t_construct_with<t_scoped(*)(t_type*, const std::wstring&), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, size_t, size_t, size_t), f_construct>
+	>::t_bind<xraft::t_color>::f_do(this, a_stack, a_n);
 #else
-	return t_construct_with<t_scoped(*)(xemmai::t_object*, size_t, size_t, size_t), f_construct>::t_bind<xraft::t_color>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*, size_t, size_t, size_t), f_construct>::t_bind<xraft::t_color>::f_do(this, a_stack, a_n);
 #endif
 }
 
 void t_type_of<xraft::t_graphics>::f_extract(const t_value& a_points0, std::vector<xraft::t_point>& a_points1)
 {
-	t_scoped m = a_points0.f_get(f_global()->f_symbol_size())();
+	t_scoped m = a_points0.f_invoke(f_global()->f_symbol_size());
 	f_check<size_t>(m, L"size");
 	size_t n = f_as<size_t>(m);
 	a_points1.resize(n);

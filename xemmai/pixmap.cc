@@ -13,13 +13,13 @@ void t_type_of<xraft::t_bitmap>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_bitmap>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_bitmap>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned), f_construct>,
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned, const t_bytes&), f_construct>,
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned, const t_bytes&, int), f_construct>
-	>::t_bind<xraft::t_bitmap>::f_do(a_class, a_stack, a_n);
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned, const t_bytes&), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned, const t_bytes&, int), f_construct>
+	>::t_bind<xraft::t_bitmap>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xraft::t_pixmap>::f_define(t_extension* a_extension)
@@ -33,14 +33,14 @@ void t_type_of<xraft::t_pixmap>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_pixmap>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_pixmap>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned), f_construct>,
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned, bool), f_construct>,
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned, bool, const t_bytes&), f_construct>,
-		t_construct_with<t_scoped(*)(xemmai::t_object*, unsigned, unsigned, bool, const t_bytes&, int), f_construct>
-	>::t_bind<xraft::t_pixmap>::f_do(a_class, a_stack, a_n);
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned, bool), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned, bool, const t_bytes&), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned, bool, const t_bytes&, int), f_construct>
+	>::t_bind<xraft::t_pixmap>::f_do(this, a_stack, a_n);
 }
 
 }

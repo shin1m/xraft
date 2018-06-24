@@ -29,7 +29,7 @@ t_scoped t_text_model::f_slice(size_t a_p, size_t a_n) const
 	if (a_p > n) t_throwable::f_throw(L"out of range.");
 	if (a_n > n) a_n = n;
 	if (a_p + a_n > n) a_n = n - a_p;
-	t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
+	auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
 	t_scoped segments = t_array::f_instantiate();
 	if (a_n > 0) {
 		size_t text = a_p;
@@ -61,8 +61,8 @@ void t_text_model::f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, cons
 		size_t n = f_text_size();
 		if (a_p > n || a_n > n || a_p + a_n > n) t_throwable::f_throw(L"out of range.");
 	}
-	t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-	t_scoped p = a_segments.f_get(extension->v_symbol_size)();
+	auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
+	t_scoped p = a_segments.f_invoke(extension->v_symbol_size);
 	f_check<size_t>(p, L"size");
 	size_t n = f_as<size_t>(p);
 	std::vector<t_segment> ss(n);
@@ -133,14 +133,14 @@ void t_type_of<xemmaix::xrafttv::t_attribute>::f_define(t_extension* a_extension
 	;
 }
 
-t_type* t_type_of<xemmaix::xrafttv::t_attribute>::f_derive(t_object* a_this)
+t_type* t_type_of<xemmaix::xrafttv::t_attribute>::f_derive()
 {
-	return new t_type_of(v_module, a_this);
+	return new t_type_of(v_module, this);
 }
 
-t_scoped t_type_of<xemmaix::xrafttv::t_attribute>::f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xemmaix::xrafttv::t_attribute>::f_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_object*, xraft::t_pixel, xraft::t_pixel), f_construct>::t_bind<xemmaix::xrafttv::t_attribute>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*, xraft::t_pixel, xraft::t_pixel), f_construct>::t_bind<xemmaix::xrafttv::t_attribute>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xemmaix::xrafttv::t_text_model>::f_define(t_extension* a_extension)
@@ -169,14 +169,14 @@ void t_type_of<xemmaix::xrafttv::t_text_model>::f_define(t_extension* a_extensio
 	;
 }
 
-t_type* t_type_of<xemmaix::xrafttv::t_text_model>::f_derive(t_object* a_this)
+t_type* t_type_of<xemmaix::xrafttv::t_text_model>::f_derive()
 {
-	return new t_type_of(v_module, a_this);
+	return new t_type_of(v_module, this);
 }
 
-t_scoped t_type_of<xemmaix::xrafttv::t_text_model>::f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xemmaix::xrafttv::t_text_model>::f_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_object*), f_construct>::t_bind<xemmaix::xrafttv::t_text_model>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*), f_construct>::t_bind<xemmaix::xrafttv::t_text_model>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_define(t_extension* a_extension)
@@ -222,14 +222,14 @@ void t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_define(t_extension* a_extens
 	;
 }
 
-t_type* t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_derive(t_object* a_this)
+t_type* t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_derive()
 {
-	return new t_type_of(v_module, a_this);
+	return new t_type_of(v_module, this);
 }
 
-t_scoped t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_object*), f_construct>::t_bind<xemmaix::xrafttv::t_wrapped_view>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*), f_construct>::t_bind<xemmaix::xrafttv::t_wrapped_view>::f_do(this, a_stack, a_n);
 }
 
 }

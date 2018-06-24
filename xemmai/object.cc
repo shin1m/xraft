@@ -14,7 +14,7 @@ void t_type_of<xraft::t_object>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_object>::f_derive(xemmai::t_object* a_this)
+t_type* t_type_of<xraft::t_object>::f_derive()
 {
 	return nullptr;
 }
@@ -25,16 +25,16 @@ void t_type_of<xraft::t_object>::f_finalize(xemmai::t_object* a_this)
 	assert(!a_this->f_pointer());
 }
 
-t_scoped t_type_of<xraft::t_object>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_object>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	t_throwable::f_throw(L"uninstantiatable.");
 }
 
-void t_type_of<xraft::t_object>::f_instantiate(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+void t_type_of<xraft::t_object>::f_instantiate(t_stacked* a_stack, size_t a_n)
 {
 	t_scoped object;
 	try {
-		object = f_as<t_type&>(a_class).f_construct(a_class, a_stack, a_n);
+		object = f_construct(a_stack, a_n);
 	} catch (...) {
 		t_destruct_n(a_stack, a_n);
 		throw;

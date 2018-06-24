@@ -440,12 +440,9 @@ struct t_extension : xemmai::t_extension
 	t_slot v_module_xraft;
 	xemmaix::xraft::t_extension* v_xraft;
 	t_slot v_symbol_size;
-	t_slot v_type_attribute;
-	t_slot v_type_text_model;
-	t_slot v_type_wrapped_view;
-
-	template<typename T>
-	void f_type__(t_scoped&& a_type);
+	t_slot_of<t_type> v_type_attribute;
+	t_slot_of<t_type> v_type_text_model;
+	t_slot_of<t_type> v_type_wrapped_view;
 
 	t_extension(xemmai::t_object* a_module, t_scoped&& a_xraft);
 	virtual void f_scan(t_scan a_scan);
@@ -455,9 +452,14 @@ struct t_extension : xemmai::t_extension
 		return v_xraft->f_extension<T>();
 	}
 	template<typename T>
-	xemmai::t_object* f_type() const
+	t_slot_of<t_type>& f_type_slot()
 	{
-		return v_xraft->f_type<T>();
+		return v_xraft->f_type_slot<T>();
+	}
+	template<typename T>
+	t_type* f_type() const
+	{
+		return const_cast<t_extension*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
 	t_scoped f_as(T&& a_value) const
@@ -468,43 +470,25 @@ struct t_extension : xemmai::t_extension
 };
 
 template<>
-inline void t_extension::f_type__<t_attribute>(t_scoped&& a_type)
-{
-	v_type_attribute = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_text_model>(t_scoped&& a_type)
-{
-	v_type_text_model = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_wrapped_view>(t_scoped&& a_type)
-{
-	v_type_wrapped_view = std::move(a_type);
-}
-
-template<>
 inline const t_extension* t_extension::f_extension<t_extension>() const
 {
 	return this;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_attribute>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_attribute>()
 {
 	return v_type_attribute;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_text_model>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_text_model>()
 {
 	return v_type_text_model;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_wrapped_view>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_wrapped_view>()
 {
 	return v_type_wrapped_view;
 }
@@ -521,15 +505,15 @@ struct t_type_of<xemmaix::xrafttv::t_attribute> : t_type_of<xraft::t_object>
 {
 	typedef xemmaix::xrafttv::t_extension t_extension;
 
-	static t_scoped f_construct(t_object* a_class, xraft::t_pixel a_foreground, xraft::t_pixel a_background)
+	static t_scoped f_construct(t_type* a_class, xraft::t_pixel a_foreground, xraft::t_pixel a_background)
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xemmaix::xrafttv::t_attribute(a_foreground, a_background));
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive(t_object* a_this);
-	virtual t_scoped f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive();
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -537,15 +521,15 @@ struct t_type_of<xemmaix::xrafttv::t_text_model> : t_type_of<xraft::t_object>
 {
 	typedef xemmaix::xrafttv::t_extension t_extension;
 
-	static t_scoped f_construct(t_object* a_class)
+	static t_scoped f_construct(t_type* a_class)
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xemmaix::xrafttv::t_text_model());
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive(t_object* a_this);
-	virtual t_scoped f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive();
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -553,15 +537,15 @@ struct t_type_of<xemmaix::xrafttv::t_wrapped_view> : t_type_of<xraft::t_object>
 {
 	typedef xemmaix::xrafttv::t_extension t_extension;
 
-	static t_scoped f_construct(t_object* a_class)
+	static t_scoped f_construct(t_type* a_class)
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xemmaix::xrafttv::t_wrapped_view());
 	}
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive(t_object* a_this);
-	virtual t_scoped f_construct(t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive();
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }

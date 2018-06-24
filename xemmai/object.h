@@ -61,7 +61,7 @@ struct t_type_of<xraft::t_object> : t_type
 		static bool f_call(T1&& a_object)
 		{
 			auto p = f_object(std::forward<T1>(a_object));
-			return reinterpret_cast<size_t>(p) >= t_value::e_tag__OBJECT && dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(p->f_type())) != nullptr;
+			return reinterpret_cast<size_t>(p) >= t_value::e_tag__OBJECT && dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(p->f_type()) != nullptr;
 		}
 	};
 	template<typename T0>
@@ -79,7 +79,7 @@ struct t_type_of<xraft::t_object> : t_type
 			case t_value::e_tag__FLOAT:
 				return false;
 			default:
-				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(f_as<t_type*>(p->f_type())) != nullptr;
+				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(p->f_type()) != nullptr;
 			}
 		}
 	};
@@ -115,10 +115,10 @@ struct t_type_of<xraft::t_object> : t_type
 	static void f_define(t_extension* a_extension);
 
 	using t_type::t_type;
-	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive(xemmai::t_object* a_this);
+	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive();
 	XRAFT__XEMMAI__EXPORT virtual void f_finalize(xemmai::t_object* a_this);
-	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
-	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(t_stacked* a_stack, size_t a_n);
 };
 
 }

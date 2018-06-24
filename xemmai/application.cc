@@ -15,8 +15,8 @@ struct t_arguments
 	{
 		t_scoped size = t_symbol::f_instantiate(L"size");
 		t_scoped shift = t_symbol::f_instantiate(L"shift");
-		while (f_as<size_t>(v_arguments->f_get(size)()) > 0) {
-			t_scoped p = v_arguments->f_get(shift)();
+		while (f_as<size_t>(v_arguments->f_invoke(size)) > 0) {
+			t_scoped p = v_arguments->f_invoke(shift);
 			f_check<std::wstring>(p, L"argument");
 			v_as.push_back(portable::f_convert(f_as<const std::wstring&>(p)));
 		}
@@ -25,7 +25,7 @@ struct t_arguments
 	{
 		t_scoped push = t_symbol::f_instantiate(L"push");
 		size_t n = v_as.size();
-		for (size_t i = 0; i < n; ++i) v_arguments->f_get(push)(f_global()->f_as(portable::f_convert(v_as[i])));
+		for (size_t i = 0; i < n; ++i) v_arguments->f_invoke(push, f_global()->f_as(portable::f_convert(v_as[i])));
 	}
 	operator std::vector<std::string>&()
 	{
@@ -102,12 +102,12 @@ void t_type_of<xraft::t_application>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_application>::f_derive(xemmai::t_object* a_this)
+t_type* t_type_of<xraft::t_application>::f_derive()
 {
 	return nullptr;
 }
 
-t_scoped t_type_of<xraft::t_application>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_application>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	t_throwable::f_throw(L"uninstantiatable.");
 }

@@ -42,8 +42,6 @@ void f_draw(T& a_target, const t_value& a_callable)
 
 class t_extension : public xemmai::t_extension
 {
-	template<typename T, typename T_super> friend class t_define;
-
 	t_slot v_module_cairo;
 	xemmaix::cairo::t_extension* v_cairo;
 
@@ -61,9 +59,14 @@ public:
 		a_scan(v_module_cairo);
 	}
 	template<typename T>
-	xemmai::t_object* f_type() const
+	t_slot_of<t_type>& f_type_slot()
 	{
-		return v_cairo->f_type<T>();
+		return v_cairo->f_type_slot<T>();
+	}
+	template<typename T>
+	t_type* f_type() const
+	{
+		return const_cast<t_extension*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
 	t_scoped f_as(const T& a_value) const

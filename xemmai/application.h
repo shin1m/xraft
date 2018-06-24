@@ -88,12 +88,12 @@ struct t_type_of<xraft::t_application> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(t_scoped&& a_module, t_scoped&& a_super) : t_type(std::move(a_module), std::move(a_super))
+	t_type_of(t_scoped&& a_module, t_type* a_super) : t_type(std::move(a_module), std::move(a_super))
 	{
 		v_shared = true;
 	}
-	virtual t_type* f_derive(xemmai::t_object* a_this);
-	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive();
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }

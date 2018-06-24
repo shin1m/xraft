@@ -50,7 +50,7 @@ class t_proxy : public t_user, public t_entry
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(xemmai::t_object* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class))
+	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class))
 	{
 		a_p->f_user__(this);
 		v_object.f_pointer__(a_p);
@@ -59,7 +59,7 @@ class t_proxy : public t_user, public t_entry
 
 public:
 	template<typename T>
-	static t_scoped f_wrap(xemmai::t_object* a_class, T* a_value)
+	static t_scoped f_wrap(t_type* a_class, T* a_value)
 	{
 		if (!a_value) return t_value();
 		t_proxy* proxy = static_cast<t_proxy*>(a_value->f_user());
@@ -67,7 +67,7 @@ public:
 		return proxy->v_object;
 	}
 	template<typename T>
-	static t_scoped f_construct(xemmai::t_object* a_class, T* a_p)
+	static t_scoped f_construct(t_type* a_class, T* a_p)
 	{
 		t_proxy* proxy = new t_proxy(a_class, a_p);
 		proxy->f_acquire();
@@ -91,7 +91,7 @@ inline xemmai::t_object* f_self(const ::xraft::t_object* a_this)
 template<typename T>
 struct t_wrapper
 {
-	static t_scoped f_construct(xemmai::t_object* a_class)
+	static t_scoped f_construct(t_type* a_class)
 	{
 		return t_proxy::f_construct(a_class, new T());
 	}
@@ -105,11 +105,8 @@ struct t_with_application_thread
 	}
 };
 
-class t_extension : public xemmai::t_extension
+struct t_extension : xemmai::t_extension
 {
-	template<typename T, typename T_super> friend class xemmai::t_define;
-
-public:
 	t_slot v_symbol_on_move;
 	t_slot v_symbol_on_show;
 	t_slot v_symbol_on_hide;
@@ -135,34 +132,34 @@ public:
 	t_slot v_symbol_on_destroy;
 
 private:
-	t_slot v_type_application;
-	t_slot v_type_point;
-	t_slot v_type_extent;
-	t_slot v_type_rectangle;
-	t_slot v_type_object;
-	t_slot v_type_font;
-	t_slot v_type_color;
-	t_slot v_type_graphics;
-	t_slot v_type_graphics__function;
-	t_slot v_type_input_attribute;
-	t_slot v_type_input_context;
-	t_slot v_type_drawable;
-	t_slot v_type_bitmap;
-	t_slot v_type_pixmap;
-	t_slot v_type_region;
-	t_slot v_type_key;
-	t_slot v_type_modifier;
-	t_slot v_type_button;
-	t_slot v_type_timer;
-	t_slot v_type_cross_mode;
-	t_slot v_type_cross_detail;
-	t_slot v_type_window;
-	t_slot v_type_widget;
-	t_slot v_type_shell;
-	t_slot v_type_frame;
-	t_slot v_type_opengl_format;
-	t_slot v_type_opengl_widget;
-	t_slot v_type_opengl_context;
+	t_slot_of<t_type> v_type_application;
+	t_slot_of<t_type> v_type_point;
+	t_slot_of<t_type> v_type_extent;
+	t_slot_of<t_type> v_type_rectangle;
+	t_slot_of<t_type> v_type_object;
+	t_slot_of<t_type> v_type_font;
+	t_slot_of<t_type> v_type_color;
+	t_slot_of<t_type> v_type_graphics;
+	t_slot_of<t_type> v_type_graphics__function;
+	t_slot_of<t_type> v_type_input_attribute;
+	t_slot_of<t_type> v_type_input_context;
+	t_slot_of<t_type> v_type_drawable;
+	t_slot_of<t_type> v_type_bitmap;
+	t_slot_of<t_type> v_type_pixmap;
+	t_slot_of<t_type> v_type_region;
+	t_slot_of<t_type> v_type_key;
+	t_slot_of<t_type> v_type_modifier;
+	t_slot_of<t_type> v_type_button;
+	t_slot_of<t_type> v_type_timer;
+	t_slot_of<t_type> v_type_cross_mode;
+	t_slot_of<t_type> v_type_cross_detail;
+	t_slot_of<t_type> v_type_window;
+	t_slot_of<t_type> v_type_widget;
+	t_slot_of<t_type> v_type_shell;
+	t_slot_of<t_type> v_type_frame;
+	t_slot_of<t_type> v_type_opengl_format;
+	t_slot_of<t_type> v_type_opengl_widget;
+	t_slot_of<t_type> v_type_opengl_context;
 	xemmai::t_object* v_application;
 
 	static void f_main(t_extension* a_extension, const t_value& a_arguments, const t_value& a_callable);
@@ -170,9 +167,6 @@ private:
 	{
 		return a_extension->v_application;
 	}
-
-	template<typename T>
-	void f_type__(t_scoped&& a_type);
 
 public:
 	t_extension(xemmai::t_object* a_module);
@@ -183,9 +177,14 @@ public:
 		return f_global();
 	}
 	template<typename T>
-	xemmai::t_object* f_type() const
+	t_slot_of<t_type>& f_type_slot()
 	{
-		return f_global()->f_type<T>();
+		return f_global()->f_type_slot<T>();
+	}
+	template<typename T>
+	t_type* f_type() const
+	{
+		return const_cast<t_extension*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
 	t_scoped f_as(T&& a_value) const
@@ -196,343 +195,175 @@ public:
 };
 
 template<>
-inline void t_extension::f_type__<t_application>(t_scoped&& a_type)
-{
-	v_type_application = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_point>(t_scoped&& a_type)
-{
-	v_type_point = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_extent>(t_scoped&& a_type)
-{
-	v_type_extent = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_rectangle>(t_scoped&& a_type)
-{
-	v_type_rectangle = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<::xraft::t_object>(t_scoped&& a_type)
-{
-	v_type_object = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_font>(t_scoped&& a_type)
-{
-	v_type_font = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_color>(t_scoped&& a_type)
-{
-	v_type_color = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_graphics>(t_scoped&& a_type)
-{
-	v_type_graphics = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_graphics::t_function>(t_scoped&& a_type)
-{
-	v_type_graphics__function = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_input_attribute>(t_scoped&& a_type)
-{
-	v_type_input_attribute = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_input_context>(t_scoped&& a_type)
-{
-	v_type_input_context = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_drawable>(t_scoped&& a_type)
-{
-	v_type_drawable = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_bitmap>(t_scoped&& a_type)
-{
-	v_type_bitmap = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_pixmap>(t_scoped&& a_type)
-{
-	v_type_pixmap = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_region>(t_scoped&& a_type)
-{
-	v_type_region = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_key>(t_scoped&& a_type)
-{
-	v_type_key = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_modifier>(t_scoped&& a_type)
-{
-	v_type_modifier = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_button>(t_scoped&& a_type)
-{
-	v_type_button = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_timer>(t_scoped&& a_type)
-{
-	v_type_timer = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_cross_mode>(t_scoped&& a_type)
-{
-	v_type_cross_mode = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_cross_detail>(t_scoped&& a_type)
-{
-	v_type_cross_detail = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_window>(t_scoped&& a_type)
-{
-	v_type_window = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_widget>(t_scoped&& a_type)
-{
-	v_type_widget = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_shell>(t_scoped&& a_type)
-{
-	v_type_shell = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_frame>(t_scoped&& a_type)
-{
-	v_type_frame = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_opengl_format>(t_scoped&& a_type)
-{
-	v_type_opengl_format = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_opengl_widget>(t_scoped&& a_type)
-{
-	v_type_opengl_widget = std::move(a_type);
-}
-
-template<>
-inline void t_extension::f_type__<t_opengl_context>(t_scoped&& a_type)
-{
-	v_type_opengl_context = std::move(a_type);
-}
-
-template<>
 inline const t_extension* t_extension::f_extension<t_extension>() const
 {
 	return this;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_application>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_application>()
 {
 	return v_type_application;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_point>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_point>()
 {
 	return v_type_point;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_extent>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_extent>()
 {
 	return v_type_extent;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_rectangle>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_rectangle>()
 {
 	return v_type_rectangle;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<::xraft::t_object>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<::xraft::t_object>()
 {
 	return v_type_object;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_font>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_font>()
 {
 	return v_type_font;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_color>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_color>()
 {
 	return v_type_color;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_graphics>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_graphics>()
 {
 	return v_type_graphics;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_graphics::t_function>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_graphics::t_function>()
 {
 	return v_type_graphics__function;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_input_attribute>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_input_attribute>()
 {
 	return v_type_input_attribute;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_input_context>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_input_context>()
 {
 	return v_type_input_context;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_drawable>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_drawable>()
 {
 	return v_type_drawable;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_bitmap>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_bitmap>()
 {
 	return v_type_bitmap;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_pixmap>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_pixmap>()
 {
 	return v_type_pixmap;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_region>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_region>()
 {
 	return v_type_region;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_key>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_key>()
 {
 	return v_type_key;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_modifier>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_modifier>()
 {
 	return v_type_modifier;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_button>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_button>()
 {
 	return v_type_button;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_timer>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_timer>()
 {
 	return v_type_timer;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_cross_mode>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_cross_mode>()
 {
 	return v_type_cross_mode;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_cross_detail>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_cross_detail>()
 {
 	return v_type_cross_detail;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_window>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_window>()
 {
 	return v_type_window;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_widget>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_widget>()
 {
 	return v_type_widget;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_shell>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_shell>()
 {
 	return v_type_shell;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_frame>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_frame>()
 {
 	return v_type_frame;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_opengl_format>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_format>()
 {
 	return v_type_opengl_format;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_opengl_widget>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_widget>()
 {
 	return v_type_opengl_widget;
 }
 
 template<>
-inline xemmai::t_object* t_extension::f_type<t_opengl_context>() const
+inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_context>()
 {
 	return v_type_opengl_context;
 }

@@ -10,7 +10,7 @@ namespace xemmai
 template<>
 struct t_type_of<xraft::t_font> : t_type_of<xraft::t_object>
 {
-	static t_scoped f_construct(xemmai::t_object* a_class, const std::wstring& a_name)
+	static t_scoped f_construct(t_type* a_class, const std::wstring& a_name)
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xraft::t_font(portable::f_convert(a_name).c_str()));
 	}
@@ -29,7 +29,7 @@ struct t_type_of<xraft::t_font> : t_type_of<xraft::t_object>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -38,14 +38,14 @@ struct t_type_of<xraft::t_color> : t_type
 	typedef xemmaix::xraft::t_extension t_extension;
 
 #ifdef XRAFT_X11
-	static t_scoped f_construct(xemmai::t_object* a_class, const std::wstring& a_name)
+	static t_scoped f_construct(t_type* a_class, const std::wstring& a_name)
 	{
 		t_scoped object = xemmai::t_object::f_allocate(a_class);
 		object.f_pointer__(new xraft::t_color(portable::f_convert(a_name).c_str()));
 		return object;
 	}
 #endif
-	static t_scoped f_construct(xemmai::t_object* a_class, size_t a_red, size_t a_green, size_t a_blue)
+	static t_scoped f_construct(t_type* a_class, size_t a_red, size_t a_green, size_t a_blue)
 	{
 		t_scoped object = xemmai::t_object::f_allocate(a_class);
 		object.f_pointer__(new xraft::t_color(a_red, a_green, a_blue));
@@ -66,9 +66,9 @@ struct t_type_of<xraft::t_color> : t_type
 	static void f_define(t_extension* a_extension);
 
 	using t_type::t_type;
-	virtual t_type* f_derive(xemmai::t_object* a_this);
+	virtual t_type* f_derive();
 	virtual void f_finalize(xemmai::t_object* a_this);
-	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>

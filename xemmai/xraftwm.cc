@@ -11,8 +11,6 @@ using namespace xemmai;
 
 struct t_xraftwm : xemmai::t_extension
 {
-	template<typename T, typename T_super> friend class t_define;
-
 	t_slot v_module_xraft;
 	xemmaix::xraft::t_extension* v_xraft;
 	t_slot v_symbol_on_move;
@@ -38,12 +36,9 @@ struct t_xraftwm : xemmai::t_extension
 	t_slot v_symbol_on_name;
 	t_slot v_symbol_on_protocols;
 	t_slot v_symbol_on_client;
-	t_slot v_type_side;
-	t_slot v_type_client;
-	t_slot v_type_root;
-
-	template<typename T>
-	void f_type__(t_scoped&& a_type);
+	t_slot_of<t_type> v_type_side;
+	t_slot_of<t_type> v_type_client;
+	t_slot_of<t_type> v_type_root;
 
 	t_xraftwm(xemmai::t_object* a_module, t_scoped&& a_xraft);
 	virtual void f_scan(t_scan a_scan)
@@ -82,9 +77,14 @@ struct t_xraftwm : xemmai::t_extension
 		return v_xraft->f_extension<T>();
 	}
 	template<typename T>
-	xemmai::t_object* f_type() const
+	t_slot_of<t_type>& f_type_slot()
 	{
-		return v_xraft->f_type<T>();
+		return v_xraft->f_type_slot<T>();
+	}
+	template<typename T>
+	t_type* f_type() const
+	{
+		return const_cast<t_xraftwm*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
 	t_scoped f_as(T&& a_value) const
@@ -95,43 +95,25 @@ struct t_xraftwm : xemmai::t_extension
 };
 
 template<>
-inline void t_xraftwm::f_type__<t_side>(t_scoped&& a_type)
-{
-	v_type_side = std::move(a_type);
-}
-
-template<>
-inline void t_xraftwm::f_type__<t_client>(t_scoped&& a_type)
-{
-	v_type_client = std::move(a_type);
-}
-
-template<>
-inline void t_xraftwm::f_type__<t_root>(t_scoped&& a_type)
-{
-	v_type_root = std::move(a_type);
-}
-
-template<>
 inline const t_xraftwm* t_xraftwm::f_extension<t_xraftwm>() const
 {
 	return this;
 }
 
 template<>
-inline xemmai::t_object* t_xraftwm::f_type<t_side>() const
+inline t_slot_of<t_type>& t_xraftwm::f_type_slot<t_side>()
 {
 	return v_type_side;
 }
 
 template<>
-inline xemmai::t_object* t_xraftwm::f_type<t_client>() const
+inline t_slot_of<t_type>& t_xraftwm::f_type_slot<t_client>()
 {
 	return v_type_client;
 }
 
 template<>
-inline xemmai::t_object* t_xraftwm::f_type<t_root>() const
+inline t_slot_of<t_type>& t_xraftwm::f_type_slot<t_root>()
 {
 	return v_type_root;
 }
@@ -159,8 +141,8 @@ struct t_type_of<xraft::t_client> : t_type_of<xraft::t_widget>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_widget>::t_type_of;
-	virtual t_type* f_derive(xemmai::t_object* a_this);
-	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive();
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -171,8 +153,8 @@ struct t_type_of<xraft::t_root> : t_type_of<xraft::t_window>
 	static void f_define(t_extension* a_extension);
 
 	using t_type_of<xraft::t_window>::t_type_of;
-	virtual t_type* f_derive(xemmai::t_object* a_this);
-	virtual t_scoped f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n);
+	virtual t_type* f_derive();
+	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }
@@ -231,8 +213,8 @@ struct t_client : ::xraft::t_client, t_wrapper<t_client>
 	}
 	virtual void f_on_activate()
 	{
-		t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-		f_self(this)->f_get(extension->v_symbol_on_activate)();
+		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
+		f_self(this)->f_invoke(extension->v_symbol_on_activate);
 	}
 	static void f_super__on_deactivate(::xraft::t_client& a_self)
 	{
@@ -243,8 +225,8 @@ struct t_client : ::xraft::t_client, t_wrapper<t_client>
 	}
 	virtual void f_on_deactivate()
 	{
-		t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-		f_self(this)->f_get(extension->v_symbol_on_deactivate)();
+		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
+		f_self(this)->f_invoke(extension->v_symbol_on_deactivate);
 	}
 	static void f_super__on_name(::xraft::t_client& a_self)
 	{
@@ -255,8 +237,8 @@ struct t_client : ::xraft::t_client, t_wrapper<t_client>
 	}
 	virtual void f_on_name()
 	{
-		t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-		f_self(this)->f_get(extension->v_symbol_on_name)();
+		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
+		f_self(this)->f_invoke(extension->v_symbol_on_name);
 	}
 	static void f_super__on_protocols(::xraft::t_client& a_self)
 	{
@@ -267,8 +249,8 @@ struct t_client : ::xraft::t_client, t_wrapper<t_client>
 	}
 	virtual void f_on_protocols()
 	{
-		t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-		f_self(this)->f_get(extension->v_symbol_on_protocols)();
+		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
+		f_self(this)->f_invoke(extension->v_symbol_on_protocols);
 	}
 };
 
@@ -281,8 +263,8 @@ struct t_root : ::xraft::t_root, t_wrapper<t_root>
 #undef T_WINDOW
 	virtual t_pointer<::xraft::t_client> f_on_client()
 	{
-		t_extension* extension = f_extension<t_extension>(f_as<t_type*>(f_self(this)->f_type())->v_module);
-		t_scoped p = f_self(this)->f_get(extension->v_symbol_on_client)();
+		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
+		t_scoped p = f_self(this)->f_invoke(extension->v_symbol_on_client);
 		f_check<::xraft::t_client>(p, L"client");
 		t_pointer<::xraft::t_client> q = f_as<::xraft::t_client*>(p);
 		q->f_release();
@@ -355,14 +337,14 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_client>::f_derive(xemmai::t_object* a_this)
+t_type* t_type_of<xraft::t_client>::f_derive()
 {
-	return new t_type_of(v_module, a_this);
+	return new t_type_of(v_module, this);
 }
 
-t_scoped t_type_of<xraft::t_client>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_client>::f_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(xemmai::t_object*), xemmaix::xraft::t_client::f_construct>::t_bind<xraft::t_client>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_client::f_construct>::t_bind<xraft::t_client>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xraft::t_root>::f_define(t_extension* a_extension)
@@ -384,14 +366,14 @@ void t_type_of<xraft::t_root>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_root>::f_derive(xemmai::t_object* a_this)
+t_type* t_type_of<xraft::t_root>::f_derive()
 {
-	return new t_type_of(v_module, a_this);
+	return new t_type_of(v_module, this);
 }
 
-t_scoped t_type_of<xraft::t_root>::f_construct(xemmai::t_object* a_class, t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_root>::f_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(xemmai::t_object*), xemmaix::xraft::t_root::f_construct>::t_bind<xraft::t_root>::f_do(a_class, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_root::f_construct>::t_bind<xraft::t_root>::f_do(this, a_stack, a_n);
 }
 
 }
