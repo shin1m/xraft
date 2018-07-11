@@ -7,7 +7,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_opengl_format> : t_type_of<xraft::t_object>
+struct t_type_of<xraft::t_opengl_format> : t_bears<xraft::t_opengl_format, t_type_of<xraft::t_object>>
 {
 	static t_scoped f_construct(t_type* a_class, bool a_rgba)
 	{
@@ -35,22 +35,21 @@ struct t_type_of<xraft::t_opengl_format> : t_type_of<xraft::t_object>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_object>::t_type_of;
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_opengl_widget> : t_type_of<xraft::t_widget>
+struct t_type_of<xraft::t_opengl_widget> : xemmaix::xraft::t_derivable<t_bears<xraft::t_opengl_widget, t_type_of<xraft::t_widget>>>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_widget>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_opengl_context> : t_type_of<xraft::t_object>
+struct t_type_of<xraft::t_opengl_context> : t_bears<xraft::t_opengl_context, t_type_of<xraft::t_object>>
 {
 	static t_scoped f_construct(t_type* a_class, const xraft::t_pointer<xraft::t_opengl_format>& a_format)
 	{
@@ -62,7 +61,7 @@ struct t_type_of<xraft::t_opengl_context> : t_type_of<xraft::t_object>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_object>::t_type_of;
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 

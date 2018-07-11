@@ -1,7 +1,5 @@
 #include "object.h"
 
-#include <cassert>
-
 namespace xemmai
 {
 
@@ -14,15 +12,9 @@ void t_type_of<xraft::t_object>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_object>::f_derive()
-{
-	return nullptr;
-}
-
 void t_type_of<xraft::t_object>::f_finalize(xemmai::t_object* a_this)
 {
-//	assert(!f_as<xraft::t_object*>(a_this));
-	assert(!a_this->f_pointer());
+	assert(a_this->f_pointer() == nullptr);
 }
 
 t_scoped t_type_of<xraft::t_object>::f_construct(t_stacked* a_stack, size_t a_n)

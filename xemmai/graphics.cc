@@ -39,16 +39,6 @@ void t_type_of<xraft::t_color>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_color>::f_derive()
-{
-	return new t_type_of(v_module, this);
-}
-
-void t_type_of<xraft::t_color>::f_finalize(t_object* a_this)
-{
-	delete &f_as<xraft::t_color&>(a_this);
-}
-
 t_scoped t_type_of<xraft::t_color>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 #ifdef XRAFT_X11
@@ -99,11 +89,6 @@ void t_type_of<xraft::t_graphics>::f_define(t_extension* a_extension)
 			t_member<void(*)(t_graphics&, const t_value&), f_fill, t_with_application_thread>()
 		)
 	;
-}
-
-t_type* t_type_of<xraft::t_graphics>::f_derive(t_object* a_this)
-{
-	return nullptr;
 }
 
 void t_type_of<xraft::t_graphics::t_function>::f_define(t_extension* a_extension)

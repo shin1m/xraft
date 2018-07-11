@@ -132,7 +132,7 @@ struct t_type_of<xraft::t_side> : t_enum_of<xraft::t_side, xemmaix::xraft::t_xra
 };
 
 template<>
-struct t_type_of<xraft::t_client> : t_type_of<xraft::t_widget>
+struct t_type_of<xraft::t_client> : xemmaix::xraft::t_derivable<t_bears<xraft::t_client, t_type_of<xraft::t_widget>>>
 {
 	typedef xemmaix::xraft::t_xraftwm t_extension;
 
@@ -140,29 +140,24 @@ struct t_type_of<xraft::t_client> : t_type_of<xraft::t_widget>
 	static void f_borders__(xraft::t_client& a_self, t_scoped&& a_borders);
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_widget>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_root> : t_type_of<xraft::t_window>
+struct t_type_of<xraft::t_root> : xemmaix::xraft::t_derivable<t_bears<xraft::t_root, t_type_of<xraft::t_window>>>
 {
 	typedef xemmaix::xraft::t_xraftwm t_extension;
 
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_window>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 t_xraftwm::t_xraftwm(xemmai::t_object* a_module, t_scoped&& a_xraft) : xemmai::t_extension(a_module), v_module_xraft(std::move(a_xraft))
@@ -274,8 +269,6 @@ struct t_root : ::xraft::t_root, t_wrapper<t_root>
 
 }
 
-}
-
 namespace xemmai
 {
 
@@ -337,11 +330,6 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_client>::f_derive()
-{
-	return new t_type_of(v_module, this);
-}
-
 t_scoped t_type_of<xraft::t_client>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_client::f_construct>::t_bind<xraft::t_client>::f_do(this, a_stack, a_n);
@@ -364,11 +352,6 @@ void t_type_of<xraft::t_root>::f_define(t_extension* a_extension)
 		)
 		(L"share_background", t_member<void(t_root::*)(const t_pointer<t_pixmap>&), &t_root::f_share_background, t_with_application_thread>())
 	;
-}
-
-t_type* t_type_of<xraft::t_root>::f_derive()
-{
-	return new t_type_of(v_module, this);
 }
 
 t_scoped t_type_of<xraft::t_root>::f_construct(t_stacked* a_stack, size_t a_n)

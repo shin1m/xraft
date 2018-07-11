@@ -9,7 +9,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_bitmap> : t_type_of<xraft::t_drawable>
+struct t_type_of<xraft::t_bitmap> : t_bears<xraft::t_bitmap, t_type_of<xraft::t_drawable>>
 {
 	static t_scoped f_construct(t_type* a_class, unsigned a_width, unsigned a_height)
 	{
@@ -25,12 +25,12 @@ struct t_type_of<xraft::t_bitmap> : t_type_of<xraft::t_drawable>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_drawable>::t_type_of;
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_pixmap> : t_type_of<xraft::t_drawable>
+struct t_type_of<xraft::t_pixmap> : t_bears<xraft::t_pixmap, t_type_of<xraft::t_drawable>>
 {
 	static t_scoped f_construct(t_type* a_class, unsigned a_width, unsigned a_height)
 	{
@@ -50,7 +50,7 @@ struct t_type_of<xraft::t_pixmap> : t_type_of<xraft::t_drawable>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_drawable>::t_type_of;
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 

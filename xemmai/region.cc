@@ -25,16 +25,6 @@ void t_type_of<xraft::t_region>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_region>::f_derive()
-{
-	return new t_type_of(v_module, this);
-}
-
-void t_type_of<xraft::t_region>::f_finalize(t_object* a_this)
-{
-	delete &f_as<xraft::t_region&>(a_this);
-}
-
 t_scoped t_type_of<xraft::t_region>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct<>::t_bind<xraft::t_region>::f_do(this, a_stack, a_n);

@@ -47,7 +47,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_application> : t_type
+struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_with_traits<t_bears<xraft::t_application>, false, true>>>
 {
 	template<typename T0>
 	struct t_as
@@ -88,12 +88,7 @@ struct t_type_of<xraft::t_application> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	t_type_of(t_scoped&& a_module, t_type* a_super) : t_type(std::move(a_module), std::move(a_super))
-	{
-		v_shared = true;
-	}
-	virtual t_type* f_derive();
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	using t_base::t_base;
 };
 
 }

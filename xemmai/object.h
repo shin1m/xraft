@@ -13,7 +13,7 @@ struct t_fundamental<xraft::t_pointer<T>>
 };
 
 template<>
-struct t_type_of<xraft::t_object> : t_type
+struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 {
 	template<typename T0>
 	struct t_cast
@@ -61,7 +61,7 @@ struct t_type_of<xraft::t_object> : t_type
 		static bool f_call(T1&& a_object)
 		{
 			auto p = f_object(std::forward<T1>(a_object));
-			return reinterpret_cast<size_t>(p) >= t_value::e_tag__OBJECT && dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(p->f_type()) != nullptr;
+			return reinterpret_cast<size_t>(p) >= t_value::e_tag__OBJECT && p->f_type()->template f_derives<typename t_fundamental<T0>::t_type>();
 		}
 	};
 	template<typename T0>
@@ -79,7 +79,7 @@ struct t_type_of<xraft::t_object> : t_type
 			case t_value::e_tag__FLOAT:
 				return false;
 			default:
-				return dynamic_cast<t_type_of<typename t_fundamental<T0>::t_type>*>(p->f_type()) != nullptr;
+				return p->f_type()->template f_derives<typename t_fundamental<T0>::t_type>();
 			}
 		}
 	};
@@ -114,8 +114,7 @@ struct t_type_of<xraft::t_object> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type::t_type;
-	XRAFT__XEMMAI__EXPORT virtual t_type* f_derive();
+	using t_base::t_base;
 	XRAFT__XEMMAI__EXPORT virtual void f_finalize(xemmai::t_object* a_this);
 	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(t_stacked* a_stack, size_t a_n);
@@ -123,10 +122,7 @@ struct t_type_of<xraft::t_object> : t_type
 
 }
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 inline void t_proxy::f_acquire()
@@ -138,8 +134,6 @@ inline void t_proxy::f_acquire()
 inline void t_proxy::f_release()
 {
 	if (v_n > 0 && --v_n <= 0) f_as<::xraft::t_object*>(v_object)->f_release();
-}
-
 }
 
 }

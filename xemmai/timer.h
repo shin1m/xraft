@@ -7,7 +7,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_timer> : t_type_of<xraft::t_object>
+struct t_type_of<xraft::t_timer> : xemmaix::xraft::t_derivable<t_bears<xraft::t_timer, t_type_of<xraft::t_object>>>
 {
 	static void f_start(xraft::t_timer& a_self, size_t a_interval)
 	{
@@ -15,8 +15,7 @@ struct t_type_of<xraft::t_timer> : t_type_of<xraft::t_object>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_object>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 

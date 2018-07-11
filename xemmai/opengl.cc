@@ -80,11 +80,6 @@ void t_type_of<xraft::t_opengl_widget>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_opengl_widget>::f_derive()
-{
-	return new t_type_of(v_module, this);
-}
-
 t_scoped t_type_of<xraft::t_opengl_widget>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	if (a_n < 1) t_throwable::f_throw(L"must be called with at least an argument.");

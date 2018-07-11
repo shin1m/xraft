@@ -102,14 +102,4 @@ void t_type_of<xraft::t_application>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_application>::f_derive()
-{
-	return nullptr;
-}
-
-t_scoped t_type_of<xraft::t_application>::f_construct(t_stacked* a_stack, size_t a_n)
-{
-	t_throwable::f_throw(L"uninstantiatable.");
-}
-
 }

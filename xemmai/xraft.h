@@ -13,10 +13,7 @@
 #include <xraft/opengl.h>
 #include <xemmai/convert.h>
 
-namespace xemmaix
-{
-
-namespace xraft
+namespace xemmaix::xraft
 {
 
 using namespace ::xraft;
@@ -368,7 +365,17 @@ inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_context>()
 	return v_type_opengl_context;
 }
 
-}
+template<typename T_base>
+struct t_derivable : T_base
+{
+	typedef t_derivable t_base;
+
+	using T_base::T_base;
+	virtual t_type* f_derive()
+	{
+		return new t_type_of<typename T_base::t_what>(t_type_of<typename T_base::t_what>::V_ids, this, this->v_module);
+	}
+};
 
 }
 

@@ -7,7 +7,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_drawable> : t_type_of<xraft::t_object>
+struct t_type_of<xraft::t_drawable> : t_bears<xraft::t_drawable, t_type_of<xraft::t_object>>
 {
 	static void f_paint(xraft::t_drawable& a_self, const t_value& a_callable)
 	{
@@ -16,7 +16,7 @@ struct t_type_of<xraft::t_drawable> : t_type_of<xraft::t_object>
 	static void f_paint(xraft::t_drawable& a_self, const t_value& a_callable, bool a_include);
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_object>::t_type_of;
+	using t_base::t_base;
 };
 
 }

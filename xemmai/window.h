@@ -26,7 +26,7 @@ struct t_type_of<xraft::t_cross_detail> : t_enum_of<xraft::t_cross_detail, xemma
 };
 
 template<>
-struct t_type_of<xraft::t_window> : t_type_of<xraft::t_drawable>
+struct t_type_of<xraft::t_window> : t_bears<xraft::t_window, t_type_of<xraft::t_drawable>>
 {
 	static void f_add(xraft::t_window& a_self, const xraft::t_pointer<xraft::t_widget>& a_widget)
 	{
@@ -40,36 +40,33 @@ struct t_type_of<xraft::t_window> : t_type_of<xraft::t_drawable>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_drawable>::t_type_of;
+	using t_base::t_base;
 };
 
 template<>
-struct t_type_of<xraft::t_widget> : t_type_of<xraft::t_window>
+struct t_type_of<xraft::t_widget> : xemmaix::xraft::t_derivable<t_bears<xraft::t_widget, t_type_of<xraft::t_window>>>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_window>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_shell> : t_type_of<xraft::t_window>
+struct t_type_of<xraft::t_shell> : xemmaix::xraft::t_derivable<t_bears<xraft::t_shell, t_type_of<xraft::t_window>>>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_window>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_frame> : t_type_of<xraft::t_shell>
+struct t_type_of<xraft::t_frame> : xemmaix::xraft::t_derivable<t_bears<xraft::t_frame, t_type_of<xraft::t_shell>>>
 {
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_shell>::t_type_of;
-	virtual t_type* f_derive();
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 

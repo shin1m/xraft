@@ -8,7 +8,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_font> : t_type_of<xraft::t_object>
+struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_object>>
 {
 	static t_scoped f_construct(t_type* a_class, const std::wstring& a_name)
 	{
@@ -28,12 +28,12 @@ struct t_type_of<xraft::t_font> : t_type_of<xraft::t_object>
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type_of<xraft::t_object>::t_type_of;
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_color> : t_type
+struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_color>>
 {
 	typedef xemmaix::xraft::t_extension t_extension;
 
@@ -65,14 +65,12 @@ struct t_type_of<xraft::t_color> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type::t_type;
-	virtual t_type* f_derive();
-	virtual void f_finalize(xemmai::t_object* a_this);
+	using t_base::t_base;
 	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_graphics> : t_type
+struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 {
 	template<typename T0>
 	struct t_as
@@ -130,8 +128,7 @@ struct t_type_of<xraft::t_graphics> : t_type
 	}
 	static void f_define(t_extension* a_extension);
 
-	using t_type::t_type;
-	virtual t_type* f_derive(xemmai::t_object* a_this);
+	using t_base::t_base;
 };
 
 template<>

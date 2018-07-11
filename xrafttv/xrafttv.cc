@@ -2,10 +2,7 @@
 
 #include "graphics.h"
 
-namespace xemmaix
-{
-
-namespace xrafttv
+namespace xemmaix::xrafttv
 {
 
 void t_text_model::f_loaded()
@@ -117,8 +114,6 @@ void t_extension::f_scan(t_scan a_scan)
 
 }
 
-}
-
 namespace xemmai
 {
 
@@ -131,11 +126,6 @@ void t_type_of<xemmaix::xrafttv::t_attribute>::f_define(t_extension* a_extension
 		(L"foreground", t_member<t_pixel(t_attribute::*)() const, &t_attribute::f_foreground, t_with_application_thread>())
 		(L"background", t_member<t_pixel(t_attribute::*)() const, &t_attribute::f_background, t_with_application_thread>())
 	;
-}
-
-t_type* t_type_of<xemmaix::xrafttv::t_attribute>::f_derive()
-{
-	return new t_type_of(v_module, this);
 }
 
 t_scoped t_type_of<xemmaix::xrafttv::t_attribute>::f_construct(t_stacked* a_stack, size_t a_n)
@@ -167,11 +157,6 @@ void t_type_of<xemmaix::xrafttv::t_text_model>::f_define(t_extension* a_extensio
 		(L"replace", t_member<void(t_text_model::*)(size_t, size_t, t_scoped&&, const std::wstring&), &t_text_model::f_replace, t_with_application_thread>())
 		(L"attribute", t_member<void(t_text_model::*)(size_t, size_t, const t_pointer<t_attribute>&), &t_text_model::f_attribute, t_with_application_thread>())
 	;
-}
-
-t_type* t_type_of<xemmaix::xrafttv::t_text_model>::f_derive()
-{
-	return new t_type_of(v_module, this);
 }
 
 t_scoped t_type_of<xemmaix::xrafttv::t_text_model>::f_construct(t_stacked* a_stack, size_t a_n)
@@ -220,11 +205,6 @@ void t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_define(t_extension* a_extens
 		(L"caret_move_line_x", t_member<void(t_wrapped_view::*)(size_t), &t_wrapped_view::f_caret_move_line_x, t_with_application_thread>())
 		(L"caret_move_point", t_member<void(t_wrapped_view::*)(size_t, size_t), &t_wrapped_view::f_caret_move_point, t_with_application_thread>())
 	;
-}
-
-t_type* t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_derive()
-{
-	return new t_type_of(v_module, this);
 }
 
 t_scoped t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_construct(t_stacked* a_stack, size_t a_n)

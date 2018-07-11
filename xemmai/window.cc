@@ -149,11 +149,6 @@ void t_type_of<xraft::t_widget>::f_define(t_extension* a_extension)
 	;
 }
 
-t_type* t_type_of<xraft::t_widget>::f_derive()
-{
-	return new t_type_of(v_module, this);
-}
-
 t_scoped t_type_of<xraft::t_widget>::f_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_widget::f_construct>::t_bind<xraft::t_widget>::f_do(this, a_stack, 0);
@@ -170,11 +165,6 @@ void t_type_of<xraft::t_shell>::f_define(t_extension* a_extension)
 		(a_extension->v_symbol_on_activate, t_member<void(*)(t_shell&), xemmaix::xraft::t_shell::f_super__on_activate, t_with_application_thread>())
 		(a_extension->v_symbol_on_deactivate, t_member<void(*)(t_shell&), xemmaix::xraft::t_shell::f_super__on_deactivate, t_with_application_thread>())
 	;
-}
-
-t_type* t_type_of<xraft::t_shell>::f_derive()
-{
-	return new t_type_of(v_module, this);
 }
 
 t_scoped t_type_of<xraft::t_shell>::f_construct(t_stacked* a_stack, size_t a_n)
@@ -196,11 +186,6 @@ void t_type_of<xraft::t_frame>::f_define(t_extension* a_extension)
 		(L"caption", t_member<const std::wstring&(t_frame::*)() const, &t_frame::f_caption, t_with_application_thread>())
 		(L"caption__", t_member<void(t_frame::*)(const std::wstring&), &t_frame::f_caption__, t_with_application_thread>())
 	;
-}
-
-t_type* t_type_of<xraft::t_frame>::f_derive()
-{
-	return new t_type_of(v_module, this);
 }
 
 t_scoped t_type_of<xraft::t_frame>::f_construct(t_stacked* a_stack, size_t a_n)
