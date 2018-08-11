@@ -23,7 +23,7 @@ struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 		{
 			xraft::f_application();
 			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
-			if (!p) t_throwable::f_throw(L"already destroyed.");
+			if (!p) f_throw(L"already destroyed.");
 			return p;
 		}
 	};
@@ -115,9 +115,9 @@ struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	XRAFT__XEMMAI__EXPORT virtual void f_finalize(xemmai::t_object* a_this);
-	XRAFT__XEMMAI__EXPORT virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
-	XRAFT__XEMMAI__EXPORT virtual void f_instantiate(t_stacked* a_stack, size_t a_n);
+	static void f_do_finalize(xemmai::t_object* a_this);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	void f_do_instantiate(t_stacked* a_stack, size_t a_n);
 };
 
 }

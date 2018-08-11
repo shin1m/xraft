@@ -52,7 +52,7 @@ void t_type_of<xraft::t_opengl_format>::f_define(t_extension* a_extension)
 	t_define<xraft::t_opengl_format, xraft::t_object>(a_extension, L"GLFormat");
 }
 
-t_scoped t_type_of<xraft::t_opengl_format>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_opengl_format>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
 		t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_wrapper<xraft::t_opengl_format>::f_construct>,
@@ -80,9 +80,9 @@ void t_type_of<xraft::t_opengl_widget>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_opengl_widget>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_opengl_widget>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
-	if (a_n < 1) t_throwable::f_throw(L"must be called with at least an argument.");
+	if (a_n < 1) f_throw(L"must be called with at least an argument.");
 	return t_construct_with<t_scoped (*)(t_type*, const xraft::t_pointer<xraft::t_opengl_format>&), xemmaix::xraft::t_opengl_widget::f_construct>::t_bind<xraft::t_opengl_widget>::f_do(this, a_stack, 1);
 }
 
@@ -96,7 +96,7 @@ void t_type_of<xraft::t_opengl_context>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_opengl_context>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_opengl_context>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
 		t_construct_with<t_scoped(*)(t_type*, const xraft::t_pointer<xraft::t_opengl_format>&), f_construct>,

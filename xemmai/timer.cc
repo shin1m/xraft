@@ -39,7 +39,7 @@ void t_type_of<xraft::t_timer>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_timer>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_timer>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*, t_scoped&&), xemmaix::xraft::t_timer::f_construct>::t_bind<xraft::t_timer>::f_do(this, a_stack, a_n);
 }

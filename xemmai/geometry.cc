@@ -15,7 +15,7 @@ void t_type_of<xraft::t_point>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_point>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_point>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct<int, int>::t_bind<xraft::t_point>::f_do(this, a_stack, a_n);
 }
@@ -32,7 +32,7 @@ void t_type_of<xraft::t_extent>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_extent>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_extent>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct<unsigned, unsigned>::t_bind<xraft::t_extent>::f_do(this, a_stack, a_n);
 }
@@ -53,7 +53,7 @@ void t_type_of<xraft::t_rectangle>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_rectangle>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_rectangle>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
 		t_construct<const xraft::t_point&, const xraft::t_extent&>,

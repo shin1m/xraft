@@ -13,7 +13,7 @@ void t_type_of<xraft::t_bitmap>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_bitmap>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_bitmap>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
 		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned), f_construct>,
@@ -33,7 +33,7 @@ void t_type_of<xraft::t_pixmap>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_pixmap>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_pixmap>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_overload<
 		t_construct_with<t_scoped(*)(t_type*, unsigned, unsigned), f_construct>,

@@ -12,17 +12,17 @@ void t_type_of<xraft::t_object>::f_define(t_extension* a_extension)
 	;
 }
 
-void t_type_of<xraft::t_object>::f_finalize(xemmai::t_object* a_this)
+void t_type_of<xraft::t_object>::f_do_finalize(xemmai::t_object* a_this)
 {
 	assert(a_this->f_pointer() == nullptr);
 }
 
-t_scoped t_type_of<xraft::t_object>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_object>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
-	t_throwable::f_throw(L"uninstantiatable.");
+	f_throw(L"uninstantiatable.");
 }
 
-void t_type_of<xraft::t_object>::f_instantiate(t_stacked* a_stack, size_t a_n)
+void t_type_of<xraft::t_object>::f_do_instantiate(t_stacked* a_stack, size_t a_n)
 {
 	t_scoped object;
 	try {

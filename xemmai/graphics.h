@@ -29,7 +29,7 @@ struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_obje
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -66,7 +66,7 @@ struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -88,7 +88,7 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 		static T0* f_call(T1&& a_object)
 		{
 			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
-			if (!p) t_throwable::f_throw(L"already destroyed.");
+			if (!p) f_throw(L"already destroyed.");
 			return p;
 		}
 	};
@@ -97,7 +97,7 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 	static void f_extract(const t_value& a_points0, std::vector<xraft::t_point>& a_points1);
 	static void f_font(xraft::t_graphics& a_self, const xraft::t_pointer<xraft::t_font>& a_font)
 	{
-		if (!a_font) t_throwable::f_throw(L"font must not be null.");
+		if (!a_font) f_throw(L"font must not be null.");
 		a_self.f_font(a_font);
 	}
 	static void f_draw(xraft::t_graphics& a_self, const t_value& a_points)
@@ -118,12 +118,12 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 	}
 	static void f_draw(xraft::t_graphics& a_self, int a_x, int a_y, const xraft::t_pointer<xraft::t_pixmap>& a_pixmap, int a_left, int a_top, unsigned a_width, unsigned a_height)
 	{
-		if (!a_pixmap) t_throwable::f_throw(L"pixmap must not be null.");
+		if (!a_pixmap) f_throw(L"pixmap must not be null.");
 		a_self.f_draw(a_x, a_y, a_pixmap, a_left, a_top, a_width, a_height);
 	}
 	static void f_draw(xraft::t_graphics& a_self, int a_x, int a_y, const xraft::t_pointer<xraft::t_pixmap>& a_pixmap, int a_left, int a_top, unsigned a_width, unsigned a_height, const xraft::t_pointer<xraft::t_bitmap>& a_bitmap)
 	{
-		if (!a_pixmap) t_throwable::f_throw(L"pixmap must not be null.");
+		if (!a_pixmap) f_throw(L"pixmap must not be null.");
 		a_self.f_draw(a_x, a_y, a_pixmap, a_left, a_top, a_width, a_height, a_bitmap);
 	}
 	static void f_define(t_extension* a_extension);

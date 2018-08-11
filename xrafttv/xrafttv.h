@@ -246,17 +246,17 @@ struct t_text_model : ::xraft::t_object, ::xraft::t_text_model<t_pointer<t_attri
 	}
 	size_t f_segment_to_text(size_t a_p) const
 	{
-		if (a_p >= f_segments_size()) t_throwable::f_throw(L"out of range.");
+		if (a_p >= f_segments_size()) f_throw(L"out of range.");
 		return t_base::f_segment_to_text(a_p);
 	}
 	const t_pointer<t_attribute>& f_segment_to_attribute(size_t a_p) const
 	{
-		if (a_p >= f_segments_size()) t_throwable::f_throw(L"out of range.");
+		if (a_p >= f_segments_size()) f_throw(L"out of range.");
 		return t_base::f_segment_to_attribute(a_p);
 	}
 	size_t f_text_to_segment(size_t a_p) const
 	{
-		if (a_p >= f_text_size()) t_throwable::f_throw(L"out of range.");
+		if (a_p >= f_text_size()) f_throw(L"out of range.");
 		return t_base::f_text_to_segment(a_p);
 	}
 	t_scoped f_slice(size_t a_p, size_t a_n) const;
@@ -264,7 +264,7 @@ struct t_text_model : ::xraft::t_object, ::xraft::t_text_model<t_pointer<t_attri
 	void f_attribute(size_t a_p, size_t a_n, const t_pointer<t_attribute>& a_attribute)
 	{
 		size_t n = f_text_size();
-		if (a_p > n || a_n > n || a_p + a_n > n) t_throwable::f_throw(L"out of range.");
+		if (a_p > n || a_n > n || a_p + a_n > n) f_throw(L"out of range.");
 		t_base::f_attribute(a_p, a_n, a_attribute);
 	}
 };
@@ -382,52 +382,52 @@ struct t_wrapped_view : ::xraft::t_object, ::xraft::t_wrapped_view<t_pointer<t_a
 	}
 	size_t f_line_to_row(size_t a_line) const
 	{
-		if (a_line >= f_lines_size()) t_throwable::f_throw(L"out of range.");
+		if (a_line >= f_lines_size()) f_throw(L"out of range.");
 		return t_base::f_line_to_row(a_line);
 	}
 	size_t f_row_to_text(size_t a_row) const
 	{
-		if (a_row >= f_rows_size()) t_throwable::f_throw(L"out of range.");
+		if (a_row >= f_rows_size()) f_throw(L"out of range.");
 		return t_base::f_row_to_text(a_row);
 	}
 	size_t f_line_to_text(size_t a_line) const
 	{
-		if (a_line >= f_lines_size()) t_throwable::f_throw(L"out of range.");
+		if (a_line >= f_lines_size()) f_throw(L"out of range.");
 		return t_base::f_line_to_text(a_line);
 	}
 	void f_caret_move_text(size_t a_text)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_text(a_text);
 	}
 	void f_caret_move_text_forward(size_t a_n)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_text_forward(a_n);
 	}
 	void f_caret_move_text_backward(size_t a_n)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_text_backward(a_n);
 	}
 	void f_caret_move_line_forward(size_t a_n)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_line_forward(a_n);
 	}
 	void f_caret_move_line_backward(size_t a_n)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_line_backward(a_n);
 	}
 	void f_caret_move_line_x(size_t a_x)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_line_x(a_x);
 	}
 	void f_caret_move_point(size_t a_x, size_t a_y)
 	{
-		if (!v_model) t_throwable::f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model.");
 		t_base::f_caret_move_point(a_x, a_y);
 	}
 };
@@ -507,7 +507,7 @@ struct t_type_of<xemmaix::xrafttv::t_attribute> : xemmaix::xraft::t_derivable<t_
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -522,7 +522,7 @@ struct t_type_of<xemmaix::xrafttv::t_text_model> : xemmaix::xraft::t_derivable<t
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -537,7 +537,7 @@ struct t_type_of<xemmaix::xrafttv::t_wrapped_view> : xemmaix::xraft::t_derivable
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }

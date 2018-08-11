@@ -22,7 +22,7 @@ void t_type_of<xraft::t_font>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_font>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_font>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*, const std::wstring&), f_construct>::t_bind<xraft::t_font>::f_do(this, a_stack, a_n);
 }
@@ -39,7 +39,7 @@ void t_type_of<xraft::t_color>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_color>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_color>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 #ifdef XRAFT_X11
 	return t_overload<

@@ -149,7 +149,7 @@ void t_type_of<xraft::t_widget>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_widget>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_widget>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_widget::f_construct>::t_bind<xraft::t_widget>::f_do(this, a_stack, 0);
 }
@@ -167,7 +167,7 @@ void t_type_of<xraft::t_shell>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_shell>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_shell>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_shell::f_construct>::t_bind<xraft::t_shell>::f_do(this, a_stack, 0);
 }
@@ -188,7 +188,7 @@ void t_type_of<xraft::t_frame>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_frame>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_frame>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_frame::f_construct>::t_bind<xraft::t_frame>::f_do(this, a_stack, 0);
 }

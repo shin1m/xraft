@@ -141,7 +141,7 @@ struct t_type_of<xraft::t_client> : xemmaix::xraft::t_derivable<t_bears<xraft::t
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -152,7 +152,7 @@ struct t_type_of<xraft::t_root> : xemmaix::xraft::t_derivable<t_bears<xraft::t_r
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }
@@ -330,7 +330,7 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_client>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_client>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_client::f_construct>::t_bind<xraft::t_client>::f_do(this, a_stack, a_n);
 }
@@ -354,7 +354,7 @@ void t_type_of<xraft::t_root>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_root>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xraft::t_root>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_root::f_construct>::t_bind<xraft::t_root>::f_do(this, a_stack, a_n);
 }

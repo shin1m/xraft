@@ -23,7 +23,7 @@ void t_text_model::f_replaced(size_t a_n)
 t_scoped t_text_model::f_slice(size_t a_p, size_t a_n) const
 {
 	size_t n = f_text_size();
-	if (a_p > n) t_throwable::f_throw(L"out of range.");
+	if (a_p > n) f_throw(L"out of range.");
 	if (a_n > n) a_n = n;
 	if (a_p + a_n > n) a_n = n - a_p;
 	auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
@@ -56,7 +56,7 @@ void t_text_model::f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, cons
 {
 	{
 		size_t n = f_text_size();
-		if (a_p > n || a_n > n || a_p + a_n > n) t_throwable::f_throw(L"out of range.");
+		if (a_p > n || a_n > n || a_p + a_n > n) f_throw(L"out of range.");
 	}
 	auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
 	t_scoped p = a_segments.f_invoke(extension->v_symbol_size);
@@ -69,13 +69,13 @@ void t_text_model::f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, cons
 		t_scoped text = p.f_get_at(t_value(0));
 		f_check<size_t>(text, L"text");
 		ss[i].v_text = f_as<size_t>(text);
-		if (ss[i].v_text <= 0) t_throwable::f_throw(L"empty segment.");
+		if (ss[i].v_text <= 0) f_throw(L"empty segment.");
 		m += ss[i].v_text;
 		t_scoped attribute = p.f_get_at(t_value(1));
 		f_check<t_attribute*>(attribute, L"attribute");
 		ss[i].v_attribute = f_as<t_attribute*>(attribute);
 	}
-	if (a_text.size() != m) t_throwable::f_throw(L"invalid text size.");
+	if (a_text.size() != m) f_throw(L"invalid text size.");
 	t_base::f_replace(a_p, a_n, ss.begin(), ss.end(), a_text.begin());
 }
 
@@ -128,7 +128,7 @@ void t_type_of<xemmaix::xrafttv::t_attribute>::f_define(t_extension* a_extension
 	;
 }
 
-t_scoped t_type_of<xemmaix::xrafttv::t_attribute>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xemmaix::xrafttv::t_attribute>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*, xraft::t_pixel, xraft::t_pixel), f_construct>::t_bind<xemmaix::xrafttv::t_attribute>::f_do(this, a_stack, a_n);
 }
@@ -159,7 +159,7 @@ void t_type_of<xemmaix::xrafttv::t_text_model>::f_define(t_extension* a_extensio
 	;
 }
 
-t_scoped t_type_of<xemmaix::xrafttv::t_text_model>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xemmaix::xrafttv::t_text_model>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), f_construct>::t_bind<xemmaix::xrafttv::t_text_model>::f_do(this, a_stack, a_n);
 }
@@ -207,7 +207,7 @@ void t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_define(t_extension* a_extens
 	;
 }
 
-t_scoped t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_construct(t_stacked* a_stack, size_t a_n)
+t_scoped t_type_of<xemmaix::xrafttv::t_wrapped_view>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
 	return t_construct_with<t_scoped(*)(t_type*), f_construct>::t_bind<xemmaix::xrafttv::t_wrapped_view>::f_do(this, a_stack, a_n);
 }

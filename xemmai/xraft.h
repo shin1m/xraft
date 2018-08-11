@@ -371,7 +371,7 @@ struct t_derivable : T_base
 	typedef t_derivable t_base;
 
 	using T_base::T_base;
-	virtual t_type* f_derive()
+	t_type* f_do_derive()
 	{
 		return new t_type_of<typename T_base::t_what>(t_type_of<typename T_base::t_what>::V_ids, this, this->v_module);
 	}

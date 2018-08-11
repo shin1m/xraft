@@ -36,7 +36,7 @@ struct t_type_of<xraft::t_opengl_format> : t_bears<xraft::t_opengl_format, t_typ
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -45,7 +45,7 @@ struct t_type_of<xraft::t_opengl_widget> : xemmaix::xraft::t_derivable<t_bears<x
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 template<>
@@ -62,7 +62,7 @@ struct t_type_of<xraft::t_opengl_context> : t_bears<xraft::t_opengl_context, t_t
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	virtual t_scoped f_construct(t_stacked* a_stack, size_t a_n);
+	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
 };
 
 }
