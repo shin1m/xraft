@@ -6,9 +6,9 @@ namespace xemmai
 void t_type_of<xraft::t_object>::f_define(t_extension* a_extension)
 {
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<xraft::t_object, xemmai::t_object>(a_extension, L"Object")
-		(L"acquire", t_member<void (*)(xraft::t_object&), f_acquire, t_with_application_thread>())
-		(L"release", t_member<void (*)(xraft::t_object&), f_release, t_with_application_thread>())
+	t_define<xraft::t_object, xemmai::t_object>(a_extension, L"Object"sv)
+		(L"acquire"sv, t_member<void (*)(xraft::t_object&), f_acquire, t_with_application_thread>())
+		(L"release"sv, t_member<void (*)(xraft::t_object&), f_release, t_with_application_thread>())
 	;
 }
 
@@ -19,7 +19,7 @@ void t_type_of<xraft::t_object>::f_do_finalize(xemmai::t_object* a_this)
 
 t_scoped t_type_of<xraft::t_object>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
-	f_throw(L"uninstantiatable.");
+	f_throw(L"uninstantiatable."sv);
 }
 
 void t_type_of<xraft::t_object>::f_do_instantiate(t_stacked* a_stack, size_t a_n)

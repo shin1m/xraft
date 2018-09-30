@@ -5,6 +5,7 @@
 
 int main(int argc, char* argv[])
 {
+	using namespace std::literals;
 	using namespace xraft;
 	typedef t_text_model<int> t_model;
 	t_model model;
@@ -13,7 +14,7 @@ int main(int argc, char* argv[])
 		assert(model.f_segments_size() == 0);
 	}
 	{
-		std::wstring s = L"Hello, World!";
+		auto s = L"Hello, World!"sv;
 		t_model::t_segment ss[] = {
 			{5, 0},
 			{2, 1},
@@ -40,7 +41,7 @@ int main(int argc, char* argv[])
 	//  is ten years o
 	// 444455544444442
 	{
-		std::wstring s = L" is ten years o";
+		auto s = L" is ten years o"sv;
 		t_model::t_segment ss[] = {
 			{4, 4},
 			{3, 5},
@@ -74,7 +75,7 @@ int main(int argc, char* argv[])
 		assert(model.f_segments_size() == 0);
 	}
 	{
-		std::wstring s = L"Hello, xem World!";
+		auto s = L"Hello, xem World!"sv;
 		t_model::t_segment ss[] = {
 			{7, 0},
 			{3, 1},
@@ -108,7 +109,7 @@ std::fprintf(stderr, "\n");
 	// xem
 	// 111
 	{
-		std::wstring s = L"xem";
+		auto s = L"xem"sv;
 		t_model::t_segment ss[] = {
 			{3, 1},
 		};
@@ -130,7 +131,7 @@ std::fprintf(stderr, "\n");
 	// xemmai
 	// 111222
 	{
-		std::wstring s = L"xemmai";
+		auto s = L"xemmai"sv;
 		t_model::t_segment ss[] = {
 			{3, 1},
 			{3, 2},

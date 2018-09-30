@@ -23,7 +23,7 @@ struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 		{
 			xraft::f_application();
 			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
-			if (!p) f_throw(L"already destroyed.");
+			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}
 	};

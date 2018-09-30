@@ -5,6 +5,7 @@
 
 #include "wrapped_view.h"
 
+using namespace std::literals;
 using namespace xraft;
 
 struct t_attribute
@@ -313,7 +314,7 @@ int main(int argc, char* argv[])
 	std::vector<std::string> arguments(argv, argv + argc);
 	t_application application(arguments);
 	t_pointer<t_editor> frame = new t_editor();
-	frame->f_caption__(L"Editor");
+	frame->f_caption__(L"Editor"sv);
 	frame->f_move(t_rectangle(0, 0, 320, 240));
 	application.f_add(frame);
 	frame->f_show();

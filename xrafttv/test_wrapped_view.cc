@@ -3,6 +3,8 @@
 
 #include "wrapped_view.h"
 
+using namespace std::literals;
+
 struct t_test_font
 {
 	size_t f_height() const
@@ -39,29 +41,29 @@ struct t_test_context
 	}
 	void f_draw_string(size_t a_x, size_t a_y, size_t a_width, const wchar_t* a_cs, size_t a_n)
 	{
-		v_s += L"<string:";
+		v_s += L"<string:"sv;
 		v_s.insert(v_s.end(), a_cs, a_cs + a_n);
-		v_s += L">";
+		v_s += L'>';
 	}
 	void f_draw_tab(size_t a_x, size_t a_y, size_t a_width)
 	{
-		v_s += L"<tab>";
+		v_s += L"<tab>"sv;
 	}
 	void f_draw_line_terminator(size_t a_x, size_t a_y)
 	{
-		v_s += L"<terminator>";
+		v_s += L"<terminator>"sv;
 	}
 	void f_draw_line_end(size_t a_x, size_t a_y, size_t a_width)
 	{
-		v_s += L"<line_end>\n";
+		v_s += L"<line_end>\n"sv;
 	}
 	void f_draw_page_end(size_t a_y, size_t a_width, size_t a_height)
 	{
-		v_s += L"<page_end>";
+		v_s += L"<page_end>"sv;
 	}
 	void f_draw_caret(size_t a_x, size_t a_y)
 	{
-		v_s += L"<caret>";
+		v_s += L"<caret>"sv;
 	}
 };
 
@@ -78,9 +80,9 @@ int main(int argc, char* argv[])
 		assert(model.f_segments_size() == 0);
 	}
 	{
-		std::wstring s =
+		auto s =
 			L"Hello, World!\n"
-			L"This\tis\tShin-ichi\tMORITA.";
+			L"This\tis\tShin-ichi\tMORITA."sv;
 		t_model::t_segment ss[] = {{s.size(), 0}};
 		model.f_replace(0, 0, &ss[0], &ss[1], s.begin());
 	}
@@ -129,7 +131,7 @@ int main(int argc, char* argv[])
 			L"<string:T><line_end>\n"
 			L"<string:A><line_end>\n"
 			L"<string:.><line_end>\n"
-			L"<page_end>"
+			L"<page_end>"sv
 		);
 	}
 	{
@@ -144,7 +146,7 @@ int main(int argc, char* argv[])
 			L"<tab><string:Shin-i><line_end>\n"
 			L"<string:chi><tab><string:MORITA><line_end>\n"
 			L"<string:.><line_end>\n"
-			L"<page_end>"
+			L"<page_end>"sv
 		);
 	}
 	{
@@ -154,16 +156,16 @@ int main(int argc, char* argv[])
 		assert(context.v_s ==
 			L"<attribute:0><string:ld!><terminator><line_end>\n"
 			L"<tab><string:Shin-i><line_end>\n"
-			L"<string:chi><tab><string:MORITA><line_end>\n"
+			L"<string:chi><tab><string:MORITA><line_end>\n"sv
 		);
 	}
 	{
-		std::wstring s = L" is ten years o";
+		auto s = L" is ten years o"sv;
 		t_model::t_segment ss[] = {{s.size(), 0}};
 		model.f_replace(2, 8, &ss[0], &ss[1], s.begin());
 	}
 	{
-		std::wstring s = L"\nGood bye.\n";
+		auto s = L"\nGood bye.\n"sv;
 		t_model::t_segment ss[] = {{s.size(), 0}};
 		model.f_replace(model.f_text_size(), 0, &ss[0], &ss[1], s.begin());
 	}
@@ -181,7 +183,7 @@ int main(int argc, char* argv[])
 			L"<string:.><terminator><line_end>\n"
 			L"<string:Good bye.><terminator><line_end>\n"
 			L"<line_end>\n"
-			L"<page_end>"
+			L"<page_end>"sv
 		);
 	}
 	return 0;

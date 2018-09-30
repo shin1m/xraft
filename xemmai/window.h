@@ -30,12 +30,12 @@ struct t_type_of<xraft::t_window> : t_bears<xraft::t_window, t_type_of<xraft::t_
 {
 	static void f_add(xraft::t_window& a_self, const xraft::t_pointer<xraft::t_widget>& a_widget)
 	{
-		if (!a_widget) f_throw(L"widget must not be null.");
+		if (!a_widget) f_throw(L"widget must not be null."sv);
 		a_self.f_add(a_widget);
 	}
 	static void f_add(xraft::t_window& a_self, const xraft::t_pointer<xraft::t_widget>& a_widget, size_t a_i)
 	{
-		if (!a_widget) f_throw(L"widget must not be null.");
+		if (!a_widget) f_throw(L"widget must not be null."sv);
 		a_self.f_add(a_widget, a_i);
 	}
 	static void f_define(t_extension* a_extension);

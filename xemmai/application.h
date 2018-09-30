@@ -47,7 +47,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_with_traits<t_bears<xraft::t_application>, false, true>>>
+struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_bears<xraft::t_application>>>
 {
 	template<typename T0>
 	struct t_as
@@ -65,7 +65,7 @@ struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_with
 		static T0* f_call(T1&& a_object)
 		{
 			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
-			if (!p) f_throw(L"already destroyed.");
+			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}
 	};
@@ -78,12 +78,12 @@ struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_with
 	}
 	static void f_add(xraft::t_application& a_self, const xraft::t_pointer<xraft::t_shell>& a_shell)
 	{
-		if (!a_shell) f_throw(L"shell must not be null.");
+		if (!a_shell) f_throw(L"shell must not be null."sv);
 		a_self.f_add(a_shell);
 	}
 	static void f_add(xraft::t_application& a_self, const xraft::t_pointer<xraft::t_shell>& a_shell, size_t a_i)
 	{
-		if (!a_shell) f_throw(L"shell must not be null.");
+		if (!a_shell) f_throw(L"shell must not be null."sv);
 		a_self.f_add(a_shell, a_i);
 	}
 	static void f_define(t_extension* a_extension);

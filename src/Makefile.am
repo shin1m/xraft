@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libxraft.la
 AM_CPPFLAGS = -I$(top_srcdir)/include -DXRAFT_X11 $(X11_CFLAGS) $(DBUS_CFLAGS) $(GL_FLAGS)
-AM_CXXFLAGS =
+AM_CXXFLAGS = -std=c++17
 AM_LDFLAGS =
 if DEBUG
 AM_CXXFLAGS += -g

@@ -386,7 +386,7 @@ void t_frame::f_on_close()
 {
 }
 
-void t_frame::f_caption__(const std::wstring& a_caption)
+void t_frame::f_caption__(std::wstring_view a_caption)
 {
 	v_caption = a_caption;
 	if (v_handle != NULL) SetWindowText(f_hwnd(), v_caption.c_str());

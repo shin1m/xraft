@@ -7,7 +7,7 @@
 		(a_extension->v_symbol_on_key_press, t_member<void(*)(T_WINDOW&, t_modifier, t_key, int), xemmaix::xraft::T_WINDOW::f_super__on_key_press, t_with_application_thread>())
 		(a_extension->v_symbol_on_key_release, t_member<void(*)(T_WINDOW&, t_modifier, t_key, int), xemmaix::xraft::T_WINDOW::f_super__on_key_release, t_with_application_thread>())
 		(a_extension->v_symbol_on_input_compose, t_member<void(*)(T_WINDOW&), xemmaix::xraft::T_WINDOW::f_super__on_input_compose, t_with_application_thread>())
-		(a_extension->v_symbol_on_input_commit, t_member<void(*)(T_WINDOW&, const std::wstring&), xemmaix::xraft::T_WINDOW::f_super__on_input_commit, t_with_application_thread>())
+		(a_extension->v_symbol_on_input_commit, t_member<void(*)(T_WINDOW&, std::wstring_view), xemmaix::xraft::T_WINDOW::f_super__on_input_commit, t_with_application_thread>())
 		(a_extension->v_symbol_on_input_spot, t_member<t_rectangle(*)(T_WINDOW&), xemmaix::xraft::T_WINDOW::f_super__on_input_spot, t_with_application_thread>())
 		(a_extension->v_symbol_on_button_press, t_member<void(*)(T_WINDOW&, t_modifier, t_button, int, int), xemmaix::xraft::T_WINDOW::f_super__on_button_press, t_with_application_thread>())
 		(a_extension->v_symbol_on_button_release, t_member<void(*)(T_WINDOW&, t_modifier, t_button, int, int), xemmaix::xraft::T_WINDOW::f_super__on_button_release, t_with_application_thread>())

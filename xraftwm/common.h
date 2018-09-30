@@ -98,7 +98,7 @@ public:
 	void f_move(t_side a_horizontal, int a_x, t_side a_vertical, int a_y);
 	void f_show();
 	void f_hide();
-	const std::wstring& f_name() const
+	std::wstring_view f_name() const
 	{
 		return v_name;
 	}

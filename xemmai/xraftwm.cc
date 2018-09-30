@@ -163,33 +163,33 @@ namespace xemmaix::xraft
 t_xraftwm::t_xraftwm(xemmai::t_object* a_module, t_scoped&& a_xraft) : xemmai::t_extension(a_module), v_module_xraft(std::move(a_xraft))
 {
 	v_xraft = xemmai::f_extension<xemmaix::xraft::t_extension>(v_module_xraft);
-	v_symbol_on_move = t_symbol::f_instantiate(L"on_move");
-	v_symbol_on_show = t_symbol::f_instantiate(L"on_show");
-	v_symbol_on_hide = t_symbol::f_instantiate(L"on_hide");
-	v_symbol_on_paint = t_symbol::f_instantiate(L"on_paint");
-	v_symbol_on_focus_enter = t_symbol::f_instantiate(L"on_focus_enter");
-	v_symbol_on_focus_leave = t_symbol::f_instantiate(L"on_focus_leave");
-	v_symbol_on_key_press = t_symbol::f_instantiate(L"on_key_press");
-	v_symbol_on_key_release = t_symbol::f_instantiate(L"on_key_release");
-	v_symbol_on_input_compose = t_symbol::f_instantiate(L"on_input_compose");
-	v_symbol_on_input_commit = t_symbol::f_instantiate(L"on_input_commit");
-	v_symbol_on_input_spot = t_symbol::f_instantiate(L"on_input_spot");
-	v_symbol_on_button_press = t_symbol::f_instantiate(L"on_button_press");
-	v_symbol_on_button_release = t_symbol::f_instantiate(L"on_button_release");
-	v_symbol_on_pointer_enter = t_symbol::f_instantiate(L"on_pointer_enter");
-	v_symbol_on_pointer_leave = t_symbol::f_instantiate(L"on_pointer_leave");
-	v_symbol_on_pointer_move = t_symbol::f_instantiate(L"on_pointer_move");
-	v_symbol_add = t_symbol::f_instantiate(L"add");
-	v_symbol_remove = t_symbol::f_instantiate(L"remove");
-	v_symbol_on_activate = t_symbol::f_instantiate(L"on_activate");
-	v_symbol_on_deactivate = t_symbol::f_instantiate(L"on_deactivate");
-	v_symbol_on_name = t_symbol::f_instantiate(L"on_name");
-	v_symbol_on_protocols = t_symbol::f_instantiate(L"on_protocols");
-	v_symbol_on_client = t_symbol::f_instantiate(L"on_client");
+	v_symbol_on_move = t_symbol::f_instantiate(L"on_move"sv);
+	v_symbol_on_show = t_symbol::f_instantiate(L"on_show"sv);
+	v_symbol_on_hide = t_symbol::f_instantiate(L"on_hide"sv);
+	v_symbol_on_paint = t_symbol::f_instantiate(L"on_paint"sv);
+	v_symbol_on_focus_enter = t_symbol::f_instantiate(L"on_focus_enter"sv);
+	v_symbol_on_focus_leave = t_symbol::f_instantiate(L"on_focus_leave"sv);
+	v_symbol_on_key_press = t_symbol::f_instantiate(L"on_key_press"sv);
+	v_symbol_on_key_release = t_symbol::f_instantiate(L"on_key_release"sv);
+	v_symbol_on_input_compose = t_symbol::f_instantiate(L"on_input_compose"sv);
+	v_symbol_on_input_commit = t_symbol::f_instantiate(L"on_input_commit"sv);
+	v_symbol_on_input_spot = t_symbol::f_instantiate(L"on_input_spot"sv);
+	v_symbol_on_button_press = t_symbol::f_instantiate(L"on_button_press"sv);
+	v_symbol_on_button_release = t_symbol::f_instantiate(L"on_button_release"sv);
+	v_symbol_on_pointer_enter = t_symbol::f_instantiate(L"on_pointer_enter"sv);
+	v_symbol_on_pointer_leave = t_symbol::f_instantiate(L"on_pointer_leave"sv);
+	v_symbol_on_pointer_move = t_symbol::f_instantiate(L"on_pointer_move"sv);
+	v_symbol_add = t_symbol::f_instantiate(L"add"sv);
+	v_symbol_remove = t_symbol::f_instantiate(L"remove"sv);
+	v_symbol_on_activate = t_symbol::f_instantiate(L"on_activate"sv);
+	v_symbol_on_deactivate = t_symbol::f_instantiate(L"on_deactivate"sv);
+	v_symbol_on_name = t_symbol::f_instantiate(L"on_name"sv);
+	v_symbol_on_protocols = t_symbol::f_instantiate(L"on_protocols"sv);
+	v_symbol_on_client = t_symbol::f_instantiate(L"on_client"sv);
 	t_type_of<t_side>::f_define(this);
 	t_type_of<xraft::t_client>::f_define(this);
 	t_type_of<xraft::t_root>::f_define(this);
-	f_define<xraft::t_root*(*)(), f_root>(this, L"root");
+	f_define<xraft::t_root*(*)(), f_root>(this, L"root"sv);
 }
 
 struct t_client : ::xraft::t_client, t_wrapper<t_client>
@@ -275,11 +275,11 @@ namespace xemmai
 void t_type_of<xraft::t_side>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
-	t_define<t_side, intptr_t>(a_extension, L"Side")
-		(L"NONE", e_side__NONE)
-		(L"NEAR", e_side__NEAR)
-		(L"FAR", e_side__FAR)
-		(L"BOTH", e_side__BOTH)
+	t_define<t_side, intptr_t>(a_extension, L"Side"sv)
+		(L"NONE"sv, e_side__NONE)
+		(L"NEAR"sv, e_side__NEAR)
+		(L"FAR"sv, e_side__FAR)
+		(L"BOTH"sv, e_side__BOTH)
 	;
 }
 
@@ -306,7 +306,7 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<xraft::t_client, xraft::t_widget>(a_extension, L"Client")
+	t_define<xraft::t_client, xraft::t_widget>(a_extension, L"Client"sv)
 #define T_WINDOW t_client
 #include "window_define.h"
 #undef T_WINDOW
@@ -314,19 +314,19 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 		(a_extension->v_symbol_on_deactivate, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_deactivate, t_with_application_thread>())
 		(a_extension->v_symbol_on_name, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_name, t_with_application_thread>())
 		(a_extension->v_symbol_on_protocols, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_protocols, t_with_application_thread>())
-		(L"borders", t_member<t_scoped(*)(t_client&), f_borders, t_with_application_thread>())
-		(L"borders__", t_member<void(*)(t_client&, t_scoped&&), f_borders__, t_with_application_thread>())
-		(L"move", t_member<void(t_client::*)(t_side, int, t_side, int), &t_client::f_move, t_with_application_thread>())
-		(L"show", t_member<void(t_client::*)(), &t_client::f_show, t_with_application_thread>())
-		(L"hide", t_member<void(t_client::*)(), &t_client::f_hide, t_with_application_thread>())
-		(L"name", t_member<const std::wstring&(t_client::*)() const, &t_client::f_name, t_with_application_thread>())
-		(L"delta", t_member<t_extent(t_client::*)() const, &t_client::f_delta, t_with_application_thread>())
-		(L"base", t_member<t_extent(t_client::*)() const, &t_client::f_base, t_with_application_thread>())
-		(L"extent", t_member<t_extent(t_client::*)() const, &t_client::f_extent, t_with_application_thread>())
-		(L"closable", t_member<bool(t_client::*)() const, &t_client::f_closable, t_with_application_thread>())
-		(L"close", t_member<void(t_client::*)(), &t_client::f_close, t_with_application_thread>())
-		(L"shaded", t_member<bool(t_client::*)() const, &t_client::f_shaded, t_with_application_thread>())
-		(L"shaded__", t_member<void(t_client::*)(bool), &t_client::f_shaded__, t_with_application_thread>())
+		(L"borders"sv, t_member<t_scoped(*)(t_client&), f_borders, t_with_application_thread>())
+		(L"borders__"sv, t_member<void(*)(t_client&, t_scoped&&), f_borders__, t_with_application_thread>())
+		(L"move"sv, t_member<void(t_client::*)(t_side, int, t_side, int), &t_client::f_move, t_with_application_thread>())
+		(L"show"sv, t_member<void(t_client::*)(), &t_client::f_show, t_with_application_thread>())
+		(L"hide"sv, t_member<void(t_client::*)(), &t_client::f_hide, t_with_application_thread>())
+		(L"name"sv, t_member<std::wstring_view(t_client::*)() const, &t_client::f_name, t_with_application_thread>())
+		(L"delta"sv, t_member<t_extent(t_client::*)() const, &t_client::f_delta, t_with_application_thread>())
+		(L"base"sv, t_member<t_extent(t_client::*)() const, &t_client::f_base, t_with_application_thread>())
+		(L"extent"sv, t_member<t_extent(t_client::*)() const, &t_client::f_extent, t_with_application_thread>())
+		(L"closable"sv, t_member<bool(t_client::*)() const, &t_client::f_closable, t_with_application_thread>())
+		(L"close"sv, t_member<void(t_client::*)(), &t_client::f_close, t_with_application_thread>())
+		(L"shaded"sv, t_member<bool(t_client::*)() const, &t_client::f_shaded, t_with_application_thread>())
+		(L"shaded__"sv, t_member<void(t_client::*)(bool), &t_client::f_shaded__, t_with_application_thread>())
 	;
 }
 
@@ -339,18 +339,18 @@ void t_type_of<xraft::t_root>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_root, t_window>(a_extension, L"Root")
+	t_define<t_root, t_window>(a_extension, L"Root"sv)
 #define T_WINDOW t_root
 #include "window_define.h"
 #undef T_WINDOW
-		(L"run", t_member<void(t_root::*)(), &t_root::f_run, t_with_application_thread>())
-		(L"active", t_member<t_pointer<t_client>(t_root::*)() const, &t_root::f_active, t_with_application_thread>())
-		(L"active__", t_member<void(t_root::*)(const t_pointer<t_client>&), &t_root::f_active__, t_with_application_thread>())
-		(L"background",
+		(L"run"sv, t_member<void(t_root::*)(), &t_root::f_run, t_with_application_thread>())
+		(L"active"sv, t_member<t_pointer<t_client>(t_root::*)() const, &t_root::f_active, t_with_application_thread>())
+		(L"active__"sv, t_member<void(t_root::*)(const t_pointer<t_client>&), &t_root::f_active__, t_with_application_thread>())
+		(L"background"sv,
 			t_member<void(t_root::*)(t_pixel), &t_root::f_background, t_with_application_thread>(),
 			t_member<void(t_root::*)(const t_pointer<t_pixmap>&), &t_root::f_background, t_with_application_thread>()
 		)
-		(L"share_background", t_member<void(t_root::*)(const t_pointer<t_pixmap>&), &t_root::f_share_background, t_with_application_thread>())
+		(L"share_background"sv, t_member<void(t_root::*)(const t_pointer<t_pixmap>&), &t_root::f_share_background, t_with_application_thread>())
 	;
 }
 
@@ -363,5 +363,6 @@ t_scoped t_type_of<xraft::t_root>::f_do_construct(t_stacked* a_stack, size_t a_n
 
 XEMMAI__MODULE__FACTORY(xemmai::t_object* a_module)
 {
-	return new xemmaix::xraft::t_xraftwm(a_module, xemmai::t_module::f_instantiate(L"xraft"));
+	using namespace std::literals;
+	return new xemmaix::xraft::t_xraftwm(a_module, xemmai::t_module::f_instantiate(L"xraft"sv));
 }

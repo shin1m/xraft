@@ -14,7 +14,7 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	template<typename T_extension, typename T>
 	static t_scoped f_transfer(T_extension* a_extension, T&& a_value)
 	{
-		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
+		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>(), false);
 		object.f_pointer__(new xraft::t_point(std::forward<T>(a_value)));
 		return object;
 	}
@@ -48,7 +48,7 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 	template<typename T_extension, typename T>
 	static t_scoped f_transfer(T_extension* a_extension, T&& a_value)
 	{
-		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
+		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>(), false);
 		object.f_pointer__(new xraft::t_extent(std::forward<T>(a_value)));
 		return object;
 	}
@@ -82,7 +82,7 @@ struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft
 	template<typename T_extension, typename T>
 	static t_scoped f_transfer(T_extension* a_extension, T&& a_value)
 	{
-		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>());
+		t_scoped object = t_object::f_allocate(a_extension->template f_type<typename t_fundamental<T>::t_type>(), false);
 		object.f_pointer__(new xraft::t_rectangle(std::forward<T>(a_value)));
 		return object;
 	}

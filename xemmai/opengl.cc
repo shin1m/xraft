@@ -49,7 +49,7 @@ namespace xemmai
 
 void t_type_of<xraft::t_opengl_format>::f_define(t_extension* a_extension)
 {
-	t_define<xraft::t_opengl_format, xraft::t_object>(a_extension, L"GLFormat");
+	t_define<xraft::t_opengl_format, xraft::t_object>(a_extension, L"GLFormat"sv);
 }
 
 t_scoped t_type_of<xraft::t_opengl_format>::f_do_construct(t_stacked* a_stack, size_t a_n)
@@ -69,20 +69,20 @@ void t_type_of<xraft::t_opengl_widget>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_opengl_widget, t_widget>(a_extension, L"GLWidget")
+	t_define<t_opengl_widget, t_widget>(a_extension, L"GLWidget"sv)
 #define T_WINDOW t_opengl_widget
 #include "window_define.h"
 #undef T_WINDOW
 		(a_extension->v_symbol_on_create, t_member<void(*)(t_opengl_widget&), xemmaix::xraft::t_opengl_widget::f_super__on_create, t_with_application_thread>())
 		(a_extension->v_symbol_on_destroy, t_member<void(*)(t_opengl_widget&), xemmaix::xraft::t_opengl_widget::f_super__on_destroy, t_with_application_thread>())
-		(L"format", t_member<const t_pointer<t_opengl_format>&(t_opengl_widget::*)() const, &t_opengl_widget::f_format, t_with_application_thread>())
-		(L"created", t_member<bool(t_opengl_widget::*)() const, &t_opengl_widget::f_created, t_with_application_thread>())
+		(L"format"sv, t_member<const t_pointer<t_opengl_format>&(t_opengl_widget::*)() const, &t_opengl_widget::f_format, t_with_application_thread>())
+		(L"created"sv, t_member<bool(t_opengl_widget::*)() const, &t_opengl_widget::f_created, t_with_application_thread>())
 	;
 }
 
 t_scoped t_type_of<xraft::t_opengl_widget>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
-	if (a_n < 1) f_throw(L"must be called with at least an argument.");
+	if (a_n < 1) f_throw(L"must be called with at least an argument."sv);
 	return t_construct_with<t_scoped (*)(t_type*, const xraft::t_pointer<xraft::t_opengl_format>&), xemmaix::xraft::t_opengl_widget::f_construct>::t_bind<xraft::t_opengl_widget>::f_do(this, a_stack, 1);
 }
 
@@ -90,9 +90,9 @@ void t_type_of<xraft::t_opengl_context>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_opengl_context, xraft::t_object>(a_extension, L"GLContext")
-		(L"make_current", t_member<bool(t_opengl_context::*)(const t_pointer<t_opengl_widget>&), &t_opengl_context::f_make_current, t_with_application_thread>())
-		(L"flush", t_member<void(t_opengl_context::*)(), &t_opengl_context::f_flush, t_with_application_thread>())
+	t_define<t_opengl_context, xraft::t_object>(a_extension, L"GLContext"sv)
+		(L"make_current"sv, t_member<bool(t_opengl_context::*)(const t_pointer<t_opengl_widget>&), &t_opengl_context::f_make_current, t_with_application_thread>())
+		(L"flush"sv, t_member<void(t_opengl_context::*)(), &t_opengl_context::f_flush, t_with_application_thread>())
 	;
 }
 

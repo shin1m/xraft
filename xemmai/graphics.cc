@@ -9,33 +9,33 @@ void t_type_of<xraft::t_font>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_font, xraft::t_object>(a_extension, L"Font")
-		(L"ascent", t_member<unsigned(t_font::*)() const, &t_font::f_ascent, t_with_application_thread>())
-		(L"descent", t_member<unsigned(t_font::*)() const, &t_font::f_descent, t_with_application_thread>())
-		(L"height", t_member<unsigned(t_font::*)() const, &t_font::f_height, t_with_application_thread>())
-		(L"width",
+	t_define<t_font, xraft::t_object>(a_extension, L"Font"sv)
+		(L"ascent"sv, t_member<unsigned(t_font::*)() const, &t_font::f_ascent, t_with_application_thread>())
+		(L"descent"sv, t_member<unsigned(t_font::*)() const, &t_font::f_descent, t_with_application_thread>())
+		(L"height"sv, t_member<unsigned(t_font::*)() const, &t_font::f_height, t_with_application_thread>())
+		(L"width"sv,
 			t_member<unsigned(t_font::*)() const, &t_font::f_width, t_with_application_thread>(),
 			t_member<unsigned(*)(t_font&, size_t), f_width, t_with_application_thread>(),
-			t_member<unsigned(*)(t_font&, const std::wstring&), f_width, t_with_application_thread>(),
-			t_member<unsigned(*)(t_font&, const std::wstring&, unsigned), f_width, t_with_application_thread>()
+			t_member<unsigned(*)(t_font&, std::wstring_view), f_width, t_with_application_thread>(),
+			t_member<unsigned(*)(t_font&, std::wstring_view, unsigned), f_width, t_with_application_thread>()
 		)
 	;
 }
 
 t_scoped t_type_of<xraft::t_font>::f_do_construct(t_stacked* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_type*, const std::wstring&), f_construct>::t_bind<xraft::t_font>::f_do(this, a_stack, a_n);
+	return t_construct_with<t_scoped(*)(t_type*, std::wstring_view), f_construct>::t_bind<xraft::t_font>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xraft::t_color>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_color, xemmai::t_object>(a_extension, L"Color")
-		(L"red", t_member<size_t(*)(t_color&), f_red, t_with_application_thread>())
-		(L"green", t_member<size_t(*)(t_color&), f_green, t_with_application_thread>())
-		(L"blue", t_member<size_t(*)(t_color&), f_blue, t_with_application_thread>())
-		(L"pixel", t_member<t_pixel(t_color::*)() const, &t_color::f_pixel, t_with_application_thread>())
+	t_define<t_color, xemmai::t_object>(a_extension, L"Color"sv)
+		(L"red"sv, t_member<size_t(*)(t_color&), f_red, t_with_application_thread>())
+		(L"green"sv, t_member<size_t(*)(t_color&), f_green, t_with_application_thread>())
+		(L"blue"sv, t_member<size_t(*)(t_color&), f_blue, t_with_application_thread>())
+		(L"pixel"sv, t_member<t_pixel(t_color::*)() const, &t_color::f_pixel, t_with_application_thread>())
 	;
 }
 
@@ -43,7 +43,7 @@ t_scoped t_type_of<xraft::t_color>::f_do_construct(t_stacked* a_stack, size_t a_
 {
 #ifdef XRAFT_X11
 	return t_overload<
-		t_construct_with<t_scoped(*)(t_type*, const std::wstring&), f_construct>,
+		t_construct_with<t_scoped(*)(t_type*, std::wstring_view), f_construct>,
 		t_construct_with<t_scoped(*)(t_type*, size_t, size_t, size_t), f_construct>
 	>::t_bind<xraft::t_color>::f_do(this, a_stack, a_n);
 #else
@@ -68,23 +68,23 @@ void t_type_of<xraft::t_graphics>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_graphics, xemmai::t_object>(a_extension, L"Graphics")
-		(L"region", t_member<const t_region&(t_graphics::*)() const, &t_graphics::f_region, t_with_application_thread>())
-		(L"clip", t_member<void(t_graphics::*)(t_region&), &t_graphics::f_clip, t_with_application_thread>())
-		(L"font", t_member<void(*)(t_graphics&, const t_pointer<t_font>&), f_font, t_with_application_thread>())
-		(L"color", t_member<void(t_graphics::*)(t_pixel), &t_graphics::f_color, t_with_application_thread>())
-		(L"function", t_member<void(t_graphics::*)(t_graphics::t_function), &t_graphics::f_function, t_with_application_thread>())
-		(L"translate", t_member<void(t_graphics::*)(int, int), &t_graphics::f_translate, t_with_application_thread>())
-		(L"bounds", t_member<t_rectangle(t_graphics::*)() const, &t_graphics::f_bounds, t_with_application_thread>())
-		(L"invalid", t_member<bool(t_graphics::*)(int, int, unsigned, unsigned) const, &t_graphics::f_invalid, t_with_application_thread>())
-		(L"draw",
+	t_define<t_graphics, xemmai::t_object>(a_extension, L"Graphics"sv)
+		(L"region"sv, t_member<const t_region&(t_graphics::*)() const, &t_graphics::f_region, t_with_application_thread>())
+		(L"clip"sv, t_member<void(t_graphics::*)(t_region&), &t_graphics::f_clip, t_with_application_thread>())
+		(L"font"sv, t_member<void(*)(t_graphics&, const t_pointer<t_font>&), f_font, t_with_application_thread>())
+		(L"color"sv, t_member<void(t_graphics::*)(t_pixel), &t_graphics::f_color, t_with_application_thread>())
+		(L"function"sv, t_member<void(t_graphics::*)(t_graphics::t_function), &t_graphics::f_function, t_with_application_thread>())
+		(L"translate"sv, t_member<void(t_graphics::*)(int, int), &t_graphics::f_translate, t_with_application_thread>())
+		(L"bounds"sv, t_member<t_rectangle(t_graphics::*)() const, &t_graphics::f_bounds, t_with_application_thread>())
+		(L"invalid"sv, t_member<bool(t_graphics::*)(int, int, unsigned, unsigned) const, &t_graphics::f_invalid, t_with_application_thread>())
+		(L"draw"sv,
 			t_member<void(t_graphics::*)(int, int, unsigned, unsigned), &t_graphics::f_draw, t_with_application_thread>(),
 			t_member<void(*)(t_graphics&, const t_value&), f_draw, t_with_application_thread>(),
-			t_member<void(*)(t_graphics&, int, int, const std::wstring&), f_draw, t_with_application_thread>(),
+			t_member<void(*)(t_graphics&, int, int, std::wstring_view), f_draw, t_with_application_thread>(),
 			t_member<void(*)(t_graphics&, int, int, const t_pointer<t_pixmap>&, int, int, unsigned, unsigned), f_draw, t_with_application_thread>(),
 			t_member<void(*)(t_graphics&, int, int, const t_pointer<t_pixmap>&, int, int, unsigned, unsigned, const t_pointer<t_bitmap>&), f_draw, t_with_application_thread>()
 		)
-		(L"fill",
+		(L"fill"sv,
 			t_member<void(t_graphics::*)(int, int, unsigned, unsigned), &t_graphics::f_fill, t_with_application_thread>(),
 			t_member<void(*)(t_graphics&, const t_value&), f_fill, t_with_application_thread>()
 		)
@@ -94,23 +94,23 @@ void t_type_of<xraft::t_graphics>::f_define(t_extension* a_extension)
 void t_type_of<xraft::t_graphics::t_function>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
-	t_define<t_graphics::t_function, intptr_t>(a_extension, L"Function")
-		(L"CLEAR", t_graphics::e_function__CLEAR)
-		(L"AND", t_graphics::e_function__AND)
-		(L"AND_REVERSE", t_graphics::e_function__AND_REVERSE)
-		(L"COPY", t_graphics::e_function__COPY)
-		(L"AND_INVERTED", t_graphics::e_function__AND_INVERTED)
-		(L"NOOP", t_graphics::e_function__NOOP)
-		(L"XOR", t_graphics::e_function__XOR)
-		(L"OR", t_graphics::e_function__OR)
-		(L"NOR", t_graphics::e_function__NOR)
-		(L"EQUIV", t_graphics::e_function__EQUIV)
-		(L"INVERT", t_graphics::e_function__INVERT)
-		(L"OR_REVERSE", t_graphics::e_function__OR_REVERSE)
-		(L"COPY_INVERTED", t_graphics::e_function__COPY_INVERTED)
-		(L"OR_INVERTED", t_graphics::e_function__OR_INVERTED)
-		(L"NAND", t_graphics::e_function__NAND)
-		(L"SET", t_graphics::e_function__SET)
+	t_define<t_graphics::t_function, intptr_t>(a_extension, L"Function"sv)
+		(L"CLEAR"sv, t_graphics::e_function__CLEAR)
+		(L"AND"sv, t_graphics::e_function__AND)
+		(L"AND_REVERSE"sv, t_graphics::e_function__AND_REVERSE)
+		(L"COPY"sv, t_graphics::e_function__COPY)
+		(L"AND_INVERTED"sv, t_graphics::e_function__AND_INVERTED)
+		(L"NOOP"sv, t_graphics::e_function__NOOP)
+		(L"XOR"sv, t_graphics::e_function__XOR)
+		(L"OR"sv, t_graphics::e_function__OR)
+		(L"NOR"sv, t_graphics::e_function__NOR)
+		(L"EQUIV"sv, t_graphics::e_function__EQUIV)
+		(L"INVERT"sv, t_graphics::e_function__INVERT)
+		(L"OR_REVERSE"sv, t_graphics::e_function__OR_REVERSE)
+		(L"COPY_INVERTED"sv, t_graphics::e_function__COPY_INVERTED)
+		(L"OR_INVERTED"sv, t_graphics::e_function__OR_INVERTED)
+		(L"NAND"sv, t_graphics::e_function__NAND)
+		(L"SET"sv, t_graphics::e_function__SET)
 	;
 }
 

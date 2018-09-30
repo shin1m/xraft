@@ -49,10 +49,10 @@ public:
 	t_extension(xemmai::t_object* a_module, t_scoped&& a_cairo) : xemmai::t_extension(a_module), v_module_cairo(std::move(a_cairo))
 	{
 		v_cairo = f_extension<xemmaix::cairo::t_extension>(v_module_cairo);
-		f_define<t_scoped(*)(t_bitmap&), f_surface_create<t_bitmap>>(this, L"BitmapSurface");
-		f_define<t_scoped(*)(t_pixmap&), f_surface_create<t_pixmap>>(this, L"PixmapSurface");
-		f_define<void(*)(t_window&, const t_value&), f_draw<t_window>>(this, L"draw_on_window");
-		f_define<void(*)(t_graphics&, const t_value&), f_draw<t_graphics>>(this, L"draw_on_graphics");
+		f_define<t_scoped(*)(t_bitmap&), f_surface_create<t_bitmap>>(this, L"BitmapSurface"sv);
+		f_define<t_scoped(*)(t_pixmap&), f_surface_create<t_pixmap>>(this, L"PixmapSurface"sv);
+		f_define<void(*)(t_window&, const t_value&), f_draw<t_window>>(this, L"draw_on_window"sv);
+		f_define<void(*)(t_graphics&, const t_value&), f_draw<t_graphics>>(this, L"draw_on_graphics"sv);
 	}
 	virtual void f_scan(t_scan a_scan)
 	{
@@ -79,5 +79,6 @@ public:
 
 XEMMAI__MODULE__FACTORY(xemmai::t_object* a_module)
 {
-	return new xemmaix::xraftcairo::t_extension(a_module, xemmai::t_module::f_instantiate(L"cairo"));
+	using namespace std::literals;
+	return new xemmaix::xraftcairo::t_extension(a_module, xemmai::t_module::f_instantiate(L"cairo"sv));
 }

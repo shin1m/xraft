@@ -204,11 +204,11 @@ public:
 		v_geometry = t_rectangle(0, 0, 574, 436);
 	}
 	XRAFT__EXPORT virtual void f_on_close();
-	const std::wstring& f_caption() const
+	std::wstring_view f_caption() const
 	{
 		return v_caption;
 	}
-	XRAFT__EXPORT void f_caption__(const std::wstring& a_caption);
+	XRAFT__EXPORT void f_caption__(std::wstring_view a_caption);
 };
 
 }

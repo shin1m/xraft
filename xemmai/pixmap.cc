@@ -7,9 +7,9 @@ void t_type_of<xraft::t_bitmap>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_bitmap, t_drawable>(a_extension, L"Bitmap")
-		(L"width", t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_width, t_with_application_thread>())
-		(L"height", t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_height, t_with_application_thread>())
+	t_define<t_bitmap, t_drawable>(a_extension, L"Bitmap"sv)
+		(L"width"sv, t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_width, t_with_application_thread>())
+		(L"height"sv, t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_height, t_with_application_thread>())
 	;
 }
 
@@ -26,10 +26,10 @@ void t_type_of<xraft::t_pixmap>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_pixmap, t_drawable>(a_extension, L"Pixmap")
-		(L"width", t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_width, t_with_application_thread>())
-		(L"height", t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_height, t_with_application_thread>())
-		(L"alpha", t_member<bool(t_pixmap::*)() const, &t_pixmap::f_alpha, t_with_application_thread>())
+	t_define<t_pixmap, t_drawable>(a_extension, L"Pixmap"sv)
+		(L"width"sv, t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_width, t_with_application_thread>())
+		(L"height"sv, t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_height, t_with_application_thread>())
+		(L"alpha"sv, t_member<bool(t_pixmap::*)() const, &t_pixmap::f_alpha, t_with_application_thread>())
 	;
 }
 

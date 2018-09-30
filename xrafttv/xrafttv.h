@@ -246,25 +246,25 @@ struct t_text_model : ::xraft::t_object, ::xraft::t_text_model<t_pointer<t_attri
 	}
 	size_t f_segment_to_text(size_t a_p) const
 	{
-		if (a_p >= f_segments_size()) f_throw(L"out of range.");
+		if (a_p >= f_segments_size()) f_throw(L"out of range."sv);
 		return t_base::f_segment_to_text(a_p);
 	}
 	const t_pointer<t_attribute>& f_segment_to_attribute(size_t a_p) const
 	{
-		if (a_p >= f_segments_size()) f_throw(L"out of range.");
+		if (a_p >= f_segments_size()) f_throw(L"out of range."sv);
 		return t_base::f_segment_to_attribute(a_p);
 	}
 	size_t f_text_to_segment(size_t a_p) const
 	{
-		if (a_p >= f_text_size()) f_throw(L"out of range.");
+		if (a_p >= f_text_size()) f_throw(L"out of range."sv);
 		return t_base::f_text_to_segment(a_p);
 	}
 	t_scoped f_slice(size_t a_p, size_t a_n) const;
-	void f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, const std::wstring& a_text);
+	void f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, std::wstring_view a_text);
 	void f_attribute(size_t a_p, size_t a_n, const t_pointer<t_attribute>& a_attribute)
 	{
 		size_t n = f_text_size();
-		if (a_p > n || a_n > n || a_p + a_n > n) f_throw(L"out of range.");
+		if (a_p > n || a_n > n || a_p + a_n > n) f_throw(L"out of range."sv);
 		t_base::f_attribute(a_p, a_n, a_attribute);
 	}
 };
@@ -382,52 +382,52 @@ struct t_wrapped_view : ::xraft::t_object, ::xraft::t_wrapped_view<t_pointer<t_a
 	}
 	size_t f_line_to_row(size_t a_line) const
 	{
-		if (a_line >= f_lines_size()) f_throw(L"out of range.");
+		if (a_line >= f_lines_size()) f_throw(L"out of range."sv);
 		return t_base::f_line_to_row(a_line);
 	}
 	size_t f_row_to_text(size_t a_row) const
 	{
-		if (a_row >= f_rows_size()) f_throw(L"out of range.");
+		if (a_row >= f_rows_size()) f_throw(L"out of range."sv);
 		return t_base::f_row_to_text(a_row);
 	}
 	size_t f_line_to_text(size_t a_line) const
 	{
-		if (a_line >= f_lines_size()) f_throw(L"out of range.");
+		if (a_line >= f_lines_size()) f_throw(L"out of range."sv);
 		return t_base::f_line_to_text(a_line);
 	}
 	void f_caret_move_text(size_t a_text)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_text(a_text);
 	}
 	void f_caret_move_text_forward(size_t a_n)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_text_forward(a_n);
 	}
 	void f_caret_move_text_backward(size_t a_n)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_text_backward(a_n);
 	}
 	void f_caret_move_line_forward(size_t a_n)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_line_forward(a_n);
 	}
 	void f_caret_move_line_backward(size_t a_n)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_line_backward(a_n);
 	}
 	void f_caret_move_line_x(size_t a_x)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_line_x(a_x);
 	}
 	void f_caret_move_point(size_t a_x, size_t a_y)
 	{
-		if (!v_model) f_throw(L"no model.");
+		if (!v_model) f_throw(L"no model."sv);
 		t_base::f_caret_move_point(a_x, a_y);
 	}
 };

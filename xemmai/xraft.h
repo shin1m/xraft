@@ -47,7 +47,7 @@ class t_proxy : public t_user, public t_entry
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class))
+	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class, false))
 	{
 		a_p->f_user__(this);
 		v_object.f_pointer__(a_p);

@@ -30,12 +30,12 @@ void t_type_of<xraft::t_timer>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_timer, xraft::t_object>(a_extension, L"Timer")
-		(L"start",
+	t_define<t_timer, xraft::t_object>(a_extension, L"Timer"sv)
+		(L"start"sv,
 			t_member<void(*)(t_timer&, size_t), f_start, t_with_application_thread>(),
 			t_member<void(t_timer::*)(size_t, bool), &t_timer::f_start, t_with_application_thread>()
 		)
-		(L"stop", t_member<void(t_timer::*)(), &t_timer::f_stop, t_with_application_thread>())
+		(L"stop"sv, t_member<void(t_timer::*)(), &t_timer::f_stop, t_with_application_thread>())
 	;
 }
 

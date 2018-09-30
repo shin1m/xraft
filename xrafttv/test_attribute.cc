@@ -5,6 +5,7 @@
 
 int main(int argc, char* argv[])
 {
+	using namespace std::literals;
 	using namespace xraft;
 	typedef t_text_model<int> t_model;
 	t_model model;
@@ -13,7 +14,7 @@ int main(int argc, char* argv[])
 		assert(model.f_segments_size() == 0);
 	}
 	{
-		std::wstring s = L"Hello, World!";
+		auto s = L"Hello, World!"sv;
 		t_model::t_segment ss[] = {{s.size(), 0}};
 		model.f_replace(0, 0, &ss[0], &ss[1], s.begin());
 		assert(model.f_text_size() == s.size());

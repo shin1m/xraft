@@ -44,7 +44,7 @@
 	virtual void f_on_paint(t_graphics& a_g)
 	{
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		t_scoped object = xemmai::t_object::f_allocate(extension->f_type<t_graphics>());
+		t_scoped object = xemmai::t_object::f_allocate(extension->f_type<t_graphics>(), false);
 		object.f_pointer__(&a_g);
 		try {
 			f_self(this)->f_invoke(extension->v_symbol_on_paint, object);
@@ -114,17 +114,17 @@
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
 		f_self(this)->f_invoke(extension->v_symbol_on_input_compose);
 	}
-	static void f_super__on_input_commit(::xraft::T_WINDOW& a_self, const std::wstring& a_s)
+	static void f_super__on_input_commit(::xraft::T_WINDOW& a_self, std::wstring_view a_s)
 	{
 		if (dynamic_cast<T_WINDOW*>(&a_self))
-			a_self.::xraft::T_WINDOW::f_on_input_commit(a_s.c_str(), a_s.size());
+			a_self.::xraft::T_WINDOW::f_on_input_commit(a_s.data(), a_s.size());
 		else
-			a_self.f_on_input_commit(a_s.c_str(), a_s.size());
+			a_self.f_on_input_commit(a_s.data(), a_s.size());
 	}
 	virtual void f_on_input_commit(const wchar_t* a_cs, size_t a_n)
 	{
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		f_self(this)->f_invoke(extension->v_symbol_on_input_commit, extension->f_as(std::wstring(a_cs, a_n)));
+		f_self(this)->f_invoke(extension->v_symbol_on_input_commit, t_string::f_instantiate(a_cs, a_n));
 	}
 	static t_rectangle f_super__on_input_spot(::xraft::T_WINDOW& a_self)
 	{
