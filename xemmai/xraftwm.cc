@@ -286,7 +286,7 @@ void t_type_of<xraft::t_side>::f_define(t_extension* a_extension)
 t_scoped t_type_of<xraft::t_client>::f_borders(xraft::t_client& a_self)
 {
 	const unsigned* borders = a_self.f_borders();
-	t_scoped tuple = t_array::f_instantiate();
+	auto tuple = t_array::f_instantiate();
 	for (size_t i = 0; i < 4; ++i) f_as<t_array&>(tuple).f_push(f_global()->f_as(borders[i]));
 	return tuple;
 }

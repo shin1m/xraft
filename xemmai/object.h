@@ -22,7 +22,7 @@ struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 		static T0* f_call(T1&& a_object)
 		{
 			xraft::f_application();
-			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
+			auto p = f_object(std::forward<T1>(a_object))->template f_as<T0*>();
 			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}

@@ -44,13 +44,13 @@
 	virtual void f_on_paint(t_graphics& a_g)
 	{
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		t_scoped object = xemmai::t_object::f_allocate(extension->f_type<t_graphics>(), false);
-		object.f_pointer__(&a_g);
+		auto object = xemmai::t_object::f_allocate(extension->f_type<t_graphics>(), false, sizeof(t_graphics*));
+		object->f_as<t_graphics*>() = &a_g;
 		try {
 			f_self(this)->f_invoke(extension->v_symbol_on_paint, object);
-			object.f_pointer__(nullptr);
+			object->f_as<t_graphics*>() = nullptr;
 		} catch (...) {
-			object.f_pointer__(nullptr);
+			object->f_as<t_graphics*>() = nullptr;
 			throw;
 		}
 	}

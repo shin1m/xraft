@@ -64,7 +64,7 @@ struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_bear
 		template<typename T1>
 		static T0* f_call(T1&& a_object)
 		{
-			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
+			auto p = f_object(std::forward<T1>(a_object))->template f_as<T0*>();
 			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}

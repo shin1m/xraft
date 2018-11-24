@@ -40,16 +40,12 @@ struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 #ifdef XRAFT_X11
 	static t_scoped f_construct(t_type* a_class, std::wstring_view a_name)
 	{
-		t_scoped object = xemmai::t_object::f_allocate(a_class, false);
-		object.f_pointer__(new xraft::t_color(portable::f_convert(a_name).c_str()));
-		return object;
+		return a_class->f_new<xraft::t_color>(false, portable::f_convert(a_name).c_str());
 	}
 #endif
 	static t_scoped f_construct(t_type* a_class, size_t a_red, size_t a_green, size_t a_blue)
 	{
-		t_scoped object = xemmai::t_object::f_allocate(a_class, false);
-		object.f_pointer__(new xraft::t_color(a_red, a_green, a_blue));
-		return object;
+		return a_class->f_new<xraft::t_color>(false, a_red, a_green, a_blue);
 	}
 	static size_t f_red(xraft::t_color& a_self)
 	{
@@ -87,7 +83,7 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 		template<typename T1>
 		static T0* f_call(T1&& a_object)
 		{
-			auto p = static_cast<T0*>(f_object(std::forward<T1>(a_object))->f_pointer());
+			auto p = f_object(std::forward<T1>(a_object))->template f_as<T0*>();
 			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}

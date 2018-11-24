@@ -27,29 +27,20 @@ t_scoped t_text_model::f_slice(size_t a_p, size_t a_n) const
 	if (a_n > n) a_n = n;
 	if (a_p + a_n > n) a_n = n - a_p;
 	auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-	t_scoped segments = t_array::f_instantiate();
+	auto segments = t_array::f_instantiate();
 	if (a_n > 0) {
 		size_t text = a_p;
 		size_t i = t_base::f_text_to_segment(text);
 		while (true) {
 			size_t next = std::min(++i < f_segments_size() ? t_base::f_segment_to_text(i) : n, a_p + a_n);
-			t_scoped segment = t_tuple::f_instantiate(2);
-			f_as<t_tuple&>(segment)[0] = t_value(next - text);
-			f_as<t_tuple&>(segment)[1] = extension->f_as(t_base::f_segment_to_attribute(i));
-			f_as<t_array&>(segments).f_push(std::move(segment));
+			f_as<t_array&>(segments).f_push(f_tuple(t_value(next - text), extension->f_as(t_base::f_segment_to_attribute(i))));
 			if (next >= a_p + a_n) break;
 			text = next;
 		}
 	}
 	std::wstring text(a_n, L'\0');
-	{
-		t_iterator i = f_begin() + a_p;
-		std::copy(i, i + a_n, text.begin());
-	}
-	t_scoped tuple = t_tuple::f_instantiate(2);
-	f_as<t_tuple&>(tuple)[0] = segments;
-	f_as<t_tuple&>(tuple)[1] = extension->f_as(text);
-	return tuple;
+	std::copy_n(f_begin() + a_p, a_n, text.begin());
+	return f_tuple(segments, extension->f_as(text));
 }
 
 void t_text_model::f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, std::wstring_view a_text)

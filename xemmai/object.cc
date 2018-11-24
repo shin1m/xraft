@@ -14,7 +14,7 @@ void t_type_of<xraft::t_object>::f_define(t_extension* a_extension)
 
 void t_type_of<xraft::t_object>::f_do_finalize(xemmai::t_object* a_this)
 {
-	assert(a_this->f_pointer() == nullptr);
+	assert(a_this->f_as<xraft::t_object*>() == nullptr);
 }
 
 t_scoped t_type_of<xraft::t_object>::f_do_construct(t_stacked* a_stack, size_t a_n)

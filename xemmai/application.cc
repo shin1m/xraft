@@ -13,8 +13,8 @@ struct t_arguments
 
 	t_arguments(xemmai::t_object* a_arguments) : v_arguments(a_arguments)
 	{
-		t_scoped size = t_symbol::f_instantiate(L"size"sv);
-		t_scoped shift = t_symbol::f_instantiate(L"shift"sv);
+		auto size = t_symbol::f_instantiate(L"size"sv);
+		auto shift = t_symbol::f_instantiate(L"shift"sv);
 		while (f_as<size_t>(v_arguments->f_invoke(size)) > 0) {
 			t_scoped p = v_arguments->f_invoke(shift);
 			f_check<t_string>(p, L"argument");
@@ -23,7 +23,7 @@ struct t_arguments
 	}
 	~t_arguments()
 	{
-		t_scoped push = t_symbol::f_instantiate(L"push"sv);
+		auto push = t_symbol::f_instantiate(L"push"sv);
 		size_t n = v_as.size();
 		for (size_t i = 0; i < n; ++i) v_arguments->f_invoke(push, f_global()->f_as(portable::f_convert(v_as[i])));
 	}

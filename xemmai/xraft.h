@@ -47,10 +47,10 @@ class t_proxy : public t_user, public t_entry
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class, false))
+	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class, false, sizeof(T*)))
 	{
 		a_p->f_user__(this);
-		v_object.f_pointer__(a_p);
+		v_object->f_as<T*>() = a_p;
 	}
 	XRAFT__XEMMAI__EXPORT virtual void f_destroy();
 
@@ -59,14 +59,14 @@ public:
 	static t_scoped f_wrap(t_type* a_class, T* a_value)
 	{
 		if (!a_value) return t_value();
-		t_proxy* proxy = static_cast<t_proxy*>(a_value->f_user());
+		auto proxy = static_cast<t_proxy*>(a_value->f_user());
 		if (!proxy) proxy = new t_proxy(a_class, a_value);
 		return proxy->v_object;
 	}
 	template<typename T>
 	static t_scoped f_construct(t_type* a_class, T* a_p)
 	{
-		t_proxy* proxy = new t_proxy(a_class, a_p);
+		auto proxy = new t_proxy(a_class, a_p);
 		proxy->f_acquire();
 		return proxy->v_object;
 	}
@@ -371,9 +371,9 @@ struct t_derivable : T_base
 	typedef t_derivable t_base;
 
 	using T_base::T_base;
-	t_type* f_do_derive()
+	t_scoped f_do_derive()
 	{
-		return new t_type_of<typename T_base::t_what>(t_type_of<typename T_base::t_what>::V_ids, this, this->v_module);
+		return this->template f_derive<t_type_of<typename T_base::t_what>>();
 	}
 };
 

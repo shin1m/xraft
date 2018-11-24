@@ -22,7 +22,7 @@ void t_proxy::f_destroy()
 {
 	if (v_previous) f_unlink();
 	if (v_n > 0) f_as<::xraft::t_object*>(v_object)->f_release();
-	v_object.f_pointer__(nullptr);
+	v_object->f_as<::xraft::t_object*>() = nullptr;
 	delete this;
 }
 
@@ -38,18 +38,18 @@ void t_proxy::f_dispose()
 void t_extension::f_main(t_extension* a_extension, const t_value& a_arguments, const t_value& a_callable)
 {
 	t_application application(a_extension, a_arguments);
-	t_scoped object = xemmai::t_object::f_allocate(a_extension->f_type<::xraft::t_application>(), true);
-	object.f_pointer__(&application);
+	auto object = xemmai::t_object::f_allocate(a_extension->f_type<::xraft::t_application>(), true, sizeof(::xraft::t_application*));
+	object->f_as<::xraft::t_application*>() = &application;
 	a_extension->v_application = object;
 	try {
 		a_callable(object);
 		a_extension->v_application = nullptr;
 		t_with_lock_for_write lock(object);
-		object.f_pointer__(nullptr);
+		object->f_as<::xraft::t_application*>() = nullptr;
 	} catch (...) {
 		a_extension->v_application = nullptr;
 		t_with_lock_for_write lock(object);
-		object.f_pointer__(nullptr);
+		object->f_as<::xraft::t_application*>() = nullptr;
 		throw;
 	}
 }

@@ -20,12 +20,9 @@ t_scoped t_type_of<xraft::t_input_context>::f_composition(t_extension* a_extensi
 	std::vector<wchar_t> cs;
 	std::vector<xraft::t_input_attribute> as0;
 	a_self.f_composition(cs, as0);
-	t_scoped as1 = t_tuple::f_instantiate(as0.size());
-	for (size_t i = 0; i < as0.size(); ++i) f_as<t_tuple&>(as1)[i] = a_extension->f_as(as0[i]);
-	t_scoped tuple = t_tuple::f_instantiate(2);
-	f_as<t_tuple&>(tuple)[0] = t_string::f_instantiate(cs.data(), cs.size());
-	f_as<t_tuple&>(tuple)[1] = std::move(as1);
-	return tuple;
+	auto as1 = t_tuple::f_instantiate(as0.size());
+	for (size_t i = 0; i < as0.size(); ++i) f_as<t_tuple&>(as1)[i].f_construct(a_extension->f_as(as0[i]));
+	return f_tuple(t_string::f_instantiate(cs.data(), cs.size()), std::move(as1));
 }
 
 void t_type_of<xraft::t_input_context>::f_define(t_extension* a_extension)
