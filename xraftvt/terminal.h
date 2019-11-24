@@ -363,6 +363,23 @@ std::fprintf(stderr, "%s unknown private mode: %d\n", a_mode ? "Set" : "Reset", 
 			}
 		}
 	}
+	void f_device_status_report()
+	{
+		int p = f_parameter(0, 0);
+		switch (p) {
+		case 5:
+			v_host.f_send("\x1b[0n", 4);
+			break;
+		case 6:
+			{
+				char cs[25];
+				v_host.f_send(cs, std::snprintf(cs, sizeof(cs), "\x1b[%d;%dR", v_cursor_y + 1, v_cursor_x + 1));
+			}
+			break;
+		default:
+std::fprintf(stderr, "Device Status Report unknown parameter: %d\n", p);
+		}
+	}
 	void f_scroll_region()
 	{
 		int h = f_height();
@@ -485,6 +502,9 @@ std::fprintf(stderr, "Unknown control character: %x\n", a_c);
 			break;
 		case L'm':
 			f_attribute();
+			break;
+		case L'n':
+			f_device_status_report();
 			break;
 		case L'r':
 			f_scroll_region();
