@@ -4,7 +4,7 @@ AC_CONFIG_SRCDIR([src/application_x11.cc])
 
 PKG_CHECK_MODULES([X11], [x11 >= 1.4])
 PKG_CHECK_MODULES([DBUS], [dbus-1 >= 1.4])
-PKG_CHECK_MODULES([GL], [gl >= 7.11])
+PKG_CHECK_MODULES([GL], [gl >= 1.2])
 PKG_CHECK_MODULES([CAIRO], [cairo >= 1.8])
 XEMMAI_USE=xemmai-201908
 PKG_CHECK_MODULES([XEMMAI], [${XEMMAI_USE}], [
