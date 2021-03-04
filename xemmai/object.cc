@@ -17,27 +17,21 @@ void t_type_of<xraft::t_object>::f_do_finalize(xemmai::t_object* a_this)
 	assert(a_this->f_as<xraft::t_object*>() == nullptr);
 }
 
-t_scoped t_type_of<xraft::t_object>::f_do_construct(t_stacked* a_stack, size_t a_n)
+t_pvalue t_type_of<xraft::t_object>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
 	f_throw(L"uninstantiatable."sv);
 }
 
-void t_type_of<xraft::t_object>::f_do_instantiate(t_stacked* a_stack, size_t a_n)
+void t_type_of<xraft::t_object>::f_do_instantiate(t_pvalue* a_stack, size_t a_n)
 {
-	t_scoped object;
-	try {
-		object = f_construct(a_stack, a_n);
-	} catch (...) {
-		t_destruct_n(a_stack, a_n);
-		throw;
-	}
+	auto object = f_construct(a_stack, a_n);
 	try {
 		object.f_call(f_global()->f_symbol_initialize(), a_stack, a_n);
 	} catch (...) {
 		static_cast<xemmaix::xraft::t_proxy*>(f_as<xraft::t_object*>(object)->f_user())->f_release();
 		throw;
 	}
-	a_stack[0] = std::move(object);
+	a_stack[0] = object;
 }
 
 }

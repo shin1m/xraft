@@ -43,32 +43,33 @@ public:
 class t_proxy : public t_user, public t_entry
 {
 	t_application* v_application;
-	t_scoped v_object;
+	t_root v_object;
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(xemmai::t_object::f_allocate(a_class, false, sizeof(T*)))
+	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(f_engine()->f_allocate(false, sizeof(T*)))
 	{
 		a_p->f_user__(this);
 		v_object->f_as<T*>() = a_p;
+		v_object->f_be(a_class);
 	}
 	XRAFT__XEMMAI__EXPORT virtual void f_destroy();
 
 public:
 	template<typename T>
-	static t_scoped f_wrap(t_type* a_class, T* a_value)
+	static t_pvalue f_wrap(t_type* a_class, T* a_value)
 	{
-		if (!a_value) return t_value();
+		if (!a_value) return {};
 		auto proxy = static_cast<t_proxy*>(a_value->f_user());
 		if (!proxy) proxy = new t_proxy(a_class, a_value);
-		return proxy->v_object;
+		return static_cast<xemmai::t_object*>(proxy->v_object);
 	}
 	template<typename T>
-	static t_scoped f_construct(t_type* a_class, T* a_p)
+	static t_pvalue f_construct(t_type* a_class, T* a_p)
 	{
 		auto proxy = new t_proxy(a_class, a_p);
 		proxy->f_acquire();
-		return proxy->v_object;
+		return static_cast<xemmai::t_object*>(proxy->v_object);
 	}
 
 	XRAFT__XEMMAI__EXPORT virtual void f_dispose();
@@ -88,7 +89,7 @@ inline xemmai::t_object* f_self(const ::xraft::t_object* a_this)
 template<typename T>
 struct t_wrapper
 {
-	static t_scoped f_construct(t_type* a_class)
+	static t_pvalue f_construct(t_type* a_class)
 	{
 		return t_proxy::f_construct(a_class, new T());
 	}
@@ -96,7 +97,7 @@ struct t_wrapper
 
 struct t_with_application_thread
 {
-	t_with_application_thread(const t_value& a_self)
+	t_with_application_thread(xemmai::t_object*)
 	{
 		f_application();
 	}
@@ -159,8 +160,8 @@ private:
 	t_slot_of<t_type> v_type_opengl_context;
 	xemmai::t_object* v_application;
 
-	static void f_main(t_extension* a_extension, const t_value& a_arguments, const t_value& a_callable);
-	static t_scoped f_application(t_extension* a_extension)
+	static void f_main(t_extension* a_extension, const t_pvalue& a_arguments, const t_pvalue& a_callable);
+	static t_pvalue f_application(t_extension* a_extension)
 	{
 		return a_extension->v_application;
 	}
@@ -184,7 +185,7 @@ public:
 		return const_cast<t_extension*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
-	t_scoped f_as(T&& a_value) const
+	t_pvalue f_as(T&& a_value) const
 	{
 		typedef t_type_of<typename t_fundamental<T>::t_type> t;
 		return t::f_transfer(f_extension<typename t::t_extension>(), std::forward<T>(a_value));
@@ -234,7 +235,7 @@ inline t_slot_of<t_type>& t_extension::f_type_slot<t_font>()
 }
 
 template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_color>()
+inline t_slot_of<t_type>& t_extension::f_type_slot<::xraft::t_color>()
 {
 	return v_type_color;
 }
@@ -371,7 +372,7 @@ struct t_derivable : T_base
 	typedef t_derivable t_base;
 
 	using T_base::T_base;
-	t_scoped f_do_derive()
+	xemmai::t_object* f_do_derive()
 	{
 		return this->template f_derive<t_type_of<typename T_base::t_what>>();
 	}

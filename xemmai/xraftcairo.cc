@@ -16,7 +16,7 @@ class t_extension : public xemmai::t_extension
 	xemmaix::cairo::t_extension* v_cairo;
 
 public:
-	t_extension(xemmai::t_object* a_module, t_scoped&& a_cairo);
+	t_extension(xemmai::t_object* a_module, const t_pvalue& a_cairo);
 	virtual void f_scan(t_scan a_scan)
 	{
 		a_scan(v_module_cairo);
@@ -32,7 +32,7 @@ public:
 		return const_cast<t_extension*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
-	t_scoped f_as(const T& a_value) const
+	t_pvalue f_as(const T& a_value) const
 	{
 		return v_cairo->f_as(a_value);
 	}
@@ -42,13 +42,13 @@ namespace
 {
 
 template<typename T>
-t_scoped f_surface_create(t_extension* a_extension, T& a_target)
+t_pvalue f_surface_create(t_extension* a_extension, T& a_target)
 {
 	return xemmaix::cairo::t_surface::f_construct(a_extension->f_type<xemmaix::cairo::t_surface>(), f_surface_create(a_target));
 }
 
 template<typename T>
-void f_draw(t_extension* a_extension, T& a_target, const t_value& a_callable)
+void f_draw(t_extension* a_extension, T& a_target, const t_pvalue& a_callable)
 {
 	f_draw(a_target, [&](cairo_t* a_context)
 	{
@@ -58,13 +58,13 @@ void f_draw(t_extension* a_extension, T& a_target, const t_value& a_callable)
 
 }
 
-t_extension::t_extension(xemmai::t_object* a_module, t_scoped&& a_cairo) : xemmai::t_extension(a_module), v_module_cairo(std::move(a_cairo))
+t_extension::t_extension(xemmai::t_object* a_module, const t_pvalue& a_cairo) : xemmai::t_extension(a_module), v_module_cairo(a_cairo)
 {
 	v_cairo = f_extension<xemmaix::cairo::t_extension>(v_module_cairo);
-	f_define<t_scoped(*)(t_extension*, t_bitmap&), f_surface_create<t_bitmap>>(this, L"BitmapSurface"sv);
-	f_define<t_scoped(*)(t_extension*, t_pixmap&), f_surface_create<t_pixmap>>(this, L"PixmapSurface"sv);
-	f_define<void(*)(t_extension*, t_window&, const t_value&), f_draw<t_window>>(this, L"draw_on_window"sv);
-	f_define<void(*)(t_extension*, t_graphics&, const t_value&), f_draw<t_graphics>>(this, L"draw_on_graphics"sv);
+	f_define<t_pvalue(*)(t_extension*, t_bitmap&), f_surface_create<t_bitmap>>(this, L"BitmapSurface"sv);
+	f_define<t_pvalue(*)(t_extension*, t_pixmap&), f_surface_create<t_pixmap>>(this, L"PixmapSurface"sv);
+	f_define<void(*)(t_extension*, t_window&, const t_pvalue&), f_draw<t_window>>(this, L"draw_on_window"sv);
+	f_define<void(*)(t_extension*, t_graphics&, const t_pvalue&), f_draw<t_graphics>>(this, L"draw_on_graphics"sv);
 }
 
 }

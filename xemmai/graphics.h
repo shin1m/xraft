@@ -10,7 +10,7 @@ namespace xemmai
 template<>
 struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_object>>
 {
-	static t_scoped f_construct(t_type* a_class, std::wstring_view a_name)
+	static t_pvalue f_construct(t_type* a_class, std::wstring_view a_name)
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xraft::t_font(portable::f_convert(a_name).c_str()));
 	}
@@ -29,7 +29,7 @@ struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_obje
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
@@ -38,12 +38,12 @@ struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	typedef xemmaix::xraft::t_extension t_extension;
 
 #ifdef XRAFT_X11
-	static t_scoped f_construct(t_type* a_class, std::wstring_view a_name)
+	static t_pvalue f_construct(t_type* a_class, std::wstring_view a_name)
 	{
 		return a_class->f_new<xraft::t_color>(false, portable::f_convert(a_name).c_str());
 	}
 #endif
-	static t_scoped f_construct(t_type* a_class, size_t a_red, size_t a_green, size_t a_blue)
+	static t_pvalue f_construct(t_type* a_class, size_t a_red, size_t a_green, size_t a_blue)
 	{
 		return a_class->f_new<xraft::t_color>(false, a_red, a_green, a_blue);
 	}
@@ -62,7 +62,7 @@ struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
@@ -90,19 +90,19 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 	};
 	typedef xemmaix::xraft::t_extension t_extension;
 
-	static void f_extract(const t_value& a_points0, std::vector<xraft::t_point>& a_points1);
+	static void f_extract(const t_pvalue& a_points0, std::vector<xraft::t_point>& a_points1);
 	static void f_font(xraft::t_graphics& a_self, const xraft::t_pointer<xraft::t_font>& a_font)
 	{
 		if (!a_font) f_throw(L"font must not be null."sv);
 		a_self.f_font(a_font);
 	}
-	static void f_draw(xraft::t_graphics& a_self, const t_value& a_points)
+	static void f_draw(xraft::t_graphics& a_self, const t_pvalue& a_points)
 	{
 		std::vector<xraft::t_point> points;
 		f_extract(a_points, points);
 		a_self.f_draw(&points[0], points.size());
 	}
-	static void f_fill(xraft::t_graphics& a_self, const t_value& a_points)
+	static void f_fill(xraft::t_graphics& a_self, const t_pvalue& a_points)
 	{
 		std::vector<xraft::t_point> points;
 		f_extract(a_points, points);

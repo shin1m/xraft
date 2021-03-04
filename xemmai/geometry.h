@@ -12,7 +12,7 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	typedef xemmaix::xraft::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_scoped f_transfer(T_extension* a_extension, T&& a_value)
+	static t_pvalue f_transfer(T_extension* a_extension, T&& a_value)
 	{
 		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_extension, false, std::forward<T>(a_value));;
 	}
@@ -35,7 +35,7 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
@@ -44,7 +44,7 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 	typedef xemmaix::xraft::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_scoped f_transfer(T_extension* a_extension, T&& a_value)
+	static t_pvalue f_transfer(T_extension* a_extension, T&& a_value)
 	{
 		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_extension, false, std::forward<T>(a_value));;
 	}
@@ -67,7 +67,7 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
@@ -76,7 +76,7 @@ struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft
 	typedef xemmaix::xraft::t_extension t_extension;
 
 	template<typename T_extension, typename T>
-	static t_scoped f_transfer(T_extension* a_extension, T&& a_value)
+	static t_pvalue f_transfer(T_extension* a_extension, T&& a_value)
 	{
 		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_extension, false, std::forward<T>(a_value));;
 	}
@@ -115,7 +115,7 @@ struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 }

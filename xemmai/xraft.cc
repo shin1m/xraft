@@ -35,11 +35,12 @@ void t_proxy::f_dispose()
 	}
 }
 
-void t_extension::f_main(t_extension* a_extension, const t_value& a_arguments, const t_value& a_callable)
+void t_extension::f_main(t_extension* a_extension, const t_pvalue& a_arguments, const t_pvalue& a_callable)
 {
 	t_application application(a_extension, a_arguments);
-	auto object = xemmai::t_object::f_allocate(a_extension->f_type<::xraft::t_application>(), true, sizeof(::xraft::t_application*));
+	auto object = f_engine()->f_allocate(true, sizeof(::xraft::t_application*));
 	object->f_as<::xraft::t_application*>() = &application;
+	object->f_be(a_extension->f_type<::xraft::t_application>());
 	a_extension->v_application = object;
 	try {
 		a_callable(object);
@@ -85,7 +86,7 @@ t_extension::t_extension(xemmai::t_object* a_module) : xemmai::t_extension(a_mod
 	t_type_of<t_rectangle>::f_define(this);
 	t_type_of<::xraft::t_object>::f_define(this);
 	t_type_of<t_font>::f_define(this);
-	t_type_of<t_color>::f_define(this);
+	t_type_of<::xraft::t_color>::f_define(this);
 	t_type_of<t_graphics>::f_define(this);
 	t_type_of<t_graphics::t_function>::f_define(this);
 	t_type_of<t_input_attribute>::f_define(this);
@@ -107,8 +108,8 @@ t_extension::t_extension(xemmai::t_object* a_module) : xemmai::t_extension(a_mod
 	t_type_of<t_opengl_format>::f_define(this);
 	t_type_of<::xraft::t_opengl_widget>::f_define(this);
 	t_type_of<t_opengl_context>::f_define(this);
-	f_define<void (*)(t_extension*, const t_value&, const t_value&), f_main>(this, L"main"sv);
-	f_define<t_scoped(*)(t_extension*), f_application>(this, L"application"sv);
+	f_define<void (*)(t_extension*, const t_pvalue&, const t_pvalue&), f_main>(this, L"main"sv);
+	f_define<t_pvalue(*)(t_extension*), f_application>(this, L"application"sv);
 }
 
 void t_extension::f_scan(t_scan a_scan)

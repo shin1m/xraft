@@ -44,8 +44,9 @@
 	virtual void f_on_paint(t_graphics& a_g)
 	{
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		auto object = xemmai::t_object::f_allocate(extension->f_type<t_graphics>(), false, sizeof(t_graphics*));
+		auto object = f_engine()->f_allocate(false, sizeof(t_graphics*));
 		object->f_as<t_graphics*>() = &a_g;
+		object->f_be(extension->f_type<t_graphics>());
 		try {
 			f_self(this)->f_invoke(extension->v_symbol_on_paint, object);
 			object->f_as<t_graphics*>() = nullptr;
@@ -198,21 +199,21 @@
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
 		f_self(this)->f_invoke(extension->v_symbol_on_pointer_move, extension->f_as(a_modifier), extension->f_as(a_x), extension->f_as(a_y));
 	}
-	static void f_super__add(::xraft::T_WINDOW& a_self, const t_pointer<::xraft::t_widget>& a_widget)
+	static void f_super__add(::xraft::T_WINDOW& a_self, const ::xraft::t_pointer<::xraft::t_widget>& a_widget)
 	{
 		if (dynamic_cast<T_WINDOW*>(&a_self))
 			a_self.::xraft::T_WINDOW::f_add(a_widget);
 		else
 			a_self.f_add(a_widget);
 	}
-	static void f_super__add(::xraft::T_WINDOW& a_self, const t_pointer<::xraft::t_widget>& a_widget, size_t a_i)
+	static void f_super__add(::xraft::T_WINDOW& a_self, const ::xraft::t_pointer<::xraft::t_widget>& a_widget, size_t a_i)
 	{
 		if (dynamic_cast<T_WINDOW*>(&a_self))
 			a_self.::xraft::T_WINDOW::f_add(a_widget, a_i);
 		else
 			a_self.f_add(a_widget, a_i);
 	}
-	virtual void f_add(const t_pointer<::xraft::t_widget>& a_widget, size_t a_i = size_t(-1))
+	virtual void f_add(const ::xraft::t_pointer<::xraft::t_widget>& a_widget, size_t a_i = size_t(-1))
 	{
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
 		f_self(this)->f_invoke(extension->v_symbol_add, extension->f_as(a_widget), extension->f_as(a_i));

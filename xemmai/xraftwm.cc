@@ -1,6 +1,5 @@
 #include "pixmap.h"
 #include "window.h"
-
 #include <xraftwm/common.h>
 #include <xemmai/array.h>
 
@@ -40,7 +39,7 @@ struct t_xraftwm : xemmai::t_extension
 	t_slot_of<t_type> v_type_client;
 	t_slot_of<t_type> v_type_root;
 
-	t_xraftwm(xemmai::t_object* a_module, t_scoped&& a_xraft);
+	t_xraftwm(xemmai::t_object* a_module, const t_pvalue& a_xraft);
 	virtual void f_scan(t_scan a_scan)
 	{
 		a_scan(v_module_xraft);
@@ -87,7 +86,7 @@ struct t_xraftwm : xemmai::t_extension
 		return const_cast<t_xraftwm*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
-	t_scoped f_as(T&& a_value) const
+	t_pvalue f_as(T&& a_value) const
 	{
 		typedef t_type_of<typename t_fundamental<T>::t_type> t;
 		return t::f_transfer(f_extension<typename t::t_extension>(), std::forward<T>(a_value));
@@ -113,7 +112,7 @@ inline t_slot_of<t_type>& t_xraftwm::f_type_slot<t_client>()
 }
 
 template<>
-inline t_slot_of<t_type>& t_xraftwm::f_type_slot<t_root>()
+inline t_slot_of<t_type>& t_xraftwm::f_type_slot<::xraft::t_root>()
 {
 	return v_type_root;
 }
@@ -136,12 +135,12 @@ struct t_type_of<xraft::t_client> : xemmaix::xraft::t_derivable<t_bears<xraft::t
 {
 	typedef xemmaix::xraft::t_xraftwm t_extension;
 
-	static t_scoped f_borders(xraft::t_client& a_self);
-	static void f_borders__(xraft::t_client& a_self, t_scoped&& a_borders);
+	static t_pvalue f_borders(xraft::t_client& a_self);
+	static void f_borders__(xraft::t_client& a_self, const t_pvalue& a_borders);
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
@@ -152,7 +151,7 @@ struct t_type_of<xraft::t_root> : xemmaix::xraft::t_derivable<t_bears<xraft::t_r
 	static void f_define(t_extension* a_extension);
 
 	using t_base::t_base;
-	t_scoped f_do_construct(t_stacked* a_stack, size_t a_n);
+	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 }
@@ -160,7 +159,7 @@ struct t_type_of<xraft::t_root> : xemmaix::xraft::t_derivable<t_bears<xraft::t_r
 namespace xemmaix::xraft
 {
 
-t_xraftwm::t_xraftwm(xemmai::t_object* a_module, t_scoped&& a_xraft) : xemmai::t_extension(a_module), v_module_xraft(std::move(a_xraft))
+t_xraftwm::t_xraftwm(xemmai::t_object* a_module, const t_pvalue& a_xraft) : xemmai::t_extension(a_module), v_module_xraft(a_xraft)
 {
 	v_xraft = xemmai::f_extension<xemmaix::xraft::t_extension>(v_module_xraft);
 	v_symbol_on_move = t_symbol::f_instantiate(L"on_move"sv);
@@ -187,9 +186,9 @@ t_xraftwm::t_xraftwm(xemmai::t_object* a_module, t_scoped&& a_xraft) : xemmai::t
 	v_symbol_on_protocols = t_symbol::f_instantiate(L"on_protocols"sv);
 	v_symbol_on_client = t_symbol::f_instantiate(L"on_client"sv);
 	t_type_of<t_side>::f_define(this);
-	t_type_of<xraft::t_client>::f_define(this);
-	t_type_of<xraft::t_root>::f_define(this);
-	f_define<xraft::t_root*(*)(), f_root>(this, L"root"sv);
+	t_type_of<::xraft::t_client>::f_define(this);
+	t_type_of<::xraft::t_root>::f_define(this);
+	f_define<::xraft::t_root*(*)(), f_root>(this, L"root"sv);
 }
 
 struct t_client : ::xraft::t_client, t_wrapper<t_client>
@@ -256,12 +255,12 @@ struct t_root : ::xraft::t_root, t_wrapper<t_root>
 #define T_WINDOW t_root
 #include "window_override.h"
 #undef T_WINDOW
-	virtual t_pointer<::xraft::t_client> f_on_client()
+	virtual ::xraft::t_pointer<::xraft::t_client> f_on_client()
 	{
 		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		t_scoped p = f_self(this)->f_invoke(extension->v_symbol_on_client);
+		auto p = f_self(this)->f_invoke(extension->v_symbol_on_client);
 		f_check<::xraft::t_client>(p, L"client");
-		t_pointer<::xraft::t_client> q = f_as<::xraft::t_client*>(p);
+		::xraft::t_pointer<::xraft::t_client> q = f_as<::xraft::t_client*>(p);
 		q->f_release();
 		return q;
 	}
@@ -283,7 +282,7 @@ void t_type_of<xraft::t_side>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_client>::f_borders(xraft::t_client& a_self)
+t_pvalue t_type_of<xraft::t_client>::f_borders(xraft::t_client& a_self)
 {
 	const unsigned* borders = a_self.f_borders();
 	auto tuple = t_array::f_instantiate();
@@ -291,11 +290,11 @@ t_scoped t_type_of<xraft::t_client>::f_borders(xraft::t_client& a_self)
 	return tuple;
 }
 
-void t_type_of<xraft::t_client>::f_borders__(xraft::t_client& a_self, t_scoped&& a_borders)
+void t_type_of<xraft::t_client>::f_borders__(xraft::t_client& a_self, const t_pvalue& a_borders)
 {
 	unsigned borders[4];
 	for (size_t i = 0; i < 4; ++i) {
-		t_scoped x = a_borders.f_get_at(f_global()->f_as(i));
+		auto x = a_borders.f_get_at(f_global()->f_as(i));
 		f_check<unsigned>(x, L"border");
 		borders[i] = f_as<unsigned>(x);
 	}
@@ -314,8 +313,8 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 		(a_extension->v_symbol_on_deactivate, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_deactivate, t_with_application_thread>())
 		(a_extension->v_symbol_on_name, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_name, t_with_application_thread>())
 		(a_extension->v_symbol_on_protocols, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_protocols, t_with_application_thread>())
-		(L"borders"sv, t_member<t_scoped(*)(t_client&), f_borders, t_with_application_thread>())
-		(L"borders__"sv, t_member<void(*)(t_client&, t_scoped&&), f_borders__, t_with_application_thread>())
+		(L"borders"sv, t_member<t_pvalue(*)(t_client&), f_borders, t_with_application_thread>())
+		(L"borders__"sv, t_member<void(*)(t_client&, const t_pvalue&), f_borders__, t_with_application_thread>())
 		(L"move"sv, t_member<void(t_client::*)(t_side, int, t_side, int), &t_client::f_move, t_with_application_thread>())
 		(L"show"sv, t_member<void(t_client::*)(), &t_client::f_show, t_with_application_thread>())
 		(L"hide"sv, t_member<void(t_client::*)(), &t_client::f_hide, t_with_application_thread>())
@@ -330,33 +329,33 @@ void t_type_of<xraft::t_client>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_client>::f_do_construct(t_stacked* a_stack, size_t a_n)
+t_pvalue t_type_of<xraft::t_client>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_client::f_construct>::t_bind<xraft::t_client>::f_do(this, a_stack, a_n);
+	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_client::f_construct>::t_bind<xraft::t_client>::f_do(this, a_stack, a_n);
 }
 
 void t_type_of<xraft::t_root>::f_define(t_extension* a_extension)
 {
 	using namespace xraft;
 	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_root, t_window>(a_extension, L"Root"sv)
+	t_define<xraft::t_root, t_window>(a_extension, L"Root"sv)
 #define T_WINDOW t_root
 #include "window_define.h"
 #undef T_WINDOW
-		(L"run"sv, t_member<void(t_root::*)(), &t_root::f_run, t_with_application_thread>())
-		(L"active"sv, t_member<t_pointer<t_client>(t_root::*)() const, &t_root::f_active, t_with_application_thread>())
-		(L"active__"sv, t_member<void(t_root::*)(const t_pointer<t_client>&), &t_root::f_active__, t_with_application_thread>())
+		(L"run"sv, t_member<void(xraft::t_root::*)(), &xraft::t_root::f_run, t_with_application_thread>())
+		(L"active"sv, t_member<xraft::t_pointer<t_client>(xraft::t_root::*)() const, &xraft::t_root::f_active, t_with_application_thread>())
+		(L"active__"sv, t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_client>&), &xraft::t_root::f_active__, t_with_application_thread>())
 		(L"background"sv,
-			t_member<void(t_root::*)(t_pixel), &t_root::f_background, t_with_application_thread>(),
-			t_member<void(t_root::*)(const t_pointer<t_pixmap>&), &t_root::f_background, t_with_application_thread>()
+			t_member<void(xraft::t_root::*)(t_pixel), &xraft::t_root::f_background, t_with_application_thread>(),
+			t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_pixmap>&), &xraft::t_root::f_background, t_with_application_thread>()
 		)
-		(L"share_background"sv, t_member<void(t_root::*)(const t_pointer<t_pixmap>&), &t_root::f_share_background, t_with_application_thread>())
+		(L"share_background"sv, t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_pixmap>&), &xraft::t_root::f_share_background, t_with_application_thread>())
 	;
 }
 
-t_scoped t_type_of<xraft::t_root>::f_do_construct(t_stacked* a_stack, size_t a_n)
+t_pvalue t_type_of<xraft::t_root>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_root::f_construct>::t_bind<xraft::t_root>::f_do(this, a_stack, a_n);
+	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_root::f_construct>::t_bind<xraft::t_root>::f_do(this, a_stack, a_n);
 }
 
 }

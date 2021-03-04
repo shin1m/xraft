@@ -21,10 +21,10 @@ protected:
 public:
 	class t_post : public t_runnable
 	{
-		t_scoped v_callable;
+		t_rvalue v_callable;
 
 	public:
-		t_post(t_scoped&& a_callable) : v_callable(std::move(a_callable))
+		t_post(const t_pvalue& a_callable) : v_callable(a_callable)
 		{
 		}
 		virtual void operator()();
@@ -71,10 +71,10 @@ struct t_type_of<xraft::t_application> : t_uninstantiatable<t_underivable<t_bear
 	};
 	typedef xemmaix::xraft::t_extension t_extension;
 
-	static void f_post(xraft::t_application& a_self, t_scoped&& a_callable)
+	static void f_post(xraft::t_application& a_self, const t_pvalue& a_callable)
 	{
 		t_thread::f_cache_release();
-		a_self.f_post(new xemmaix::xraft::t_application::t_post(std::move(a_callable)));
+		a_self.f_post(new xemmaix::xraft::t_application::t_post(a_callable));
 	}
 	static void f_add(xraft::t_application& a_self, const xraft::t_pointer<xraft::t_shell>& a_shell)
 	{

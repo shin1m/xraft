@@ -115,10 +115,10 @@ void t_type_of<xraft::t_window>::f_define(t_extension* a_extension)
 	using xemmaix::xraft::t_with_application_thread;
 	t_define<t_window, t_drawable>(a_extension, L"Window"sv)
 		(L"count"sv, t_member<size_t(t_window::*)() const, &t_window::f_count, t_with_application_thread>())
-		(L"at"sv, t_member<const t_pointer<t_widget>&(t_window::*)(size_t) const, &t_window::f_at, t_with_application_thread>())
+		(L"at"sv, t_member<const xraft::t_pointer<t_widget>&(t_window::*)(size_t) const, &t_window::f_at, t_with_application_thread>())
 		(a_extension->v_symbol_add,
-			t_member<void(*)(t_window&, const t_pointer<t_widget>&), f_add, t_with_application_thread>(),
-			t_member<void(*)(t_window&, const t_pointer<t_widget>&, size_t), f_add, t_with_application_thread>()
+			t_member<void(*)(t_window&, const xraft::t_pointer<t_widget>&), f_add, t_with_application_thread>(),
+			t_member<void(*)(t_window&, const xraft::t_pointer<t_widget>&, size_t), f_add, t_with_application_thread>()
 		)
 		(a_extension->v_symbol_remove, t_member<void(t_window::*)(size_t), &t_window::f_remove, t_with_application_thread>())
 		(L"geometry"sv, t_member<const t_rectangle&(t_window::*)() const, &t_window::f_geometry, t_with_application_thread>())
@@ -130,8 +130,8 @@ void t_type_of<xraft::t_window>::f_define(t_extension* a_extension)
 		(L"scroll"sv, t_member<void(t_window::*)(int, int, unsigned, unsigned, int, int), &t_window::f_scroll, t_with_application_thread>())
 		(L"from_screen"sv, t_member<t_point(t_window::*)(const t_point&) const, &t_window::f_from_screen, t_with_application_thread>())
 		(L"to_screen"sv, t_member<t_point(t_window::*)(const t_point&) const, &t_window::f_to_screen, t_with_application_thread>())
-		(L"input_context"sv, t_member<const t_pointer<t_input_context>&(t_window::*)() const, &t_window::f_input_context, t_with_application_thread>())
-		(L"input_context__"sv, t_member<void(t_window::*)(const t_pointer<t_input_context>&), &t_window::f_input_context__, t_with_application_thread>())
+		(L"input_context"sv, t_member<const xraft::t_pointer<t_input_context>&(t_window::*)() const, &t_window::f_input_context, t_with_application_thread>())
+		(L"input_context__"sv, t_member<void(t_window::*)(const xraft::t_pointer<t_input_context>&), &t_window::f_input_context__, t_with_application_thread>())
 		(L"cursor"sv, t_member<t_cursor(t_window::*)() const, &t_window::f_cursor, t_with_application_thread>())
 		(L"cursor__"sv, t_member<void(t_window::*)(t_cursor), &t_window::f_cursor__, t_with_application_thread>())
 	;
@@ -145,13 +145,13 @@ void t_type_of<xraft::t_widget>::f_define(t_extension* a_extension)
 #define T_WINDOW t_widget
 #include "window_define.h"
 #undef T_WINDOW
-		(L"parent"sv, t_member<t_pointer<t_window>(t_widget::*)() const, &t_widget::f_parent, t_with_application_thread>())
+		(L"parent"sv, t_member<xraft::t_pointer<t_window>(t_widget::*)() const, &t_widget::f_parent, t_with_application_thread>())
 	;
 }
 
-t_scoped t_type_of<xraft::t_widget>::f_do_construct(t_stacked* a_stack, size_t a_n)
+t_pvalue t_type_of<xraft::t_widget>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_widget::f_construct>::t_bind<xraft::t_widget>::f_do(this, a_stack, 0);
+	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_widget::f_construct>::t_bind<xraft::t_widget>::f_do(this, a_stack, 0);
 }
 
 void t_type_of<xraft::t_shell>::f_define(t_extension* a_extension)
@@ -167,9 +167,9 @@ void t_type_of<xraft::t_shell>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_shell>::f_do_construct(t_stacked* a_stack, size_t a_n)
+t_pvalue t_type_of<xraft::t_shell>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_shell::f_construct>::t_bind<xraft::t_shell>::f_do(this, a_stack, 0);
+	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_shell::f_construct>::t_bind<xraft::t_shell>::f_do(this, a_stack, 0);
 }
 
 void t_type_of<xraft::t_frame>::f_define(t_extension* a_extension)
@@ -188,9 +188,9 @@ void t_type_of<xraft::t_frame>::f_define(t_extension* a_extension)
 	;
 }
 
-t_scoped t_type_of<xraft::t_frame>::f_do_construct(t_stacked* a_stack, size_t a_n)
+t_pvalue t_type_of<xraft::t_frame>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
-	return t_construct_with<t_scoped(*)(t_type*), xemmaix::xraft::t_frame::f_construct>::t_bind<xraft::t_frame>::f_do(this, a_stack, 0);
+	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_frame::f_construct>::t_bind<xraft::t_frame>::f_do(this, a_stack, 0);
 }
 
 }

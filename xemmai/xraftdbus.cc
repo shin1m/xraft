@@ -1,5 +1,4 @@
 #include <xemmaix/dbus/connection.h>
-
 #include "application.h"
 
 namespace xemmaix::xraftdbus
