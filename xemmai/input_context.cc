@@ -18,12 +18,12 @@ void t_type_of<xraft::t_input_attribute>::f_define(t_extension* a_extension)
 t_pvalue t_type_of<xraft::t_input_context>::f_composition(t_extension* a_extension, xraft::t_input_context& a_self)
 {
 	std::vector<wchar_t> cs;
-	std::vector<xraft::t_input_attribute> as0;
-	a_self.f_composition(cs, as0);
-	auto as1 = t_tuple::f_instantiate(as0.size());
-	auto& tuple = f_as<t_tuple&>(as1);
-	for (size_t i = 0; i < as0.size(); ++i) new(&tuple[i]) t_svalue(a_extension->f_as(as0[i]));
-	return f_tuple(t_string::f_instantiate(cs.data(), cs.size()), as1);
+	std::vector<xraft::t_input_attribute> as;
+	a_self.f_composition(cs, as);
+	return f_tuple(t_string::f_instantiate(cs.data(), cs.size()), t_tuple::f_instantiate(as.size(), [&](auto& tuple)
+	{
+		for (size_t i = 0; i < as.size(); ++i) new(&tuple[i]) t_svalue(a_extension->f_as(as[i]));
+	}));
 }
 
 void t_type_of<xraft::t_input_context>::f_define(t_extension* a_extension)
