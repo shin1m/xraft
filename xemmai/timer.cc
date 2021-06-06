@@ -26,17 +26,16 @@ struct t_timer : ::xraft::t_timer, t_wrapper<t_timer>
 namespace xemmai
 {
 
-void t_type_of<xraft::t_timer>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_timer>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_timer, xraft::t_object>(a_extension, L"Timer"sv)
+	t_define{a_library}
 		(L"start"sv,
-			t_member<void(*)(t_timer&, size_t), f_start, t_with_application_thread>(),
-			t_member<void(t_timer::*)(size_t, bool), &t_timer::f_start, t_with_application_thread>()
+			t_member<void(*)(t_timer&, size_t), f_start>(),
+			t_member<void(t_timer::*)(size_t, bool), &t_timer::f_start>()
 		)
-		(L"stop"sv, t_member<void(t_timer::*)(), &t_timer::f_stop, t_with_application_thread>())
-	;
+		(L"stop"sv, t_member<void(t_timer::*)(), &t_timer::f_stop>())
+	.f_derive<t_timer, xraft::t_object>();
 }
 
 t_pvalue t_type_of<xraft::t_timer>::f_do_construct(t_pvalue* a_stack, size_t a_n)

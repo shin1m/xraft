@@ -9,12 +9,12 @@ namespace xemmai
 template<>
 struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_point>>
 {
-	typedef xemmaix::xraft::t_extension t_extension;
+	typedef xemmaix::xraft::t_library t_library;
 
-	template<typename T_extension, typename T>
-	static t_pvalue f_transfer(T_extension* a_extension, T&& a_value)
+	template<typename T_library, typename T>
+	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
 	{
-		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_extension, false, std::forward<T>(a_value));;
+		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_library, std::forward<T>(a_value));;
 	}
 	static int f_x(xraft::t_point& a_self)
 	{
@@ -32,7 +32,7 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	{
 		a_self.v_y = a_value;
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
@@ -41,12 +41,12 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 template<>
 struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t_extent>>
 {
-	typedef xemmaix::xraft::t_extension t_extension;
+	typedef xemmaix::xraft::t_library t_library;
 
-	template<typename T_extension, typename T>
-	static t_pvalue f_transfer(T_extension* a_extension, T&& a_value)
+	template<typename T_library, typename T>
+	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
 	{
-		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_extension, false, std::forward<T>(a_value));;
+		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_library, std::forward<T>(a_value));;
 	}
 	static unsigned f_width(xraft::t_extent& a_self)
 	{
@@ -64,7 +64,7 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 	{
 		a_self.v_height = a_value;
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
@@ -73,12 +73,12 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 template<>
 struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft::t_rectangle>>
 {
-	typedef xemmaix::xraft::t_extension t_extension;
+	typedef xemmaix::xraft::t_library t_library;
 
-	template<typename T_extension, typename T>
-	static t_pvalue f_transfer(T_extension* a_extension, T&& a_value)
+	template<typename T_library, typename T>
+	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
 	{
-		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_extension, false, std::forward<T>(a_value));;
+		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_library, std::forward<T>(a_value));;
 	}
 	static int f_x(xraft::t_rectangle& a_self)
 	{
@@ -112,7 +112,7 @@ struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft
 	{
 		a_self.v_height = a_value;
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);

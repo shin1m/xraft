@@ -35,84 +35,27 @@ void t_proxy::f_dispose()
 	}
 }
 
-void t_extension::f_main(t_extension* a_extension, const t_pvalue& a_arguments, const t_pvalue& a_callable)
+void t_library::f_main(t_library* a_library, const t_pvalue& a_arguments, const t_pvalue& a_callable)
 {
-	t_application application(a_extension, a_arguments);
-	auto object = f_engine()->f_allocate(true, sizeof(::xraft::t_application*));
+	t_application application(a_library, a_arguments);
+	auto object = f_engine()->f_allocate(sizeof(::xraft::t_application*));
 	object->f_as<::xraft::t_application*>() = &application;
-	object->f_be(a_extension->f_type<::xraft::t_application>());
-	a_extension->v_application = object;
+	object->f_be(a_library->f_type<::xraft::t_application>());
+	a_library->v_application = object;
 	try {
 		a_callable(object);
-		a_extension->v_application = nullptr;
-		t_with_lock_for_write lock(object);
+		a_library->v_application = nullptr;
+		std::lock_guard lock(a_library->v_mutex);
 		object->f_as<::xraft::t_application*>() = nullptr;
 	} catch (...) {
-		a_extension->v_application = nullptr;
-		t_with_lock_for_write lock(object);
+		a_library->v_application = nullptr;
+		std::lock_guard lock(a_library->v_mutex);
 		object->f_as<::xraft::t_application*>() = nullptr;
 		throw;
 	}
 }
 
-t_extension::t_extension(xemmai::t_object* a_module) : xemmai::t_extension(a_module)
-{
-	v_symbol_on_move = t_symbol::f_instantiate(L"on_move"sv);
-	v_symbol_on_show = t_symbol::f_instantiate(L"on_show"sv);
-	v_symbol_on_hide = t_symbol::f_instantiate(L"on_hide"sv);
-	v_symbol_on_paint = t_symbol::f_instantiate(L"on_paint"sv);
-	v_symbol_on_focus_enter = t_symbol::f_instantiate(L"on_focus_enter"sv);
-	v_symbol_on_focus_leave = t_symbol::f_instantiate(L"on_focus_leave"sv);
-	v_symbol_on_key_press = t_symbol::f_instantiate(L"on_key_press"sv);
-	v_symbol_on_key_release = t_symbol::f_instantiate(L"on_key_release"sv);
-	v_symbol_on_input_compose = t_symbol::f_instantiate(L"on_input_compose"sv);
-	v_symbol_on_input_commit = t_symbol::f_instantiate(L"on_input_commit"sv);
-	v_symbol_on_input_spot = t_symbol::f_instantiate(L"on_input_spot"sv);
-	v_symbol_on_button_press = t_symbol::f_instantiate(L"on_button_press"sv);
-	v_symbol_on_button_release = t_symbol::f_instantiate(L"on_button_release"sv);
-	v_symbol_on_pointer_enter = t_symbol::f_instantiate(L"on_pointer_enter"sv);
-	v_symbol_on_pointer_leave = t_symbol::f_instantiate(L"on_pointer_leave"sv);
-	v_symbol_on_pointer_move = t_symbol::f_instantiate(L"on_pointer_move"sv);
-	v_symbol_add = t_symbol::f_instantiate(L"add"sv);
-	v_symbol_remove = t_symbol::f_instantiate(L"remove"sv);
-	v_symbol_on_activate = t_symbol::f_instantiate(L"on_activate"sv);
-	v_symbol_on_deactivate = t_symbol::f_instantiate(L"on_deactivate"sv);
-	v_symbol_on_close = t_symbol::f_instantiate(L"on_close"sv);
-	v_symbol_on_create = t_symbol::f_instantiate(L"on_create"sv);
-	v_symbol_on_destroy = t_symbol::f_instantiate(L"on_destroy"sv);
-	t_type_of<::xraft::t_application>::f_define(this);
-	t_type_of<t_point>::f_define(this);
-	t_type_of<t_extent>::f_define(this);
-	t_type_of<t_rectangle>::f_define(this);
-	t_type_of<::xraft::t_object>::f_define(this);
-	t_type_of<t_font>::f_define(this);
-	t_type_of<::xraft::t_color>::f_define(this);
-	t_type_of<t_graphics>::f_define(this);
-	t_type_of<t_graphics::t_function>::f_define(this);
-	t_type_of<t_input_attribute>::f_define(this);
-	t_type_of<t_input_context>::f_define(this);
-	t_type_of<t_drawable>::f_define(this);
-	t_type_of<t_bitmap>::f_define(this);
-	t_type_of<t_pixmap>::f_define(this);
-	t_type_of<t_region>::f_define(this);
-	t_type_of<t_key>::f_define(this);
-	t_type_of<t_modifier>::f_define(this);
-	t_type_of<t_button>::f_define(this);
-	t_type_of<t_timer>::f_define(this);
-	t_type_of<t_cross_mode>::f_define(this);
-	t_type_of<t_cross_detail>::f_define(this);
-	t_type_of<t_window>::f_define(this);
-	t_type_of<::xraft::t_widget>::f_define(this);
-	t_type_of<::xraft::t_shell>::f_define(this);
-	t_type_of<::xraft::t_frame>::f_define(this);
-	t_type_of<t_opengl_format>::f_define(this);
-	t_type_of<::xraft::t_opengl_widget>::f_define(this);
-	t_type_of<t_opengl_context>::f_define(this);
-	f_define<void (*)(t_extension*, const t_pvalue&, const t_pvalue&), f_main>(this, L"main"sv);
-	f_define<t_pvalue(*)(t_extension*), f_application>(this, L"application"sv);
-}
-
-void t_extension::f_scan(t_scan a_scan)
+void t_library::f_scan(t_scan a_scan)
 {
 	a_scan(v_symbol_on_move);
 	a_scan(v_symbol_on_show);
@@ -167,9 +110,89 @@ void t_extension::f_scan(t_scan a_scan)
 	a_scan(v_type_opengl_context);
 }
 
+std::vector<std::pair<t_root, t_rvalue>> t_library::f_define()
+{
+	v_symbol_on_move = t_symbol::f_instantiate(L"on_move"sv);
+	v_symbol_on_show = t_symbol::f_instantiate(L"on_show"sv);
+	v_symbol_on_hide = t_symbol::f_instantiate(L"on_hide"sv);
+	v_symbol_on_paint = t_symbol::f_instantiate(L"on_paint"sv);
+	v_symbol_on_focus_enter = t_symbol::f_instantiate(L"on_focus_enter"sv);
+	v_symbol_on_focus_leave = t_symbol::f_instantiate(L"on_focus_leave"sv);
+	v_symbol_on_key_press = t_symbol::f_instantiate(L"on_key_press"sv);
+	v_symbol_on_key_release = t_symbol::f_instantiate(L"on_key_release"sv);
+	v_symbol_on_input_compose = t_symbol::f_instantiate(L"on_input_compose"sv);
+	v_symbol_on_input_commit = t_symbol::f_instantiate(L"on_input_commit"sv);
+	v_symbol_on_input_spot = t_symbol::f_instantiate(L"on_input_spot"sv);
+	v_symbol_on_button_press = t_symbol::f_instantiate(L"on_button_press"sv);
+	v_symbol_on_button_release = t_symbol::f_instantiate(L"on_button_release"sv);
+	v_symbol_on_pointer_enter = t_symbol::f_instantiate(L"on_pointer_enter"sv);
+	v_symbol_on_pointer_leave = t_symbol::f_instantiate(L"on_pointer_leave"sv);
+	v_symbol_on_pointer_move = t_symbol::f_instantiate(L"on_pointer_move"sv);
+	v_symbol_add = t_symbol::f_instantiate(L"add"sv);
+	v_symbol_remove = t_symbol::f_instantiate(L"remove"sv);
+	v_symbol_on_activate = t_symbol::f_instantiate(L"on_activate"sv);
+	v_symbol_on_deactivate = t_symbol::f_instantiate(L"on_deactivate"sv);
+	v_symbol_on_close = t_symbol::f_instantiate(L"on_close"sv);
+	v_symbol_on_create = t_symbol::f_instantiate(L"on_create"sv);
+	v_symbol_on_destroy = t_symbol::f_instantiate(L"on_destroy"sv);
+	t_type_of<::xraft::t_application>::f_define(this);
+	t_type_of<t_point>::f_define(this);
+	t_type_of<t_extent>::f_define(this);
+	t_type_of<t_rectangle>::f_define(this);
+	t_type_of<::xraft::t_object>::f_define(this);
+	t_type_of<t_font>::f_define(this);
+	t_type_of<::xraft::t_color>::f_define(this);
+	t_type_of<t_graphics>::f_define(this);
+	t_type_of<t_input_context>::f_define(this);
+	t_type_of<t_drawable>::f_define(this);
+	t_type_of<t_bitmap>::f_define(this);
+	t_type_of<t_pixmap>::f_define(this);
+	t_type_of<t_region>::f_define(this);
+	t_type_of<t_timer>::f_define(this);
+	t_type_of<t_window>::f_define(this);
+	t_type_of<::xraft::t_widget>::f_define(this);
+	t_type_of<::xraft::t_shell>::f_define(this);
+	t_type_of<::xraft::t_frame>::f_define(this);
+	t_type_of<t_opengl_format>::f_define(this);
+	t_type_of<::xraft::t_opengl_widget>::f_define(this);
+	t_type_of<t_opengl_context>::f_define(this);
+	return t_define(this)
+		(L"Application"sv, xemmai::t_object::f_of(v_type_application))
+		(L"Point"sv, xemmai::t_object::f_of(v_type_point))
+		(L"Extent"sv, xemmai::t_object::f_of(v_type_extent))
+		(L"Rectangle"sv, xemmai::t_object::f_of(v_type_rectangle))
+		(L"Object"sv, xemmai::t_object::f_of(v_type_object))
+		(L"Font"sv, xemmai::t_object::f_of(v_type_font))
+		(L"Color"sv, xemmai::t_object::f_of(v_type_color))
+		(L"Graphics"sv, xemmai::t_object::f_of(v_type_graphics))
+		(L"Function"sv, t_type_of<t_graphics::t_function>::f_define(this))
+		(L"InputAttribute"sv, t_type_of<t_input_attribute>::f_define(this))
+		(L"InputContext"sv, xemmai::t_object::f_of(v_type_input_context))
+		(L"Drawable"sv, xemmai::t_object::f_of(v_type_drawable))
+		(L"Bitmap"sv, xemmai::t_object::f_of(v_type_bitmap))
+		(L"Pixmap"sv, xemmai::t_object::f_of(v_type_pixmap))
+		(L"Region"sv, xemmai::t_object::f_of(v_type_region))
+		(L"Key"sv, t_type_of<t_key>::f_define(this))
+		(L"Modifier"sv, t_type_of<t_modifier>::f_define(this))
+		(L"Button"sv, t_type_of<t_button>::f_define(this))
+		(L"Timer"sv, xemmai::t_object::f_of(v_type_timer))
+		(L"CrossMode"sv, t_type_of<t_cross_mode>::f_define(this))
+		(L"CrossDetail"sv, t_type_of<t_cross_detail>::f_define(this))
+		(L"Window"sv, xemmai::t_object::f_of(v_type_window))
+		(L"Widget"sv, xemmai::t_object::f_of(v_type_widget))
+		(L"Shell"sv, xemmai::t_object::f_of(v_type_shell))
+		(L"Frame"sv, xemmai::t_object::f_of(v_type_frame))
+		(L"GLFormat"sv, xemmai::t_object::f_of(v_type_opengl_format))
+		(L"GLWidget"sv, xemmai::t_object::f_of(v_type_opengl_widget))
+		(L"GLContext"sv, xemmai::t_object::f_of(v_type_opengl_context))
+		(L"main"sv, t_static<void (*)(t_library*, const t_pvalue&, const t_pvalue&), f_main>())
+		(L"application"sv, t_static<t_pvalue(*)(t_library*), f_application>())
+	;
 }
 
-XEMMAI__MODULE__FACTORY(xemmai::t_object* a_module)
+}
+
+XEMMAI__MODULE__FACTORY(xemmai::t_library::t_handle* a_handle)
 {
-	return new xemmaix::xraft::t_extension(a_module);
+	return xemmai::f_new<xemmaix::xraft::t_library>(a_handle);
 }

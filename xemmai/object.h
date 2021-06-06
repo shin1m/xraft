@@ -13,7 +13,7 @@ struct t_fundamental<xraft::t_pointer<T>>
 };
 
 template<>
-struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
+struct t_type_of<xraft::t_object> : xemmaix::xraft::t_bears_pointer<xraft::t_object>
 {
 	template<typename T0>
 	struct t_cast
@@ -92,17 +92,17 @@ struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 			return t_is<T0*>::f_call(std::forward<T1>(a_object));
 		}
 	};
-	typedef xemmaix::xraft::t_extension t_extension;
+	typedef xemmaix::xraft::t_library t_library;
 
-	template<typename T_extension, typename T>
-	static t_pvalue f_transfer(T_extension* a_extension, const xraft::t_pointer<T>& a_value)
+	template<typename T_library, typename T>
+	static t_pvalue f_transfer(T_library* a_library, const xraft::t_pointer<T>& a_value)
 	{
-		return xemmaix::xraft::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), static_cast<T*>(a_value));
+		return xemmaix::xraft::t_proxy::f_wrap(a_library->template f_type<typename t_fundamental<T>::t_type>(), static_cast<T*>(a_value));
 	}
-	template<typename T_extension, typename T>
-	static t_pvalue f_transfer(T_extension* a_extension, T* a_value)
+	template<typename T_library, typename T>
+	static t_pvalue f_transfer(T_library* a_library, T* a_value)
 	{
-		return xemmaix::xraft::t_proxy::f_wrap(a_extension->template f_type<typename t_fundamental<T>::t_type>(), a_value);
+		return xemmaix::xraft::t_proxy::f_wrap(a_library->template f_type<typename t_fundamental<T>::t_type>(), a_value);
 	}
 	static void f_acquire(xraft::t_object& a_self)
 	{
@@ -112,7 +112,7 @@ struct t_type_of<xraft::t_object> : t_underivable<t_bears<xraft::t_object>>
 	{
 		static_cast<xemmaix::xraft::t_proxy*>(a_self.f_user())->f_release();
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	static void f_do_finalize(xemmai::t_object* a_this);

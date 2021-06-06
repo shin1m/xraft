@@ -1,38 +1,36 @@
 #include "input_context.h"
 
-#include <xemmai/array.h>
-
 namespace xemmai
 {
 
-void t_type_of<xraft::t_input_attribute>::f_define(t_extension* a_extension)
+t_object* t_type_of<xraft::t_input_attribute>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define<t_input_attribute, intptr_t>(a_extension, L"InputAttribute"sv)
+	t_define{a_library}.f_derive<t_input_attribute, intptr_t>();
+	return a_library->f_type<t_input_attribute>()->f_do_derive({{}, t_define(a_library)
 		(L"NONE"sv, e_input_attribute__NONE)
 		(L"REVERSE"sv, e_input_attribute__REVERSE)
 		(L"UNDERLINE"sv, e_input_attribute__UNDERLINE)
-	;
+	});
 }
 
-t_pvalue t_type_of<xraft::t_input_context>::f_composition(t_extension* a_extension, xraft::t_input_context& a_self)
+t_pvalue t_type_of<xraft::t_input_context>::f_composition(t_library* a_library, xraft::t_input_context& a_self)
 {
 	std::vector<wchar_t> cs;
 	std::vector<xraft::t_input_attribute> as;
 	a_self.f_composition(cs, as);
 	return f_tuple(t_string::f_instantiate(cs.data(), cs.size()), t_tuple::f_instantiate(as.size(), [&](auto& tuple)
 	{
-		for (size_t i = 0; i < as.size(); ++i) new(&tuple[i]) t_svalue(a_extension->f_as(as[i]));
+		for (size_t i = 0; i < as.size(); ++i) new(&tuple[i]) t_svalue(a_library->f_as(as[i]));
 	}));
 }
 
-void t_type_of<xraft::t_input_context>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_input_context>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_input_context, xraft::t_object>(a_extension, L"InputContext"sv)
-		(L"composition"sv, t_member<t_pvalue(*)(t_extension*, t_input_context&), f_composition, t_with_application_thread>())
-	;
+	t_define{a_library}
+		(L"composition"sv, t_member<t_pvalue(*)(t_library*, t_input_context&), f_composition>())
+	.f_derive<t_input_context, xraft::t_object>();
 }
 
 t_pvalue t_type_of<xraft::t_input_context>::f_do_construct(t_pvalue* a_stack, size_t a_n)

@@ -47,10 +47,11 @@ class t_proxy : public t_user, public t_entry
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(f_engine()->f_allocate(false, sizeof(T*)))
+	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(f_engine()->f_allocate(xemmai::t_object::f_align_for_fields(sizeof(T*)) + sizeof(t_svalue) * a_class->v_instance_fields))
 	{
 		a_p->f_user__(this);
 		v_object->f_as<T*>() = a_p;
+		std::uninitialized_default_construct_n(v_object->f_fields(sizeof(T*)), a_class->v_instance_fields);
 		v_object->f_be(a_class);
 	}
 	XRAFT__XEMMAI__EXPORT virtual void f_destroy();
@@ -95,16 +96,9 @@ struct t_wrapper
 	}
 };
 
-struct t_with_application_thread
+struct t_library : xemmai::t_library
 {
-	t_with_application_thread(xemmai::t_object*)
-	{
-		f_application();
-	}
-};
-
-struct t_extension : xemmai::t_extension
-{
+	std::mutex v_mutex;
 	t_slot v_symbol_on_move;
 	t_slot v_symbol_on_show;
 	t_slot v_symbol_on_hide;
@@ -160,17 +154,18 @@ private:
 	t_slot_of<t_type> v_type_opengl_context;
 	xemmai::t_object* v_application;
 
-	static void f_main(t_extension* a_extension, const t_pvalue& a_arguments, const t_pvalue& a_callable);
-	static t_pvalue f_application(t_extension* a_extension)
+	static void f_main(t_library* a_library, const t_pvalue& a_arguments, const t_pvalue& a_callable);
+	static t_pvalue f_application(t_library* a_library)
 	{
-		return a_extension->v_application;
+		return a_library->v_application;
 	}
 
 public:
-	t_extension(xemmai::t_object* a_module);
+	using xemmai::t_library::t_library;
 	virtual void f_scan(t_scan a_scan);
+	virtual std::vector<std::pair<t_root, t_rvalue>> f_define();
 	template<typename T>
-	const T* f_extension() const
+	const T* f_library() const
 	{
 		return f_global();
 	}
@@ -182,200 +177,59 @@ public:
 	template<typename T>
 	t_type* f_type() const
 	{
-		return const_cast<t_extension*>(this)->f_type_slot<T>();
+		return const_cast<t_library*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
 	t_pvalue f_as(T&& a_value) const
 	{
 		typedef t_type_of<typename t_fundamental<T>::t_type> t;
-		return t::f_transfer(f_extension<typename t::t_extension>(), std::forward<T>(a_value));
+		return t::f_transfer(f_library<typename t::t_library>(), std::forward<T>(a_value));
 	}
 };
 
 template<>
-inline const t_extension* t_extension::f_extension<t_extension>() const
+inline const t_library* t_library::f_library<t_library>() const
 {
 	return this;
 }
 
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_application>()
-{
-	return v_type_application;
-}
+XEMMAI__LIBRARY__TYPE(t_library, application)
+XEMMAI__LIBRARY__TYPE(t_library, point)
+XEMMAI__LIBRARY__TYPE(t_library, extent)
+XEMMAI__LIBRARY__TYPE(t_library, rectangle)
+XEMMAI__LIBRARY__TYPE_AS(t_library, ::xraft::t_object, object)
+XEMMAI__LIBRARY__TYPE(t_library, font)
+XEMMAI__LIBRARY__TYPE_AS(t_library, ::xraft::t_color, color)
+XEMMAI__LIBRARY__TYPE(t_library, graphics)
+XEMMAI__LIBRARY__TYPE_AS(t_library, t_graphics::t_function, graphics__function)
+XEMMAI__LIBRARY__TYPE(t_library, input_attribute)
+XEMMAI__LIBRARY__TYPE(t_library, input_context)
+XEMMAI__LIBRARY__TYPE(t_library, drawable)
+XEMMAI__LIBRARY__TYPE(t_library, bitmap)
+XEMMAI__LIBRARY__TYPE(t_library, pixmap)
+XEMMAI__LIBRARY__TYPE(t_library, region)
+XEMMAI__LIBRARY__TYPE(t_library, key)
+XEMMAI__LIBRARY__TYPE(t_library, modifier)
+XEMMAI__LIBRARY__TYPE(t_library, button)
+XEMMAI__LIBRARY__TYPE(t_library, timer)
+XEMMAI__LIBRARY__TYPE(t_library, cross_mode)
+XEMMAI__LIBRARY__TYPE(t_library, cross_detail)
+XEMMAI__LIBRARY__TYPE(t_library, window)
+XEMMAI__LIBRARY__TYPE(t_library, widget)
+XEMMAI__LIBRARY__TYPE(t_library, shell)
+XEMMAI__LIBRARY__TYPE(t_library, frame)
+XEMMAI__LIBRARY__TYPE(t_library, opengl_format)
+XEMMAI__LIBRARY__TYPE(t_library, opengl_widget)
+XEMMAI__LIBRARY__TYPE(t_library, opengl_context)
 
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_point>()
+template<typename T, typename T_base = t_type>
+struct t_bears_pointer : t_bears<T, T_base>
 {
-	return v_type_point;
-}
+	using t_base = t_bears_pointer;
 
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_extent>()
-{
-	return v_type_extent;
-}
+	static constexpr size_t V_native = sizeof(T*);
 
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_rectangle>()
-{
-	return v_type_rectangle;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<::xraft::t_object>()
-{
-	return v_type_object;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_font>()
-{
-	return v_type_font;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<::xraft::t_color>()
-{
-	return v_type_color;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_graphics>()
-{
-	return v_type_graphics;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_graphics::t_function>()
-{
-	return v_type_graphics__function;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_input_attribute>()
-{
-	return v_type_input_attribute;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_input_context>()
-{
-	return v_type_input_context;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_drawable>()
-{
-	return v_type_drawable;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_bitmap>()
-{
-	return v_type_bitmap;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_pixmap>()
-{
-	return v_type_pixmap;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_region>()
-{
-	return v_type_region;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_key>()
-{
-	return v_type_key;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_modifier>()
-{
-	return v_type_modifier;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_button>()
-{
-	return v_type_button;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_timer>()
-{
-	return v_type_timer;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_cross_mode>()
-{
-	return v_type_cross_mode;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_cross_detail>()
-{
-	return v_type_cross_detail;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_window>()
-{
-	return v_type_window;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_widget>()
-{
-	return v_type_widget;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_shell>()
-{
-	return v_type_shell;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_frame>()
-{
-	return v_type_frame;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_format>()
-{
-	return v_type_opengl_format;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_widget>()
-{
-	return v_type_opengl_widget;
-}
-
-template<>
-inline t_slot_of<t_type>& t_extension::f_type_slot<t_opengl_context>()
-{
-	return v_type_opengl_context;
-}
-
-template<typename T_base>
-struct t_derivable : T_base
-{
-	typedef t_derivable t_base;
-
-	using T_base::T_base;
-	xemmai::t_object* f_do_derive()
-	{
-		return this->template f_derive<t_type_of<typename T_base::t_what>>();
-	}
+	using t_bears<T, T_base>::t_bears;
 };
 
 }

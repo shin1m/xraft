@@ -10,17 +10,21 @@ namespace xemmaix::xraftcairo
 using namespace xraft;
 using namespace xemmai;
 
-class t_extension : public xemmai::t_extension
+class t_library : public xemmai::t_library
 {
 	t_slot v_module_cairo;
-	xemmaix::cairo::t_extension* v_cairo;
+	xemmaix::cairo::t_library* v_cairo;
 
 public:
-	t_extension(xemmai::t_object* a_module, const t_pvalue& a_cairo);
+	t_library(xemmai::t_object* a_module, const t_pvalue& a_cairo);
+	t_library(xemmai::t_library::t_handle* a_handle, const t_pvalue& a_cairo) : xemmai::t_library(a_handle), v_module_cairo(a_cairo), v_cairo(&v_module_cairo->f_as<t_module>().v_body->f_as<xemmaix::cairo::t_library>())
+	{
+	}
 	virtual void f_scan(t_scan a_scan)
 	{
 		a_scan(v_module_cairo);
 	}
+	virtual std::vector<std::pair<t_root, t_rvalue>> f_define();
 	template<typename T>
 	t_slot_of<t_type>& f_type_slot()
 	{
@@ -29,7 +33,7 @@ public:
 	template<typename T>
 	t_type* f_type() const
 	{
-		return const_cast<t_extension*>(this)->f_type_slot<T>();
+		return const_cast<t_library*>(this)->f_type_slot<T>();
 	}
 	template<typename T>
 	t_pvalue f_as(const T& a_value) const
@@ -42,35 +46,36 @@ namespace
 {
 
 template<typename T>
-t_pvalue f_surface_create(t_extension* a_extension, T& a_target)
+t_pvalue f_surface_create(t_library* a_library, T& a_target)
 {
-	return xemmaix::cairo::t_surface::f_construct(a_extension->f_type<xemmaix::cairo::t_surface>(), f_surface_create(a_target));
+	return xemmaix::cairo::t_surface::f_construct(a_library->f_type<xemmaix::cairo::t_surface>(), f_surface_create(a_target));
 }
 
 template<typename T>
-void f_draw(t_extension* a_extension, T& a_target, const t_pvalue& a_callable)
+void f_draw(t_library* a_library, T& a_target, const t_pvalue& a_callable)
 {
 	f_draw(a_target, [&](cairo_t* a_context)
 	{
-		a_callable(xemmaix::cairo::t_context::f_construct(a_extension->f_type<xemmaix::cairo::t_context>(), a_context));
+		a_callable(xemmaix::cairo::t_context::f_construct(a_library->f_type<xemmaix::cairo::t_context>(), a_context));
 	});
 }
 
 }
 
-t_extension::t_extension(xemmai::t_object* a_module, const t_pvalue& a_cairo) : xemmai::t_extension(a_module), v_module_cairo(a_cairo)
+std::vector<std::pair<t_root, t_rvalue>> t_library::f_define()
 {
-	v_cairo = f_extension<xemmaix::cairo::t_extension>(v_module_cairo);
-	f_define<t_pvalue(*)(t_extension*, t_bitmap&), f_surface_create<t_bitmap>>(this, L"BitmapSurface"sv);
-	f_define<t_pvalue(*)(t_extension*, t_pixmap&), f_surface_create<t_pixmap>>(this, L"PixmapSurface"sv);
-	f_define<void(*)(t_extension*, t_window&, const t_pvalue&), f_draw<t_window>>(this, L"draw_on_window"sv);
-	f_define<void(*)(t_extension*, t_graphics&, const t_pvalue&), f_draw<t_graphics>>(this, L"draw_on_graphics"sv);
+	return t_define(this)
+		(L"BitmapSurface"sv, t_static<t_pvalue(*)(t_library*, t_bitmap&), f_surface_create<t_bitmap>>())
+		(L"PixmapSurface"sv, t_static<t_pvalue(*)(t_library*, t_pixmap&), f_surface_create<t_pixmap>>())
+		(L"draw_on_window"sv, t_static<void(*)(t_library*, t_window&, const t_pvalue&), f_draw<t_window>>())
+		(L"draw_on_graphics"sv, t_static<void(*)(t_library*, t_graphics&, const t_pvalue&), f_draw<t_graphics>>())
+	;
 }
 
 }
 
-XEMMAI__MODULE__FACTORY(xemmai::t_object* a_module)
+XEMMAI__MODULE__FACTORY(xemmai::t_library::t_handle* a_handle)
 {
 	using namespace std::literals;
-	return new xemmaix::xraftcairo::t_extension(a_module, xemmai::t_module::f_instantiate(L"cairo"sv));
+	return xemmai::f_new<xemmaix::xraftcairo::t_library>(a_handle, xemmai::t_module::f_instantiate(L"cairo"sv));
 }

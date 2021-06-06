@@ -24,8 +24,9 @@ struct t_shell : ::xraft::t_shell, t_wrapper<t_shell>
 	}
 	virtual void f_on_activate()
 	{
-		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		f_self(this)->f_invoke(extension->v_symbol_on_activate);
+		auto& library = f_self(this)->f_type()->v_module->f_as<t_library>();
+		static size_t index;
+		f_self(this)->f_invoke(library.v_symbol_on_activate, index);
 	}
 	static void f_super__on_deactivate(::xraft::t_shell& a_self)
 	{
@@ -36,8 +37,9 @@ struct t_shell : ::xraft::t_shell, t_wrapper<t_shell>
 	}
 	virtual void f_on_deactivate()
 	{
-		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		f_self(this)->f_invoke(extension->v_symbol_on_deactivate);
+		auto& library = f_self(this)->f_type()->v_module->f_as<t_library>();
+		static size_t index;
+		f_self(this)->f_invoke(library.v_symbol_on_deactivate, index);
 	}
 };
 
@@ -55,8 +57,9 @@ struct t_frame : ::xraft::t_frame, t_wrapper<t_frame>
 	}
 	virtual void f_on_activate()
 	{
-		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		f_self(this)->f_invoke(extension->v_symbol_on_activate);
+		auto& library = f_self(this)->f_type()->v_module->f_as<t_library>();
+		static size_t index;
+		f_self(this)->f_invoke(library.v_symbol_on_activate, index);
 	}
 	static void f_super__on_deactivate(::xraft::t_frame& a_self)
 	{
@@ -67,8 +70,9 @@ struct t_frame : ::xraft::t_frame, t_wrapper<t_frame>
 	}
 	virtual void f_on_deactivate()
 	{
-		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		f_self(this)->f_invoke(extension->v_symbol_on_deactivate);
+		auto& library = f_self(this)->f_type()->v_module->f_as<t_library>();
+		static size_t index;
+		f_self(this)->f_invoke(library.v_symbol_on_deactivate, index);
 	}
 	static void f_super__on_close(::xraft::t_frame& a_self)
 	{
@@ -79,8 +83,9 @@ struct t_frame : ::xraft::t_frame, t_wrapper<t_frame>
 	}
 	virtual void f_on_close()
 	{
-		auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
-		f_self(this)->f_invoke(extension->v_symbol_on_close);
+		auto& library = f_self(this)->f_type()->v_module->f_as<t_library>();
+		static size_t index;
+		f_self(this)->f_invoke(library.v_symbol_on_close, index);
 	}
 };
 
@@ -89,64 +94,64 @@ struct t_frame : ::xraft::t_frame, t_wrapper<t_frame>
 namespace xemmai
 {
 
-void t_type_of<xraft::t_cross_mode>::f_define(t_extension* a_extension)
+t_object* t_type_of<xraft::t_cross_mode>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define<t_cross_mode, intptr_t>(a_extension, L"CrossMode"sv)
+	t_define{a_library}.f_derive<t_cross_mode, intptr_t>();
+	return a_library->f_type<t_cross_mode>()->f_do_derive({{}, t_define(a_library)
 		(L"NORMAL"sv, e_cross_mode__NORMAL)
 		(L"GRAB"sv, e_cross_mode__GRAB)
 		(L"UNGRAB"sv, e_cross_mode__UNGRAB)
-	;
+	});
 }
 
-void t_type_of<xraft::t_cross_detail>::f_define(t_extension* a_extension)
+t_object* t_type_of<xraft::t_cross_detail>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define<t_cross_detail, intptr_t>(a_extension, L"CrossDetail"sv)
+	t_define{a_library}.f_derive<t_cross_detail, intptr_t>();
+	return a_library->f_type<t_cross_detail>()->f_do_derive({{}, t_define(a_library)
 		(L"OUTER"sv, e_cross_detail__OUTER)
 		(L"INNER"sv, e_cross_detail__INNER)
 		(L"THROUGH"sv, e_cross_detail__THROUGH)
-	;
+	});
 }
 
-void t_type_of<xraft::t_window>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_window>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_window, t_drawable>(a_extension, L"Window"sv)
-		(L"count"sv, t_member<size_t(t_window::*)() const, &t_window::f_count, t_with_application_thread>())
-		(L"at"sv, t_member<const xraft::t_pointer<t_widget>&(t_window::*)(size_t) const, &t_window::f_at, t_with_application_thread>())
-		(a_extension->v_symbol_add,
-			t_member<void(*)(t_window&, const xraft::t_pointer<t_widget>&), f_add, t_with_application_thread>(),
-			t_member<void(*)(t_window&, const xraft::t_pointer<t_widget>&, size_t), f_add, t_with_application_thread>()
+	t_define{a_library}
+		(L"count"sv, t_member<size_t(t_window::*)() const, &t_window::f_count>())
+		(L"at"sv, t_member<const xraft::t_pointer<t_widget>&(t_window::*)(size_t) const, &t_window::f_at>())
+		(a_library->v_symbol_add,
+			t_member<void(*)(t_window&, const xraft::t_pointer<t_widget>&), f__add>(),
+			t_member<void(*)(t_window&, const xraft::t_pointer<t_widget>&, size_t), f__add>()
 		)
-		(a_extension->v_symbol_remove, t_member<void(t_window::*)(size_t), &t_window::f_remove, t_with_application_thread>())
-		(L"geometry"sv, t_member<const t_rectangle&(t_window::*)() const, &t_window::f_geometry, t_with_application_thread>())
-		(L"move"sv, t_member<void(t_window::*)(const t_rectangle&), &t_window::f_move, t_with_application_thread>())
-		(L"visible"sv, t_member<bool(t_window::*)() const, &t_window::f_visible, t_with_application_thread>())
-		(L"show"sv, t_member<void(t_window::*)(), &t_window::f_show, t_with_application_thread>())
-		(L"hide"sv, t_member<void(t_window::*)(), &t_window::f_hide, t_with_application_thread>())
-		(L"invalidate"sv, t_member<void(t_window::*)(int, int, unsigned, unsigned), &t_window::f_invalidate, t_with_application_thread>())
-		(L"scroll"sv, t_member<void(t_window::*)(int, int, unsigned, unsigned, int, int), &t_window::f_scroll, t_with_application_thread>())
-		(L"from_screen"sv, t_member<t_point(t_window::*)(const t_point&) const, &t_window::f_from_screen, t_with_application_thread>())
-		(L"to_screen"sv, t_member<t_point(t_window::*)(const t_point&) const, &t_window::f_to_screen, t_with_application_thread>())
-		(L"input_context"sv, t_member<const xraft::t_pointer<t_input_context>&(t_window::*)() const, &t_window::f_input_context, t_with_application_thread>())
-		(L"input_context__"sv, t_member<void(t_window::*)(const xraft::t_pointer<t_input_context>&), &t_window::f_input_context__, t_with_application_thread>())
-		(L"cursor"sv, t_member<t_cursor(t_window::*)() const, &t_window::f_cursor, t_with_application_thread>())
-		(L"cursor__"sv, t_member<void(t_window::*)(t_cursor), &t_window::f_cursor__, t_with_application_thread>())
-	;
+		(a_library->v_symbol_remove, t_member<void(t_window::*)(size_t), &t_window::f_remove>())
+		(L"geometry"sv, t_member<const t_rectangle&(t_window::*)() const, &t_window::f_geometry>())
+		(L"move"sv, t_member<void(t_window::*)(const t_rectangle&), &t_window::f_move>())
+		(L"visible"sv, t_member<bool(t_window::*)() const, &t_window::f_visible>())
+		(L"show"sv, t_member<void(t_window::*)(), &t_window::f_show>())
+		(L"hide"sv, t_member<void(t_window::*)(), &t_window::f_hide>())
+		(L"invalidate"sv, t_member<void(t_window::*)(int, int, unsigned, unsigned), &t_window::f_invalidate>())
+		(L"scroll"sv, t_member<void(t_window::*)(int, int, unsigned, unsigned, int, int), &t_window::f_scroll>())
+		(L"from_screen"sv, t_member<t_point(t_window::*)(const t_point&) const, &t_window::f_from_screen>())
+		(L"to_screen"sv, t_member<t_point(t_window::*)(const t_point&) const, &t_window::f_to_screen>())
+		(L"input_context"sv, t_member<const xraft::t_pointer<t_input_context>&(t_window::*)() const, &t_window::f_input_context>())
+		(L"input_context__"sv, t_member<void(t_window::*)(const xraft::t_pointer<t_input_context>&), &t_window::f_input_context__>())
+		(L"cursor"sv, t_member<t_cursor(t_window::*)() const, &t_window::f_cursor>())
+		(L"cursor__"sv, t_member<void(t_window::*)(t_cursor), &t_window::f_cursor__>())
+	.f_derive<t_window, t_drawable>();
 }
 
-void t_type_of<xraft::t_widget>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_widget>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_widget, t_window>(a_extension, L"Widget"sv)
+	t_define{a_library}
 #define T_WINDOW t_widget
 #include "window_define.h"
 #undef T_WINDOW
-		(L"parent"sv, t_member<xraft::t_pointer<t_window>(t_widget::*)() const, &t_widget::f_parent, t_with_application_thread>())
-	;
+		(L"parent"sv, t_member<xraft::t_pointer<t_window>(t_widget::*)() const, &t_widget::f_parent>())
+	.f_derive<t_widget, t_window>();
 }
 
 t_pvalue t_type_of<xraft::t_widget>::f_do_construct(t_pvalue* a_stack, size_t a_n)
@@ -154,17 +159,16 @@ t_pvalue t_type_of<xraft::t_widget>::f_do_construct(t_pvalue* a_stack, size_t a_
 	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_widget::f_construct>::t_bind<xraft::t_widget>::f_do(this, a_stack, 0);
 }
 
-void t_type_of<xraft::t_shell>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_shell>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_shell, t_window>(a_extension, L"Shell"sv)
+	t_define{a_library}
 #define T_WINDOW t_shell
 #include "window_define.h"
 #undef T_WINDOW
-		(a_extension->v_symbol_on_activate, t_member<void(*)(t_shell&), xemmaix::xraft::t_shell::f_super__on_activate, t_with_application_thread>())
-		(a_extension->v_symbol_on_deactivate, t_member<void(*)(t_shell&), xemmaix::xraft::t_shell::f_super__on_deactivate, t_with_application_thread>())
-	;
+		(a_library->v_symbol_on_activate, t_member<void(*)(t_shell&), xemmaix::xraft::t_shell::f_super__on_activate>())
+		(a_library->v_symbol_on_deactivate, t_member<void(*)(t_shell&), xemmaix::xraft::t_shell::f_super__on_deactivate>())
+	.f_derive<t_shell, t_window>();
 }
 
 t_pvalue t_type_of<xraft::t_shell>::f_do_construct(t_pvalue* a_stack, size_t a_n)
@@ -172,20 +176,19 @@ t_pvalue t_type_of<xraft::t_shell>::f_do_construct(t_pvalue* a_stack, size_t a_n
 	return t_construct_with<t_pvalue(*)(t_type*), xemmaix::xraft::t_shell::f_construct>::t_bind<xraft::t_shell>::f_do(this, a_stack, 0);
 }
 
-void t_type_of<xraft::t_frame>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_frame>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_frame, t_shell>(a_extension, L"Frame"sv)
+	t_define{a_library}
 #define T_WINDOW t_frame
 #include "window_define.h"
 #undef T_WINDOW
-		(a_extension->v_symbol_on_activate, t_member<void(*)(t_frame&), xemmaix::xraft::t_frame::f_super__on_activate, t_with_application_thread>())
-		(a_extension->v_symbol_on_deactivate, t_member<void(*)(t_frame&), xemmaix::xraft::t_frame::f_super__on_deactivate, t_with_application_thread>())
-		(a_extension->v_symbol_on_close, t_member<void(*)(t_frame&), xemmaix::xraft::t_frame::f_super__on_close, t_with_application_thread>())
-		(L"caption"sv, t_member<std::wstring_view(t_frame::*)() const, &t_frame::f_caption, t_with_application_thread>())
-		(L"caption__"sv, t_member<void(t_frame::*)(std::wstring_view), &t_frame::f_caption__, t_with_application_thread>())
-	;
+		(a_library->v_symbol_on_activate, t_member<void(*)(t_frame&), xemmaix::xraft::t_frame::f_super__on_activate>())
+		(a_library->v_symbol_on_deactivate, t_member<void(*)(t_frame&), xemmaix::xraft::t_frame::f_super__on_deactivate>())
+		(a_library->v_symbol_on_close, t_member<void(*)(t_frame&), xemmaix::xraft::t_frame::f_super__on_close>())
+		(L"caption"sv, t_member<std::wstring_view(t_frame::*)() const, &t_frame::f_caption>())
+		(L"caption__"sv, t_member<void(t_frame::*)(std::wstring_view), &t_frame::f_caption__>())
+	.f_derive<t_frame, t_shell>();
 }
 
 t_pvalue t_type_of<xraft::t_frame>::f_do_construct(t_pvalue* a_stack, size_t a_n)

@@ -8,7 +8,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_bitmap> : t_bears<xraft::t_bitmap, t_type_of<xraft::t_drawable>>
+struct t_type_of<xraft::t_bitmap> : xemmaix::xraft::t_bears_pointer<xraft::t_bitmap, t_type_of<xraft::t_drawable>>
 {
 	static t_pvalue f_construct(t_type* a_class, unsigned a_width, unsigned a_height)
 	{
@@ -22,14 +22,14 @@ struct t_type_of<xraft::t_bitmap> : t_bears<xraft::t_bitmap, t_type_of<xraft::t_
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xraft::t_bitmap(a_width, a_height, reinterpret_cast<const char*>(&a_data[0]), a_bytes_per_line));
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_pixmap> : t_bears<xraft::t_pixmap, t_type_of<xraft::t_drawable>>
+struct t_type_of<xraft::t_pixmap> : xemmaix::xraft::t_bears_pointer<xraft::t_pixmap, t_type_of<xraft::t_drawable>>
 {
 	static t_pvalue f_construct(t_type* a_class, unsigned a_width, unsigned a_height)
 	{
@@ -47,7 +47,7 @@ struct t_type_of<xraft::t_pixmap> : t_bears<xraft::t_pixmap, t_type_of<xraft::t_
 	{
 		return xemmaix::xraft::t_proxy::f_construct(a_class, new xraft::t_pixmap(a_width, a_height, a_alpha, reinterpret_cast<const char*>(&a_data[0]), a_bytes_per_line));
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);

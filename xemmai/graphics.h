@@ -8,7 +8,7 @@ namespace xemmai
 {
 
 template<>
-struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_object>>
+struct t_type_of<xraft::t_font> : xemmaix::xraft::t_bears_pointer<xraft::t_font, t_type_of<xraft::t_object>>
 {
 	static t_pvalue f_construct(t_type* a_class, std::wstring_view a_name)
 	{
@@ -26,7 +26,7 @@ struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_obje
 	{
 		return a_self.f_width(a_s.data(), a_s.size(), a_x);
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
@@ -35,17 +35,17 @@ struct t_type_of<xraft::t_font> : t_bears<xraft::t_font, t_type_of<xraft::t_obje
 template<>
 struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_color>>
 {
-	typedef xemmaix::xraft::t_extension t_extension;
+	typedef xemmaix::xraft::t_library t_library;
 
 #ifdef XRAFT_X11
 	static t_pvalue f_construct(t_type* a_class, std::wstring_view a_name)
 	{
-		return a_class->f_new<xraft::t_color>(false, portable::f_convert(a_name).c_str());
+		return a_class->f_new<xraft::t_color>(portable::f_convert(a_name).c_str());
 	}
 #endif
 	static t_pvalue f_construct(t_type* a_class, size_t a_red, size_t a_green, size_t a_blue)
 	{
-		return a_class->f_new<xraft::t_color>(false, a_red, a_green, a_blue);
+		return a_class->f_new<xraft::t_color>(a_red, a_green, a_blue);
 	}
 	static size_t f_red(xraft::t_color& a_self)
 	{
@@ -59,14 +59,14 @@ struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 	{
 		return a_self.f_blue();
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 	t_pvalue f_do_construct(t_pvalue* a_stack, size_t a_n);
 };
 
 template<>
-struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
+struct t_type_of<xraft::t_graphics> : xemmaix::xraft::t_bears_pointer<xraft::t_graphics>
 {
 	template<typename T0>
 	struct t_as
@@ -83,12 +83,13 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 		template<typename T1>
 		static T0* f_call(T1&& a_object)
 		{
+			xraft::f_application();
 			auto p = f_object(std::forward<T1>(a_object))->template f_as<T0*>();
 			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}
 	};
-	typedef xemmaix::xraft::t_extension t_extension;
+	typedef xemmaix::xraft::t_library t_library;
 
 	static void f_extract(const t_pvalue& a_points0, std::vector<xraft::t_point>& a_points1);
 	static void f_font(xraft::t_graphics& a_self, const xraft::t_pointer<xraft::t_font>& a_font)
@@ -122,15 +123,15 @@ struct t_type_of<xraft::t_graphics> : t_underivable<t_bears<xraft::t_graphics>>
 		if (!a_pixmap) f_throw(L"pixmap must not be null."sv);
 		a_self.f_draw(a_x, a_y, a_pixmap, a_left, a_top, a_width, a_height, a_bitmap);
 	}
-	static void f_define(t_extension* a_extension);
+	static void f_define(t_library* a_library);
 
 	using t_base::t_base;
 };
 
 template<>
-struct t_type_of<xraft::t_graphics::t_function> : t_enum_of<xraft::t_graphics::t_function, xemmaix::xraft::t_extension>
+struct t_type_of<xraft::t_graphics::t_function> : t_enum_of<xraft::t_graphics::t_function, xemmaix::xraft::t_library>
 {
-	static void f_define(t_extension* a_extension);
+	static t_object* f_define(t_library* a_library);
 
 	using t_base::t_base;
 };

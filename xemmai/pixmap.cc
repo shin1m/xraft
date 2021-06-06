@@ -3,14 +3,13 @@
 namespace xemmai
 {
 
-void t_type_of<xraft::t_bitmap>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_bitmap>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_bitmap, t_drawable>(a_extension, L"Bitmap"sv)
-		(L"width"sv, t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_width, t_with_application_thread>())
-		(L"height"sv, t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_height, t_with_application_thread>())
-	;
+	t_define{a_library}
+		(L"width"sv, t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_width>())
+		(L"height"sv, t_member<unsigned(t_bitmap::*)() const, &t_bitmap::f_height>())
+	.f_derive<t_bitmap, t_drawable>();
 }
 
 t_pvalue t_type_of<xraft::t_bitmap>::f_do_construct(t_pvalue* a_stack, size_t a_n)
@@ -22,15 +21,14 @@ t_pvalue t_type_of<xraft::t_bitmap>::f_do_construct(t_pvalue* a_stack, size_t a_
 	>::t_bind<xraft::t_bitmap>::f_do(this, a_stack, a_n);
 }
 
-void t_type_of<xraft::t_pixmap>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_pixmap>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_pixmap, t_drawable>(a_extension, L"Pixmap"sv)
-		(L"width"sv, t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_width, t_with_application_thread>())
-		(L"height"sv, t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_height, t_with_application_thread>())
-		(L"alpha"sv, t_member<bool(t_pixmap::*)() const, &t_pixmap::f_alpha, t_with_application_thread>())
-	;
+	t_define{a_library}
+		(L"width"sv, t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_width>())
+		(L"height"sv, t_member<unsigned(t_pixmap::*)() const, &t_pixmap::f_height>())
+		(L"alpha"sv, t_member<bool(t_pixmap::*)() const, &t_pixmap::f_alpha>())
+	.f_derive<t_pixmap, t_drawable>();
 }
 
 t_pvalue t_type_of<xraft::t_pixmap>::f_do_construct(t_pvalue* a_stack, size_t a_n)

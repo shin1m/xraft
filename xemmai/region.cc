@@ -4,30 +4,29 @@
 namespace xemmai
 {
 
-void t_type_of<xraft::t_region>::f_define(t_extension* a_extension)
+void t_type_of<xraft::t_region>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	using xemmaix::xraft::t_with_application_thread;
-	t_define<t_region, xemmai::t_object>(a_extension, L"Region"sv)
-		(L"clear"sv, t_member<void(t_region::*)(), &t_region::f_clear, t_with_application_thread>())
-		(L"swap"sv, t_member<void(t_region::*)(t_region&), &t_region::f_swap, t_with_application_thread>())
-		(L"empty"sv, t_member<bool(t_region::*)() const, &t_region::f_empty, t_with_application_thread>())
-		(L"contains"sv, t_member<bool(t_region::*)(int, int, unsigned, unsigned) const, &t_region::f_contains, t_with_application_thread>())
-		(L"bounds"sv, t_member<t_rectangle(t_region::*)() const, &t_region::f_bounds, t_with_application_thread>())
-		(L"intersect"sv, t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_intersect, t_with_application_thread>())
+	t_define{a_library}
+		(L"clear"sv, t_member<void(t_region::*)(), &t_region::f_clear>())
+		(L"swap"sv, t_member<void(t_region::*)(t_region&), &t_region::f_swap>())
+		(L"empty"sv, t_member<bool(t_region::*)() const, &t_region::f_empty>())
+		(L"contains"sv, t_member<bool(t_region::*)(int, int, unsigned, unsigned) const, &t_region::f_contains>())
+		(L"bounds"sv, t_member<t_rectangle(t_region::*)() const, &t_region::f_bounds>())
+		(L"intersect"sv, t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_intersect>())
 		(L"unite"sv,
-			t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_unite, t_with_application_thread>(),
-			t_member<void(t_region::*)(const t_region&, int, int, unsigned, unsigned), &t_region::f_unite, t_with_application_thread>()
+			t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_unite>(),
+			t_member<void(t_region::*)(const t_region&, int, int, unsigned, unsigned), &t_region::f_unite>()
 		)
-		(L"subtract"sv, t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_subtract, t_with_application_thread>())
-		(L"xor"sv, t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_xor, t_with_application_thread>())
-		(L"translate"sv, t_member<void(t_region::*)(int, int), &t_region::f_translate, t_with_application_thread>())
-	;
+		(L"subtract"sv, t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_subtract>())
+		(L"xor"sv, t_member<void(t_region::*)(const t_region&, const t_region&), &t_region::f_xor>())
+		(L"translate"sv, t_member<void(t_region::*)(int, int), &t_region::f_translate>())
+	.f_derive<t_region, xemmai::t_object>();
 }
 
 t_pvalue t_type_of<xraft::t_region>::f_do_construct(t_pvalue* a_stack, size_t a_n)
 {
-	return t_construct<false>::t_bind<xraft::t_region>::f_do(this, a_stack, a_n);
+	return t_construct<>::t_bind<xraft::t_region>::f_do(this, a_stack, a_n);
 }
 
 }
