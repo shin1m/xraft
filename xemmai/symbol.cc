@@ -6,8 +6,9 @@ namespace xemmai
 t_object* t_type_of<xraft::t_key>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_key, intptr_t>();
-	return a_library->f_type<t_key>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"NONE"sv, e_key__NONE)
 		(L"BACK_SPACE"sv, e_key__BACK_SPACE)
 		(L"TAB"sv, e_key__TAB)
@@ -168,14 +169,16 @@ t_object* t_type_of<xraft::t_key>::f_define(t_library* a_library)
 		(L"BAR"sv, e_key__BAR)
 		(L"BRACERIGHT"sv, e_key__BRACERIGHT)
 		(L"ASCIITILDE"sv, e_key__ASCIITILDE)
+		;
 	});
 }
 
 t_object* t_type_of<xraft::t_modifier>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_modifier, intptr_t>();
-	return a_library->f_type<t_modifier>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"NONE"sv, e_modifier__NONE)
 		(L"SHIFT"sv, e_modifier__SHIFT)
 		(L"LOCK"sv, e_modifier__LOCK)
@@ -186,20 +189,23 @@ t_object* t_type_of<xraft::t_modifier>::f_define(t_library* a_library)
 		(L"BUTTON3"sv, e_modifier__BUTTON3)
 		(L"BUTTON4"sv, e_modifier__BUTTON4)
 		(L"BUTTON5"sv, e_modifier__BUTTON5)
+		;
 	});
 }
 
 t_object* t_type_of<xraft::t_button>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_button, intptr_t>();
-	return a_library->f_type<t_button>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"NONE"sv, e_button__NONE)
 		(L"BUTTON1"sv, e_button__1)
 		(L"BUTTON2"sv, e_button__2)
 		(L"BUTTON3"sv, e_button__3)
 		(L"BUTTON4"sv, e_button__4)
 		(L"BUTTON5"sv, e_button__5)
+		;
 	});
 }
 

@@ -92,8 +92,9 @@ void t_type_of<xraft::t_graphics>::f_define(t_library* a_library)
 t_object* t_type_of<xraft::t_graphics::t_function>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_graphics::t_function, intptr_t>();
-	return a_library->f_type<t_graphics::t_function>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"CLEAR"sv, t_graphics::e_function__CLEAR)
 		(L"AND"sv, t_graphics::e_function__AND)
 		(L"AND_REVERSE"sv, t_graphics::e_function__AND_REVERSE)
@@ -110,6 +111,7 @@ t_object* t_type_of<xraft::t_graphics::t_function>::f_define(t_library* a_librar
 		(L"OR_INVERTED"sv, t_graphics::e_function__OR_INVERTED)
 		(L"NAND"sv, t_graphics::e_function__NAND)
 		(L"SET"sv, t_graphics::e_function__SET)
+		;
 	});
 }
 

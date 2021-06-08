@@ -6,11 +6,13 @@ namespace xemmai
 t_object* t_type_of<xraft::t_input_attribute>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_input_attribute, intptr_t>();
-	return a_library->f_type<t_input_attribute>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"NONE"sv, e_input_attribute__NONE)
 		(L"REVERSE"sv, e_input_attribute__REVERSE)
 		(L"UNDERLINE"sv, e_input_attribute__UNDERLINE)
+		;
 	});
 }
 

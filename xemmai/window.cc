@@ -97,22 +97,26 @@ namespace xemmai
 t_object* t_type_of<xraft::t_cross_mode>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_cross_mode, intptr_t>();
-	return a_library->f_type<t_cross_mode>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"NORMAL"sv, e_cross_mode__NORMAL)
 		(L"GRAB"sv, e_cross_mode__GRAB)
 		(L"UNGRAB"sv, e_cross_mode__UNGRAB)
+		;
 	});
 }
 
 t_object* t_type_of<xraft::t_cross_detail>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_cross_detail, intptr_t>();
-	return a_library->f_type<t_cross_detail>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"OUTER"sv, e_cross_detail__OUTER)
 		(L"INNER"sv, e_cross_detail__INNER)
 		(L"THROUGH"sv, e_cross_detail__THROUGH)
+		;
 	});
 }
 

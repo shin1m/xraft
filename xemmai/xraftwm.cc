@@ -270,12 +270,14 @@ namespace xemmai
 t_object* t_type_of<xraft::t_side>::f_define(t_library* a_library)
 {
 	using namespace xraft;
-	t_define{a_library}.f_derive<t_side, intptr_t>();
-	return a_library->f_type<t_side>()->f_do_derive({{}, t_define(a_library)
+	return t_base::f_define(a_library, [](auto a_fields)
+	{
+		a_fields
 		(L"NONE"sv, e_side__NONE)
 		(L"NEAR"sv, e_side__NEAR)
 		(L"FAR"sv, e_side__FAR)
 		(L"BOTH"sv, e_side__BOTH)
+		;
 	});
 }
 
