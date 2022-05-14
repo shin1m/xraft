@@ -176,8 +176,8 @@ std::vector<std::pair<xemmai::t_root, t_rvalue>> t_xraftwm::f_define()
 	t_type_of<::xraft::t_root>::f_define(this);
 	return t_define(this)
 		(L"Side"sv, t_type_of<t_side>::f_define(this))
-		(L"Client"sv, xemmai::t_object::f_of(v_type_client))
-		(L"Root"sv, xemmai::t_object::f_of(v_type_root))
+		(L"Client"sv, static_cast<xemmai::t_object*>(v_type_client))
+		(L"Root"sv, static_cast<xemmai::t_object*>(v_type_root))
 		(L"root"sv, t_static<::xraft::t_root*(*)(), f_root>())
 	;
 }
