@@ -72,7 +72,7 @@ struct t_type_of<xraft::t_application> : t_uninstantiatable<xemmaix::xraft::t_be
 			return p;
 		}
 	};
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	static void f_post(t_library* a_library, const t_pvalue& a_self, const t_pvalue& a_callable)
 	{

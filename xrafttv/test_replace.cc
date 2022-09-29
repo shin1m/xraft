@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
 	using namespace std::literals;
 	using namespace xraft;
-	typedef t_text_model<int> t_model;
+	using t_model = t_text_model<int>;
 	t_model model;
 	{
 		assert(model.f_text_size() == 0);

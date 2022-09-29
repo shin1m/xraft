@@ -9,7 +9,7 @@ namespace xemmai
 template<typename T>
 struct t_fundamental<xraft::t_pointer<T>>
 {
-	typedef T t_type;
+	using t_type = T;
 };
 
 template<>
@@ -92,7 +92,7 @@ struct t_type_of<xraft::t_object> : xemmaix::xraft::t_bears_pointer<xraft::t_obj
 			return t_is<T0*>::f_call(std::forward<T1>(a_object));
 		}
 	};
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	template<typename T_library, typename T>
 	static t_pvalue f_transfer(T_library* a_library, const xraft::t_pointer<T>& a_value)

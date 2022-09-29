@@ -190,7 +190,7 @@ struct t_event
 
 struct t_text_model : ::xraft::t_object, ::xraft::t_text_model<t_pointer<t_attribute>>, ::xraft::t_text_model<t_pointer<t_attribute>>::t_observer
 {
-	typedef ::xraft::t_text_model<t_pointer<t_attribute>> t_base;
+	using t_base = ::xraft::t_text_model<t_pointer<t_attribute>>;
 
 	t_event v_loaded;
 	t_event v_replacing;
@@ -271,7 +271,7 @@ struct t_text_model : ::xraft::t_object, ::xraft::t_text_model<t_pointer<t_attri
 
 struct t_wrapped_view : ::xraft::t_object, ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>, ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>::t_observer
 {
-	typedef ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font> t_base;
+	using t_base = ::xraft::t_wrapped_view<t_pointer<t_attribute>, t_font>;
 
 	t_event v_invalidated;
 	t_event v_resized;
@@ -461,7 +461,7 @@ struct t_extension : xemmai::t_extension
 	template<typename T>
 	t_scoped f_as(T&& a_value) const
 	{
-		typedef t_type_of<typename t_fundamental<T>::t_type> t;
+		using t = t_type_of<typename t_fundamental<T>::t_type>;
 		return t::f_transfer(f_extension<typename t::t_extension>(), std::forward<T>(a_value));
 	}
 };
@@ -498,7 +498,7 @@ namespace xemmai
 template<>
 struct t_type_of<xemmaix::xrafttv::t_attribute> : xemmaix::xraft::t_derivable<t_bears<xemmaix::xrafttv::t_attribute, t_type_of<xraft::t_object>>>
 {
-	typedef xemmaix::xrafttv::t_extension t_extension;
+	using t_extension = xemmaix::xrafttv::t_extension;
 
 	static t_scoped f_construct(t_type* a_class, xraft::t_pixel a_foreground, xraft::t_pixel a_background)
 	{
@@ -513,7 +513,7 @@ struct t_type_of<xemmaix::xrafttv::t_attribute> : xemmaix::xraft::t_derivable<t_
 template<>
 struct t_type_of<xemmaix::xrafttv::t_text_model> : xemmaix::xraft::t_derivable<t_bears<xemmaix::xrafttv::t_text_model, t_type_of<xraft::t_object>>>
 {
-	typedef xemmaix::xrafttv::t_extension t_extension;
+	using t_extension = xemmaix::xrafttv::t_extension;
 
 	static t_scoped f_construct(t_type* a_class)
 	{
@@ -528,7 +528,7 @@ struct t_type_of<xemmaix::xrafttv::t_text_model> : xemmaix::xraft::t_derivable<t
 template<>
 struct t_type_of<xemmaix::xrafttv::t_wrapped_view> : xemmaix::xraft::t_derivable<t_bears<xemmaix::xrafttv::t_wrapped_view, t_type_of<xraft::t_object>>>
 {
-	typedef xemmaix::xrafttv::t_extension t_extension;
+	using t_extension = xemmaix::xrafttv::t_extension;
 
 	static t_scoped f_construct(t_type* a_class)
 	{

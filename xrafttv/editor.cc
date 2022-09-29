@@ -138,12 +138,12 @@ struct t_context
 	}
 };
 
-class t_editor : public t_frame, t_wrapped_view< ::t_attribute, ::t_font>::t_observer
+class t_editor : public t_frame, t_wrapped_view<::t_attribute, ::t_font>::t_observer
 {
-	typedef t_text_model< ::t_attribute>::t_segment t_segment;
+	using t_segment = t_text_model<::t_attribute>::t_segment;
 
-	t_text_model< ::t_attribute> v_model;
-	t_wrapped_view< ::t_attribute, ::t_font> v_view;
+	t_text_model<::t_attribute> v_model;
+	t_wrapped_view<::t_attribute, ::t_font> v_view;
 	size_t v_position;
 	::t_attribute v_attribute_default;
 	::t_attribute v_attribute_compose[4];

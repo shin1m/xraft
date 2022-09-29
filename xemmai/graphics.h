@@ -35,7 +35,7 @@ struct t_type_of<xraft::t_font> : xemmaix::xraft::t_bears_pointer<xraft::t_font,
 template<>
 struct t_type_of<xraft::t_color> : xemmaix::xraft::t_derivable<t_holds<xraft::t_color>>
 {
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 #ifdef XRAFT_X11
 	static t_pvalue f_construct(t_type* a_class, std::wstring_view a_name)
@@ -89,7 +89,7 @@ struct t_type_of<xraft::t_graphics> : xemmaix::xraft::t_bears_pointer<xraft::t_g
 			return p;
 		}
 	};
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	static void f_extract(const t_pvalue& a_points0, std::vector<xraft::t_point>& a_points1);
 	static void f_font(xraft::t_graphics& a_self, const xraft::t_pointer<xraft::t_font>& a_font)

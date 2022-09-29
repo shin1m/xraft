@@ -9,7 +9,7 @@ namespace xemmai
 template<>
 struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_point>>
 {
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	template<typename T_library, typename T>
 	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
@@ -41,7 +41,7 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 template<>
 struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t_extent>>
 {
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	template<typename T_library, typename T>
 	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
@@ -73,7 +73,7 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 template<>
 struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft::t_rectangle>>
 {
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	template<typename T_library, typename T>
 	static t_pvalue f_transfer(T_library* a_library, T&& a_value)

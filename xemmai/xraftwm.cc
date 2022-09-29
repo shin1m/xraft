@@ -90,7 +90,7 @@ struct t_xraftwm : xemmai::t_library
 	template<typename T>
 	t_pvalue f_as(T&& a_value) const
 	{
-		typedef t_type_of<typename t_fundamental<T>::t_type> t;
+		using t = t_type_of<typename t_fundamental<T>::t_type>;
 		return t::f_transfer(f_library<typename t::t_library>(), std::forward<T>(a_value));
 	}
 };
@@ -121,7 +121,7 @@ struct t_type_of<xraft::t_side> : t_enum_of<xraft::t_side, xemmaix::xraft::t_xra
 template<>
 struct t_type_of<xraft::t_client> : xemmaix::xraft::t_derivable<xemmaix::xraft::t_bears_pointer<xraft::t_client, t_type_of<xraft::t_widget>>>
 {
-	typedef xemmaix::xraft::t_xraftwm t_library;
+	using t_library = xemmaix::xraft::t_xraftwm;
 
 	static t_pvalue f_borders(xraft::t_client& a_self);
 	static void f_borders__(xraft::t_client& a_self, const t_pvalue& a_borders);
@@ -134,7 +134,7 @@ struct t_type_of<xraft::t_client> : xemmaix::xraft::t_derivable<xemmaix::xraft::
 template<>
 struct t_type_of<xraft::t_root> : xemmaix::xraft::t_derivable<xemmaix::xraft::t_bears_pointer<xraft::t_root, t_type_of<xraft::t_window>>>
 {
-	typedef xemmaix::xraft::t_xraftwm t_library;
+	using t_library = xemmaix::xraft::t_xraftwm;
 
 	static void f_define(t_library* a_library);
 
@@ -184,7 +184,7 @@ std::vector<std::pair<xemmai::t_root, t_rvalue>> t_xraftwm::f_define()
 
 struct t_client : ::xraft::t_client, t_wrapper<t_client>
 {
-	typedef t_xraftwm t_library;
+	using t_library = t_xraftwm;
 
 #define T_WINDOW t_client
 #include "window_override.h"
@@ -245,7 +245,7 @@ struct t_client : ::xraft::t_client, t_wrapper<t_client>
 
 struct t_root : ::xraft::t_root, t_wrapper<t_root>
 {
-	typedef t_xraftwm t_library;
+	using t_library = t_xraftwm;
 
 #define T_WINDOW t_root
 #include "window_override.h"

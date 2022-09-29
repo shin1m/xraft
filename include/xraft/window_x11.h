@@ -18,7 +18,7 @@ struct t_sink
 	virtual void f_process(XEvent& a_event) = 0;
 };
 
-typedef Cursor t_cursor;
+using t_cursor = Cursor;
 
 class t_window : public t_drawable, protected t_sink
 {

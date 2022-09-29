@@ -19,7 +19,7 @@ struct t_type_of<xraft::t_region> : t_derivable<t_holds<xraft::t_region>>
 			return f_object(std::forward<T1>(a_object))->template f_as<typename t_fundamental<T0>::t_type>();
 		}
 	};
-	typedef xemmaix::xraft::t_library t_library;
+	using t_library = xemmaix::xraft::t_library;
 
 	template<typename T_library>
 	static t_pvalue f_transfer(T_library* a_library, const xraft::t_region& a_value)

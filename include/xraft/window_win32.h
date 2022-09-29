@@ -14,8 +14,8 @@ class t_frame;
 class t_opengl_context;
 class t_opengl_widget;
 
-//typedef HCURSOR t_cursor;
-typedef intptr_t t_cursor;
+//using t_cursor = HCURSOR;
+using t_cursor = intptr_t;
 
 class t_window : public t_drawable
 {

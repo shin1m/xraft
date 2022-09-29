@@ -22,10 +22,10 @@ class t_graphics;
 class t_drawable : public t_object
 {
 #ifdef XRAFT_X11
-	typedef Drawable t_handle;
+	using t_handle = Drawable;
 #endif
 #ifdef XRAFT_WIN32
-	typedef HANDLE t_handle;
+	using t_handle = HANDLE;
 #endif
 	friend class t_graphics;
 

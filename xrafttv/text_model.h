@@ -13,7 +13,7 @@ template<typename T_attribute>
 class t_text_model
 {
 public:
-	typedef gapped<wchar_t>::const_iterator t_iterator;
+	using t_iterator = gapped<wchar_t>::const_iterator;
 
 	struct t_segment
 	{
@@ -32,7 +32,7 @@ public:
 	};
 
 private:
-	typedef gapped<t_segment> t_segments;
+	using t_segments = gapped<t_segment>;
 
 	struct t_convert
 	{

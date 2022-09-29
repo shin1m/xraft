@@ -22,7 +22,7 @@ class t_terminal : public t_buffer<T_host>
 		e_PRIMARY, e_SECONDARY, e_PRIVATE
 	};
 
-	typedef void (t_terminal::*t_state)(wchar_t a_c);
+	using t_state = void (t_terminal::*)(wchar_t a_c);
 
 	bool v_mode_insert = false;
 	bool v_mode_origin = false;

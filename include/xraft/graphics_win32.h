@@ -80,7 +80,7 @@ public:
 	}
 };
 
-typedef COLORREF t_pixel;
+using t_pixel = COLORREF;
 
 class t_color
 {

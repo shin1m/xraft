@@ -53,7 +53,7 @@ public:
 	}
 };
 
-typedef unsigned long t_pixel;
+using t_pixel = unsigned long;
 
 class t_color
 {

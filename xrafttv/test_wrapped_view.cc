@@ -70,8 +70,8 @@ struct t_test_context
 int main(int argc, char* argv[])
 {
 	using namespace xraft;
-	typedef t_text_model<int> t_model;
-	typedef t_wrapped_view<int, t_test_font> t_view;
+	using t_model = t_text_model<int>;
+	using t_view = t_wrapped_view<int, t_test_font>;
 	t_model model;
 	t_view view(t_test_font {});
 	view.f_model__(&model);

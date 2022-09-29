@@ -10,8 +10,8 @@ using namespace xraft;
 
 class t_basic_dictionary : public t_dictionary
 {
-	typedef std::map<std::wstring, std::vector<std::wstring> > t_map0;
-	typedef std::map<std::wstring, t_map0> t_map1;
+	using t_map0 = std::map<std::wstring, std::vector<std::wstring>>;
+	using t_map1 = std::map<std::wstring, t_map0>;
 
 	t_converter<wchar_t, char> v_converter{"wchar_t", "euc-jp"};
 	std::vector<std::string> v_publics;

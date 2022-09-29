@@ -37,8 +37,8 @@ private:
 		{
 		}
 	};
-	typedef gapped<t_x> t_rows;
-	typedef gapped<size_t> t_lines;
+	using t_rows = gapped<t_x>;
+	using t_lines = gapped<size_t>;
 	class t_convert
 	{
 		size_t v_size;
