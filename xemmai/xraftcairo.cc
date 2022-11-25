@@ -16,31 +16,14 @@ class t_library : public xemmai::t_library
 	xemmaix::cairo::t_library* v_cairo;
 
 public:
-	t_library(xemmai::t_object* a_module, const t_pvalue& a_cairo);
 	t_library(xemmai::t_library::t_handle* a_handle, const t_pvalue& a_cairo) : xemmai::t_library(a_handle), v_module_cairo(a_cairo), v_cairo(&v_module_cairo->f_as<t_module>().v_body->f_as<xemmaix::cairo::t_library>())
 	{
 	}
-	virtual void f_scan(t_scan a_scan)
-	{
-		a_scan(v_module_cairo);
-	}
-	virtual std::vector<std::pair<t_root, t_rvalue>> f_define();
-	template<typename T>
-	t_slot_of<t_type>& f_type_slot()
-	{
-		return v_cairo->f_type_slot<T>();
-	}
-	template<typename T>
-	t_type* f_type() const
-	{
-		return const_cast<t_library*>(this)->f_type_slot<T>();
-	}
-	template<typename T>
-	t_pvalue f_as(const T& a_value) const
-	{
-		return v_cairo->f_as(a_value);
-	}
+	XEMMAI__LIBRARY__MEMBERS
 };
+
+XEMMAI__LIBRARY__BASE(t_library, t_global, f_global())
+XEMMAI__LIBRARY__BASE(t_library, xemmaix::cairo::t_library, v_cairo)
 
 namespace
 {
@@ -60,6 +43,11 @@ void f_draw(t_library* a_library, T& a_target, const t_pvalue& a_callable)
 	});
 }
 
+}
+
+void t_library::f_scan(t_scan a_scan)
+{
+	a_scan(v_module_cairo);
 }
 
 std::vector<std::pair<t_root, t_rvalue>> t_library::f_define()

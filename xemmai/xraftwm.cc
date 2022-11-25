@@ -41,66 +41,12 @@ struct t_xraftwm : xemmai::t_library
 	t_xraftwm(xemmai::t_library::t_handle* a_handle, const t_pvalue& a_xraft) : xemmai::t_library(a_handle), v_module_xraft(a_xraft), v_xraft(&v_module_xraft->f_as<t_module>().v_body->f_as<xemmaix::xraft::t_library>())
 	{
 	}
-	virtual void f_scan(t_scan a_scan)
-	{
-		a_scan(v_module_xraft);
-		a_scan(v_symbol_on_move);
-		a_scan(v_symbol_on_show);
-		a_scan(v_symbol_on_hide);
-		a_scan(v_symbol_on_paint);
-		a_scan(v_symbol_on_focus_enter);
-		a_scan(v_symbol_on_focus_leave);
-		a_scan(v_symbol_on_key_press);
-		a_scan(v_symbol_on_key_release);
-		a_scan(v_symbol_on_input_compose);
-		a_scan(v_symbol_on_input_commit);
-		a_scan(v_symbol_on_input_spot);
-		a_scan(v_symbol_on_button_press);
-		a_scan(v_symbol_on_button_release);
-		a_scan(v_symbol_on_pointer_enter);
-		a_scan(v_symbol_on_pointer_leave);
-		a_scan(v_symbol_on_pointer_move);
-		a_scan(v_symbol_add);
-		a_scan(v_symbol_remove);
-		a_scan(v_symbol_on_activate);
-		a_scan(v_symbol_on_deactivate);
-		a_scan(v_symbol_on_name);
-		a_scan(v_symbol_on_protocols);
-		a_scan(v_symbol_on_client);
-		a_scan(v_type_side);
-		a_scan(v_type_client);
-		a_scan(v_type_root);
-	}
-	virtual std::vector<std::pair<xemmai::t_root, t_rvalue>> f_define();
-	template<typename T>
-	const T* f_library() const
-	{
-		return v_xraft->f_library<T>();
-	}
-	template<typename T>
-	t_slot_of<t_type>& f_type_slot()
-	{
-		return v_xraft->f_type_slot<T>();
-	}
-	template<typename T>
-	t_type* f_type() const
-	{
-		return const_cast<t_xraftwm*>(this)->f_type_slot<T>();
-	}
-	template<typename T>
-	t_pvalue f_as(T&& a_value) const
-	{
-		using t = t_type_of<typename t_fundamental<T>::t_type>;
-		return t::f_transfer(f_library<typename t::t_library>(), std::forward<T>(a_value));
-	}
+	using t_root = xemmai::t_root;
+	XEMMAI__LIBRARY__MEMBERS
 };
 
-template<>
-inline const t_xraftwm* t_xraftwm::f_library<t_xraftwm>() const
-{
-	return this;
-}
-
+XEMMAI__LIBRARY__BASE(t_xraftwm, t_global, f_global())
+XEMMAI__LIBRARY__BASE(t_xraftwm, xemmaix::xraft::t_library, v_xraft)
 XEMMAI__LIBRARY__TYPE(t_xraftwm, side)
 XEMMAI__LIBRARY__TYPE(t_xraftwm, client)
 XEMMAI__LIBRARY__TYPE_AS(t_xraftwm, ::xraft::t_root, root)
@@ -146,6 +92,37 @@ struct t_type_of<xraft::t_root> : xemmaix::xraft::t_derivable<xemmaix::xraft::t_
 
 namespace xemmaix::xraft
 {
+
+void t_xraftwm::f_scan(t_scan a_scan)
+{
+	a_scan(v_module_xraft);
+	a_scan(v_symbol_on_move);
+	a_scan(v_symbol_on_show);
+	a_scan(v_symbol_on_hide);
+	a_scan(v_symbol_on_paint);
+	a_scan(v_symbol_on_focus_enter);
+	a_scan(v_symbol_on_focus_leave);
+	a_scan(v_symbol_on_key_press);
+	a_scan(v_symbol_on_key_release);
+	a_scan(v_symbol_on_input_compose);
+	a_scan(v_symbol_on_input_commit);
+	a_scan(v_symbol_on_input_spot);
+	a_scan(v_symbol_on_button_press);
+	a_scan(v_symbol_on_button_release);
+	a_scan(v_symbol_on_pointer_enter);
+	a_scan(v_symbol_on_pointer_leave);
+	a_scan(v_symbol_on_pointer_move);
+	a_scan(v_symbol_add);
+	a_scan(v_symbol_remove);
+	a_scan(v_symbol_on_activate);
+	a_scan(v_symbol_on_deactivate);
+	a_scan(v_symbol_on_name);
+	a_scan(v_symbol_on_protocols);
+	a_scan(v_symbol_on_client);
+	a_scan(v_type_side);
+	a_scan(v_type_client);
+	a_scan(v_type_root);
+}
 
 std::vector<std::pair<xemmai::t_root, t_rvalue>> t_xraftwm::f_define()
 {
