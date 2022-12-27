@@ -17,7 +17,7 @@ add_module(xraft
 	timer.cc
 	window.cc
 	xraft.cc
-	)
+)
 add_module(xraftdbus xraftdbus.cc)
 add_module(xraftcairo xraftcairo.cc)
 target_compile_options(xraftcairo-xemmai PRIVATE ${CAIRO_CFLAGS})

@@ -4,7 +4,7 @@ add_executable(xraftim
 	engine.cc
 	basic_dictionary.cc
 	main.cc
-	)
+)
 target_compile_features(xraftim PRIVATE cxx_std_17)
 target_include_directories(xraftim PRIVATE "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(xraftim dbus-1)
