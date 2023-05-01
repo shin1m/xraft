@@ -311,9 +311,9 @@ std::fprintf(stderr, "Unknown attribute: %d\n", v_parameters[i]);
 	}
 	void f_mode(bool a_mode)
 	{
-		for (int i = 0; i < v_parameters_size; ++i) {
-			switch (v_csi) {
-			case t_csi::e_PRIMARY:
+		switch (v_csi) {
+		case t_csi::e_PRIMARY:
+			for (int i = 0; i < v_parameters_size; ++i)
 				switch (v_parameters[i]) {
 				case 4:
 					v_mode_insert = a_mode;
@@ -321,11 +321,13 @@ std::fprintf(stderr, "Unknown attribute: %d\n", v_parameters[i]);
 				default:
 std::fprintf(stderr, "%s unknown mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 				}
-				break;
-			case t_csi::e_SECONDARY:
+			break;
+		case t_csi::e_SECONDARY:
+			for (int i = 0; i < v_parameters_size; ++i)
 std::fprintf(stderr, "%s unknown secondary mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
-				break;
-			default:
+			break;
+		default:
+			for (int i = 0; i < v_parameters_size; ++i)
 				switch (v_parameters[i]) {
 				case 1:
 					v_mode_application_cursor = a_mode;
@@ -360,7 +362,6 @@ std::fprintf(stderr, "%s unknown secondary mode: %d\n", a_mode ? "Set" : "Reset"
 				default:
 std::fprintf(stderr, "%s unknown private mode: %d\n", a_mode ? "Set" : "Reset", v_parameters[i]);
 				}
-			}
 		}
 	}
 	void f_device_status_report()
@@ -501,7 +502,10 @@ std::fprintf(stderr, "Unknown control character: %x\n", a_c);
 			f_mode(false);
 			break;
 		case L'm':
-			f_attribute();
+			if (v_csi == t_csi::e_PRIMARY)
+				f_attribute();
+			else
+std::fprintf(stderr, "%s not supported\n", v_csi == t_csi::e_SECONDARY ? "XTMODKEYS" : "XTQMODKEYS");
 			break;
 		case L'n':
 			f_device_status_report();
@@ -568,10 +572,16 @@ std::fprintf(stderr, " %c\n", a_c);
 		case L'M':
 			f_reverse_index();
 			break;
+		case L'P':
+			v_state = &t_terminal::f_state_device_control;
+			return;
 		case L'[':
 			v_csi = t_csi::e_PRIMARY;
 			v_parameters_size = 0;
 			v_state = &t_terminal::f_state_csi;
+			return;
+		case L']':
+			v_state = &t_terminal::f_state_operating_system;
 			return;
 		default:
 std::fprintf(stderr, "Unknown escape sequence: %c\n", a_c);
@@ -609,6 +619,27 @@ std::fprintf(stderr, "Unknown G0 character set: # %c\n", a_c);
 		}
 		v_state = &t_terminal::f_state_default;
 	}
+	void f_state_device_control(wchar_t a_c)
+	{
+		switch (a_c) {
+		case L'[' - L'@':
+			v_state = &t_terminal::f_state_device_control_escape;
+			break;
+		default:
+std::fprintf(stderr, "Unknown device control: %c\n", a_c);
+		}
+	}
+	void f_state_device_control_escape(wchar_t a_c)
+	{
+		switch (a_c) {
+		case L'\\':
+			v_state = &t_terminal::f_state_default;
+			break;
+		default:
+std::fprintf(stderr, "Unknown device control escape sequence: %c\n", a_c);
+			v_state = &t_terminal::f_state_device_control;
+		}
+	}
 	void f_state_csi(wchar_t a_c)
 	{
 		if (std::iswcntrl(a_c)) {
@@ -632,6 +663,30 @@ std::fprintf(stderr, "Unknown G0 character set: # %c\n", a_c);
 				return;
 			}
 			v_state = &t_terminal::f_state_csi_parameter;
+		}
+	}
+	void f_state_operating_system(wchar_t a_c)
+	{
+		switch (a_c) {
+		case L'G' - L'@':
+			v_state = &t_terminal::f_state_default;
+			break;
+		case L'[' - L'@':
+			v_state = &t_terminal::f_state_operating_system_escape;
+			break;
+		default:
+std::fprintf(stderr, "Unknown operating system control: %c\n", a_c);
+		}
+	}
+	void f_state_operating_system_escape(wchar_t a_c)
+	{
+		switch (a_c) {
+		case L'\\':
+			v_state = &t_terminal::f_state_default;
+			break;
+		default:
+std::fprintf(stderr, "Unknown operating system control escape sequence: %c\n", a_c);
+			v_state = &t_terminal::f_state_operating_system;
 		}
 	}
 	void f_state_csi_parameter(wchar_t a_c)
