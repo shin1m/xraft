@@ -1,4 +1,5 @@
 #include <xraft/pixmap.h>
+#include <cstdint>
 
 namespace xraft
 {
