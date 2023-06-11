@@ -83,7 +83,10 @@ class t_cairoc : public t_frame
 	}
 	virtual void f_on_paint(t_graphics& a_g)
 	{
-		f_draw(a_g, std::bind1st(std::mem_fun(&t_cairoc::f_paint), this));
+		f_draw(a_g, [&](auto a_context)
+		{
+			f_paint(a_context);
+		});
 	}
 	virtual void f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
 	{

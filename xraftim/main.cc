@@ -66,7 +66,7 @@ public:
 		if (!v_message) throw std::runtime_error("dbus_message_new_signal failed.");
 		dbus_message_iter_init_append(v_message, &v_i);
 	}
-	~t_signal_emitter()
+	~t_signal_emitter() noexcept(false)
 	{
 		if (v_message && dbus_connection_send(v_bus, v_message, NULL) == FALSE) throw std::runtime_error("dbus_connection_send failed.");
 	}

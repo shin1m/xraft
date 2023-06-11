@@ -9,7 +9,7 @@ add_library(xraft SHARED
 	timer_x11.cc
 	window_x11.cc
 )
-target_compile_features(xraft PUBLIC cxx_std_17)
+target_compile_features(xraft PUBLIC cxx_std_20)
 target_include_directories(xraft PUBLIC
 	"$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
 	"$<INSTALL_INTERFACE:include>"

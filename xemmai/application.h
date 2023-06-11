@@ -51,23 +51,21 @@ namespace xemmai
 template<>
 struct t_type_of<xraft::t_application> : t_uninstantiatable<xemmaix::xraft::t_bears_pointer<xraft::t_application>>
 {
-	template<typename T0>
-	struct t_as
+	template<typename T>
+	struct t_cast : t_type::t_cast<T>
 	{
-		template<typename T1>
-		static T0 f_call(T1&& a_object)
+		static T f_as(auto&& a_object)
 		{
-			return *t_as<typename t_fundamental<T0>::t_type*>::f_call(std::forward<T1>(a_object));
+			return *t_cast<typename t_fundamental<T>::t_type*>::f_as(std::forward<decltype(a_object)>(a_object));
 		}
 	};
-	template<typename T0>
-	struct t_as<T0*>
+	template<typename T>
+	struct t_cast<T*> : t_type::t_cast<T*>
 	{
-		template<typename T1>
-		static T0* f_call(T1&& a_object)
+		static T* f_as(auto&& a_object)
 		{
 			xraft::f_application();
-			auto p = f_object(std::forward<T1>(a_object))->template f_as<T0*>();
+			auto p = static_cast<t_object*>(a_object)->f_as<T*>();
 			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}

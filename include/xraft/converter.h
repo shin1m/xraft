@@ -50,8 +50,7 @@ public:
 	{
 		while (*a_cs != L'\0') (*this)(*a_cs++);
 	}
-	template<typename I>
-	void operator()(I a_f, I a_l)
+	void operator()(auto a_f, auto a_l)
 	{
 		while (a_f != a_l) {
 			(*this)(*a_f);
@@ -138,13 +137,11 @@ public:
 	{
 		iconv_close(v_cd);
 	}
-	template<typename I, typename O>
-	O operator()(I f, I l, O d) const;
+	auto operator()(auto f, auto l, auto d) const;
 };
 
 template<typename C0, typename C1>
-template<typename I, typename O>
-O t_converter<C0, C1>::operator()(I f, I l, O d) const
+auto t_converter<C0, C1>::operator()(auto f, auto l, auto d) const
 {
 	char cs0[16];
 	char cs1[16];

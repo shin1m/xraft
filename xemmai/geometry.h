@@ -11,10 +11,9 @@ struct t_type_of<xraft::t_point> : xemmaix::xraft::t_derivable<t_holds<xraft::t_
 {
 	using t_library = xemmaix::xraft::t_library;
 
-	template<typename T_library, typename T>
-	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
+	static t_pvalue f_transfer(auto* a_library, auto&& a_value)
 	{
-		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_library, std::forward<T>(a_value));;
+		return xemmai::f_new<typename t_fundamental<decltype(a_value)>::t_type>(a_library, std::forward<decltype(a_value)>(a_value));;
 	}
 	static int f_x(xraft::t_point& a_self)
 	{
@@ -43,10 +42,9 @@ struct t_type_of<xraft::t_extent> : xemmaix::xraft::t_derivable<t_holds<xraft::t
 {
 	using t_library = xemmaix::xraft::t_library;
 
-	template<typename T_library, typename T>
-	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
+	static t_pvalue f_transfer(auto* a_library, auto&& a_value)
 	{
-		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_library, std::forward<T>(a_value));;
+		return xemmai::f_new<typename t_fundamental<decltype(a_value)>::t_type>(a_library, std::forward<decltype(a_value)>(a_value));;
 	}
 	static unsigned f_width(xraft::t_extent& a_self)
 	{
@@ -75,10 +73,9 @@ struct t_type_of<xraft::t_rectangle> : xemmaix::xraft::t_derivable<t_holds<xraft
 {
 	using t_library = xemmaix::xraft::t_library;
 
-	template<typename T_library, typename T>
-	static t_pvalue f_transfer(T_library* a_library, T&& a_value)
+	static t_pvalue f_transfer(auto* a_library, auto&& a_value)
 	{
-		return xemmai::f_new<typename t_fundamental<T>::t_type>(a_library, std::forward<T>(a_value));;
+		return xemmai::f_new<typename t_fundamental<decltype(a_value)>::t_type>(a_library, std::forward<decltype(a_value)>(a_value));;
 	}
 	static int f_x(xraft::t_rectangle& a_self)
 	{

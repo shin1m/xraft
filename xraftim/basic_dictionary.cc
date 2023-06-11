@@ -100,8 +100,7 @@ class t_file
 {
 	std::FILE* v_fp;
 
-	template<typename T>
-	bool f_seek(size_t a_f, size_t a_l, T a_compare);
+	bool f_seek(size_t a_f, size_t a_l, auto a_compare);
 
 public:
 	t_file(const char* a_path, const char* a_mode) : v_fp(std::fopen(a_path, a_mode))
@@ -135,8 +134,7 @@ public:
 	}
 };
 
-template<typename T>
-bool t_file::f_seek(size_t a_f, size_t a_l, T a_compare)
+bool t_file::f_seek(size_t a_f, size_t a_l, auto a_compare)
 {
 	while (a_f < a_l) {
 		std::fseek(v_fp, (a_f + a_l) / 2, SEEK_SET);
@@ -263,8 +261,7 @@ void t_lexer<T>::f_next()
 	}
 }
 
-template<typename T>
-void f_build(const std::vector<std::wstring>& a_texts, T& a_target)
+void f_build(const std::vector<std::wstring>& a_texts, auto& a_target)
 {
 	for (const auto& x : a_texts) {
 		a_target(L'/');

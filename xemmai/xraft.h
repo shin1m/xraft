@@ -57,16 +57,14 @@ class t_proxy : public t_user, public t_entry
 	XRAFT__XEMMAI__EXPORT virtual void f_destroy();
 
 public:
-	template<typename T>
-	static t_pvalue f_wrap(t_type* a_class, T* a_value)
+	static t_pvalue f_wrap(t_type* a_class, auto* a_value)
 	{
 		if (!a_value) return {};
 		auto proxy = static_cast<t_proxy*>(a_value->f_user());
 		if (!proxy) proxy = new t_proxy(a_class, a_value);
 		return static_cast<xemmai::t_object*>(proxy->v_object);
 	}
-	template<typename T>
-	static t_pvalue f_construct(t_type* a_class, T* a_p)
+	static t_pvalue f_construct(t_type* a_class, auto* a_p)
 	{
 		auto proxy = new t_proxy(a_class, a_p);
 		proxy->f_acquire();

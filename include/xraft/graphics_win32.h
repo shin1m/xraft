@@ -67,8 +67,7 @@ public:
 		GetCharWidthW(hdc, a_c, a_c, &w.w);
 		return w.w;
 	}
-	template<typename I>
-	unsigned f_width(I a_i, size_t a_n, unsigned a_x = 0) const
+	unsigned f_width(auto a_i, size_t a_n, unsigned a_x = 0) const
 	{
 		unsigned x = a_x;
 		while (a_n > 0) {

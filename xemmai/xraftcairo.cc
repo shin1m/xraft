@@ -28,14 +28,12 @@ XEMMAI__LIBRARY__BASE(t_library, xemmaix::cairo::t_library, v_cairo)
 namespace
 {
 
-template<typename T>
-t_pvalue f_surface_create(t_library* a_library, T& a_target)
+t_pvalue f_surface_create(t_library* a_library, auto& a_target)
 {
 	return xemmaix::cairo::t_surface::f_construct(a_library->f_type<xemmaix::cairo::t_surface>(), f_surface_create(a_target));
 }
 
-template<typename T>
-void f_draw(t_library* a_library, T& a_target, const t_pvalue& a_callable)
+void f_draw(t_library* a_library, auto& a_target, const t_pvalue& a_callable)
 {
 	f_draw(a_target, [&](cairo_t* a_context)
 	{

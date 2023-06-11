@@ -136,8 +136,7 @@ class t_balls : public t_frame
 		t_extent extent = f_geometry();
 		v_pixmap = new t_pixmap(extent.v_width, extent.v_height);
 	}
-	template<typename T>
-	void f_draw(t_graphics& a_g, int a_x, int a_y, const wchar_t* a_format, T a_value)
+	void f_draw(t_graphics& a_g, int a_x, int a_y, const wchar_t* a_format, auto a_value)
 	{
 		wchar_t cs[1024];
 		int n = swprintf(cs, sizeof(cs) / sizeof(wchar_t), a_format, a_value);

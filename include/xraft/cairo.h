@@ -17,8 +17,7 @@
 namespace xraft
 {
 
-template<typename T_callable>
-void f_draw(cairo_surface_t* a_surface, T_callable a_callable)
+void f_draw(cairo_surface_t* a_surface, auto a_callable)
 {
 	try {
 		cairo_t* context = cairo_create(a_surface);
@@ -71,8 +70,7 @@ inline cairo_surface_t* f_surface_create(t_bitmap& a_bitmap)
 	return cairo_xlib_surface_create(display, a_bitmap.f_handle(), visual, a_bitmap.f_width(), a_bitmap.f_height());
 }
 
-template<typename T_callable>
-inline void f_draw(t_window& a_window, T_callable a_callable)
+inline void f_draw(t_window& a_window, auto a_callable)
 {
 	Display* display = f_application()->f_x11_display();
 	int screen = DefaultScreen(display);
@@ -81,8 +79,7 @@ inline void f_draw(t_window& a_window, T_callable a_callable)
 	f_draw(cairo_xlib_surface_create(display, a_window.f_handle(), visual, geometry.v_width, geometry.v_height), a_callable);
 }
 
-template<typename T_callable>
-inline void f_draw(t_graphics& a_graphics, T_callable a_callable)
+inline void f_draw(t_graphics& a_graphics, auto a_callable)
 {
 	t_drawable* p = a_graphics.f_drawable();
 	t_window* window = dynamic_cast<t_window*>(p);
@@ -169,8 +166,7 @@ inline cairo_surface_t* f_surface_create(t_pixmap& a_pixmap)
 	return a_pixmap.f_alpha() ? t_proxy<t_pixmap>::f_create_alpha(a_pixmap) : t_proxy<t_pixmap>::f_create(a_pixmap);
 }
 
-template<typename T_callable>
-inline void f_draw(t_window& a_window, T_callable a_callable)
+inline void f_draw(t_window& a_window, auto a_callable)
 {
 	HWND hwnd = static_cast<HWND>(a_window.f_handle());
 	HDC hdc = GetDC(hwnd);
@@ -183,8 +179,7 @@ inline void f_draw(t_window& a_window, T_callable a_callable)
 	ReleaseDC(hwnd, hdc);
 }
 
-template<typename T_callable>
-inline void f_draw(t_graphics& a_graphics, T_callable a_callable)
+inline void f_draw(t_graphics& a_graphics, auto a_callable)
 {
 	f_draw(cairo_win32_surface_create(a_graphics.f_win32_hdc()), a_callable);
 }

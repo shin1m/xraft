@@ -55,8 +55,7 @@ public:
 	{
 		return operator=(static_cast<U*>(a_p));
 	}
-	template<typename U>
-	bool operator==(U* a_p) const
+	bool operator==(auto* a_p) const
 	{
 		return v_p == a_p;
 	}

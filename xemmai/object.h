@@ -15,83 +15,57 @@ struct t_fundamental<xraft::t_pointer<T>>
 template<>
 struct t_type_of<xraft::t_object> : xemmaix::xraft::t_bears_pointer<xraft::t_object>
 {
-	template<typename T0>
+	template<typename T>
 	struct t_cast
 	{
-		template<typename T1>
-		static T0* f_call(T1&& a_object)
+		static T f_as(auto&& a_object)
 		{
+			return *t_cast<typename t_fundamental<T>::t_type*>::f_as(std::forward<decltype(a_object)>(a_object));
+		}
+		static bool f_is(auto&& a_object)
+		{
+			auto p = static_cast<t_object*>(a_object);
+			return reinterpret_cast<uintptr_t>(p) >= e_tag__OBJECT && p->f_type()->f_derives<typename t_fundamental<T>::t_type>();
+		}
+	};
+	template<typename T>
+	struct t_cast<T*>
+	{
+		static T* f_as(auto&& a_object)
+		{
+			if (!static_cast<t_object*>(a_object)) return nullptr;
 			xraft::f_application();
-			auto p = f_object(std::forward<T1>(a_object))->template f_as<T0*>();
+			auto p = static_cast<t_object*>(a_object)->f_as<T*>();
 			if (!p) f_throw(L"already destroyed."sv);
 			return p;
 		}
-	};
-	template<typename T0>
-	struct t_as
-	{
-		template<typename T1>
-		static T0 f_call(T1&& a_object)
+		static bool f_is(auto&& a_object)
 		{
-			return *t_cast<typename t_fundamental<T0>::t_type>::f_call(std::forward<T1>(a_object));
+			auto p = static_cast<t_object*>(a_object);
+			return reinterpret_cast<uintptr_t>(p) == e_tag__NULL || reinterpret_cast<uintptr_t>(p) >= e_tag__OBJECT && p->f_type()->f_derives<typename t_fundamental<T>::t_type>();
 		}
 	};
-	template<typename T0>
-	struct t_as<T0*>
+	template<typename T>
+	struct t_cast<const xraft::t_pointer<T>&>
 	{
-		template<typename T1>
-		static T0* f_call(T1&& a_object)
+		static xraft::t_pointer<T> f_as(auto&& a_object)
 		{
-			return f_object(std::forward<T1>(a_object)) ? t_cast<T0>::f_call(std::forward<T1>(a_object)) : nullptr;
+			return t_cast<T*>::f_as(std::forward<decltype(a_object)>(a_object));
 		}
-	};
-	template<typename T0>
-	struct t_as<const xraft::t_pointer<T0>&>
-	{
-		template<typename T1>
-		static xraft::t_pointer<T0> f_call(T1&& a_object)
+		static bool f_is(auto&& a_object)
 		{
-			return t_as<T0*>::f_call(std::forward<T1>(a_object));
-		}
-	};
-	template<typename T0>
-	struct t_is
-	{
-		template<typename T1>
-		static bool f_call(T1&& a_object)
-		{
-			auto p = f_object(std::forward<T1>(a_object));
-			return reinterpret_cast<uintptr_t>(p) >= e_tag__OBJECT && p->f_type()->template f_derives<typename t_fundamental<T0>::t_type>();
-		}
-	};
-	template<typename T0>
-	struct t_is<T0*>
-	{
-		template<typename T1>
-		static bool f_call(T1&& a_object)
-		{
-			auto p = f_object(std::forward<T1>(a_object));
-			return reinterpret_cast<uintptr_t>(p) == e_tag__NULL || reinterpret_cast<uintptr_t>(p) >= e_tag__OBJECT && p->f_type()->template f_derives<typename t_fundamental<T0>::t_type>();
-		}
-	};
-	template<typename T0>
-	struct t_is<const xraft::t_pointer<T0>&>
-	{
-		template<typename T1>
-		static bool f_call(T1&& a_object)
-		{
-			return t_is<T0*>::f_call(std::forward<T1>(a_object));
+			return t_cast<T*>::f_is(std::forward<decltype(a_object)>(a_object));
 		}
 	};
 	using t_library = xemmaix::xraft::t_library;
 
-	template<typename T_library, typename T>
-	static t_pvalue f_transfer(T_library* a_library, const xraft::t_pointer<T>& a_value)
+	template<typename T>
+	static t_pvalue f_transfer(auto* a_library, const xraft::t_pointer<T>& a_value)
 	{
 		return xemmaix::xraft::t_proxy::f_wrap(a_library->template f_type<typename t_fundamental<T>::t_type>(), static_cast<T*>(a_value));
 	}
-	template<typename T_library, typename T>
-	static t_pvalue f_transfer(T_library* a_library, T* a_value)
+	template<typename T>
+	static t_pvalue f_transfer(auto* a_library, T* a_value)
 	{
 		return xemmaix::xraft::t_proxy::f_wrap(a_library->template f_type<typename t_fundamental<T>::t_type>(), a_value);
 	}
