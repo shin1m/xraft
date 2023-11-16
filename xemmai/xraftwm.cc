@@ -268,7 +268,7 @@ void t_type_of<xraft::t_client>::f_borders__(xraft::t_client& a_self, const t_pv
 {
 	unsigned borders[4];
 	for (size_t i = 0; i < 4; ++i) {
-		auto x = a_borders.f_get_at(f_global()->f_as(i));
+		auto x = a_borders.f_get_at(i);
 		f_check<unsigned>(x, L"border");
 		borders[i] = f_as<unsigned>(x);
 	}

@@ -57,7 +57,7 @@ void t_type_of<xraft::t_graphics>::f_extract(const t_pvalue& a_points0, std::vec
 	auto n = f_as<size_t>(m);
 	a_points1.resize(n);
 	for (size_t i = 0; i < n; ++i) {
-		auto x = a_points0.f_get_at(f_global()->f_as(i));
+		auto x = a_points0.f_get_at(i);
 		f_check<xraft::t_point>(x, L"path");
 		a_points1[i] = f_as<const xraft::t_point&>(x);
 	}
