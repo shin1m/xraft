@@ -478,27 +478,27 @@ void t_client::f_move(t_side a_horizontal, int a_x, t_side a_vertical, int a_y)
 	int top = geometry.v_y;
 	int bottom = geometry.v_y + geometry.v_height;
 	switch (a_horizontal) {
-	case e_side__NEAR:
+	case c_side__NEAR:
 		left = a_x;
 		break;
-	case e_side__FAR:
+	case c_side__FAR:
 		right = a_x;
 		break;
-	case e_side__BOTH:
+	case c_side__BOTH:
 		left = a_x;
 		right = a_x + geometry.v_width;
 		break;
 	}
 	switch (a_vertical) {
-	case e_side__NEAR:
+	case c_side__NEAR:
 		top = a_y;
 		if (v_shaded) bottom = a_y + geometry.v_height;
 		break;
-	case e_side__FAR:
+	case c_side__FAR:
 		bottom = a_y;
 		if (v_shaded) top = a_y - geometry.v_height;
 		break;
-	case e_side__BOTH:
+	case c_side__BOTH:
 		top = a_y;
 		bottom = a_y + geometry.v_height;
 		break;
@@ -507,8 +507,8 @@ void t_client::f_move(t_side a_horizontal, int a_x, t_side a_vertical, int a_y)
 	unsigned height = v_height;
 	v_width = v_width_hints.f_adjust(right - left - v_borders[0] - v_borders[2]);
 	if (!v_shaded) v_height = v_height_hints.f_adjust(bottom - top - v_borders[1] - v_borders[3]);
-	if (a_horizontal == e_side__NEAR) left = right - v_width - v_borders[0] - v_borders[2];
-	if (!v_shaded && a_vertical == e_side__NEAR) top = bottom - v_height - v_borders[1] - v_borders[3];
+	if (a_horizontal == c_side__NEAR) left = right - v_width - v_borders[0] - v_borders[2];
+	if (!v_shaded && a_vertical == c_side__NEAR) top = bottom - v_height - v_borders[1] - v_borders[3];
 	t_widget::f_move(t_rectangle(left, top, v_width + v_borders[0] + v_borders[2], v_shaded ? v_borders[1] + v_borders[3] : v_height + v_borders[1] + v_borders[3]));
 	if (v_width != width || v_height != height)
 		XResizeWindow(f_application()->f_x11_display(), v_client, v_width, v_height);

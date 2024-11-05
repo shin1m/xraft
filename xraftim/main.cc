@@ -112,11 +112,11 @@ class t_ibus_engine : public t_engine
 	void f_update_auxiliary_text(const wchar_t* a_cs, size_t a_n, bool a_visible);
 	bool f_process(dbus_uint32_t a_value, dbus_uint32_t a_code, dbus_uint32_t a_state)
 	{
-		if ((a_state & ibus::e_modifier__RELEASE) != 0) return false;
+		if ((a_state & ibus::c_modifier__RELEASE) != 0) return false;
 		a_code += 8;
 		char ascii = a_value < 128 ? a_value : 0;
 		if (a_value >= 'a' && a_value <= 'z') a_value -= 'a' - 'A';
-		if ((a_state & e_modifier__CONTROL) != 0 && a_value >= '@') ascii = a_value - '@';
+		if ((a_state & c_modifier__CONTROL) != 0 && a_value >= '@') ascii = a_value - '@';
 		v_forwarded = false;
 		f_key_pressed(static_cast<t_modifier>(a_state), static_cast<t_key>(a_value), ascii);
 		return !v_forwarded;
@@ -163,7 +163,7 @@ void t_ibus_engine::f_text(DBusMessageIter& a_i, const wchar_t* a_cs, const t_at
 	dbus::t_container_builder b2(b1, DBUS_TYPE_ARRAY, "v");
 	{
 		ibus::t_variant_builder b3(b2, "(sa{sv}uuuu)", "IBusAttribute");
-		b3 << dbus_uint32_t(ibus::e_attribute_type__UNDERLINE) << dbus_uint32_t(ibus::e_attribute_underline__SINGLE) << dbus_uint32_t(0) << dbus_uint32_t(a_n);
+		b3 << dbus_uint32_t(ibus::c_attribute_type__UNDERLINE) << dbus_uint32_t(ibus::c_attribute_underline__SINGLE) << dbus_uint32_t(0) << dbus_uint32_t(a_n);
 	}
 	size_t i = 0;
 	while (i < a_n) {
@@ -172,11 +172,11 @@ void t_ibus_engine::f_text(DBusMessageIter& a_i, const wchar_t* a_cs, const t_at
 		do ++i; while (i < a_n && *++a_as == a);
 		dbus_uint32_t type;
 		switch (a) {
-		case e_attribute__ROMAN:
-			type = ibus::e_attribute_type__FOREGROUND;
+		case c_attribute__ROMAN:
+			type = ibus::c_attribute_type__FOREGROUND;
 			break;
-		case e_attribute__ENTRY:
-			type = ibus::e_attribute_type__BACKGROUND;
+		case c_attribute__ENTRY:
+			type = ibus::c_attribute_type__BACKGROUND;
 			break;
 		default:
 			continue;
@@ -221,7 +221,7 @@ void t_ibus_engine::f_on_compose(size_t a_i, size_t a_m, const wchar_t* a_cs, co
 		auto i = v_as.begin() + a_i;
 		v_as.insert(v_as.erase(i, i + a_m), a_as, a_as + a_n);
 	}
-	f_update_preedit_text(&v_cs[0], &v_as[0], v_cs.size(), f_caret(), !v_cs.empty(), ibus::e_engine_preedit__CLEAR);
+	f_update_preedit_text(&v_cs[0], &v_as[0], v_cs.size(), f_caret(), !v_cs.empty(), ibus::c_engine_preedit__CLEAR);
 }
 
 void t_ibus_engine::f_on_commit(const wchar_t* a_cs, size_t a_n)
@@ -229,7 +229,7 @@ void t_ibus_engine::f_on_commit(const wchar_t* a_cs, size_t a_n)
 	if (!v_cs.empty()) {
 		v_cs.clear();
 		v_as.clear();
-		f_update_preedit_text(0, 0, 0, 0, false, ibus::e_engine_preedit__CLEAR);
+		f_update_preedit_text(0, 0, 0, 0, false, ibus::c_engine_preedit__CLEAR);
 	}
 	if (a_n > 0) f_commit_text(a_cs, a_n);
 }
@@ -257,7 +257,7 @@ void t_ibus_engine::f_on_candidates()
 		t_signal_emitter e(v_path.c_str(), "UpdateLookupTable");
 		{
 			ibus::t_variant_builder b0(e, "(sa{sv}uubbiavav)", "IBusLookupTable");
-			b0 << dbus_uint32_t(0) << dbus_uint32_t(0) << false << false << dbus_int32_t(ibus::e_orientation__SYSTEM);
+			b0 << dbus_uint32_t(0) << dbus_uint32_t(0) << false << false << dbus_int32_t(ibus::c_orientation__SYSTEM);
 			dbus::t_container_builder(b0, DBUS_TYPE_ARRAY, "v");
 			dbus::t_container_builder(b0, DBUS_TYPE_ARRAY, "v");
 		}
@@ -281,7 +281,7 @@ void t_ibus_engine::f_on_choose()
 	t_signal_emitter e(v_path.c_str(), "UpdateLookupTable");
 	{
 		ibus::t_variant_builder b0(e, "(sa{sv}uubbiavav)", "IBusLookupTable");
-		b0 << dbus_uint32_t(8) << dbus_uint32_t(f_chosen() - first) << true << false << dbus_int32_t(ibus::e_orientation__SYSTEM);
+		b0 << dbus_uint32_t(8) << dbus_uint32_t(f_chosen() - first) << true << false << dbus_int32_t(ibus::c_orientation__SYSTEM);
 		{
 			dbus::t_container_builder b1(b0, DBUS_TYPE_ARRAY, "v");
 			for (size_t i = first; i < last; ++i) {
@@ -304,7 +304,7 @@ void t_ibus_engine::f_on_choose()
 
 void t_ibus_engine::f_focus_in()
 {
-	if (!v_cs.empty()) f_update_preedit_text(&v_cs[0], &v_as[0], v_cs.size(), f_caret(), true, ibus::e_engine_preedit__CLEAR);
+	if (!v_cs.empty()) f_update_preedit_text(&v_cs[0], &v_as[0], v_cs.size(), f_caret(), true, ibus::c_engine_preedit__CLEAR);
 	if (v_choosing)
 		f_on_choose();
 	else

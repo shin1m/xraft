@@ -198,7 +198,7 @@ struct t_bears_pointer : t_bears<T, T_base>
 {
 	using t_base = t_bears_pointer;
 
-	static constexpr size_t V_native = sizeof(T*);
+	static constexpr size_t c_NATIVE = sizeof(T*);
 
 	using t_bears<T, T_base>::t_bears;
 };

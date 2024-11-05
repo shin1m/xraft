@@ -26,7 +26,7 @@ class t_ibus : public t_frame
 	}
 	virtual void f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
 	{
-		if (a_key == e_key__Q) f_on_close();
+		if (a_key == c_key__Q) f_on_close();
 	}
 	virtual void f_on_input_commit(const wchar_t* a_cs, size_t a_n)
 	{

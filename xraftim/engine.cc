@@ -49,7 +49,7 @@ void t_engine::f_roman_push(wchar_t a_c, const t_map* a_map)
 	if (state.v_okuri > 0) --i;
 	v_buffer.push_back(a_c);
 	v_map = a_map;
-	t_attribute a = e_attribute__ROMAN;
+	t_attribute a = c_attribute__ROMAN;
 	f_on_compose(i, 0, &a_c, &a, 1);
 }
 
@@ -63,16 +63,16 @@ void t_engine::f_roman_reduce(const wchar_t* a_cs, size_t a_n)
 	if (v_mode == &t_engine::f_mode_kanji) {
 		if (state.v_okuri > 0) {
 			state.v_okuri += a_n;
-			std::vector<t_attribute> as(a_n, e_attribute__OKURI);
+			std::vector<t_attribute> as(a_n, c_attribute__OKURI);
 			f_on_compose(--i, n, a_cs, &as[0], a_n);
 		} else {
 			state.v_entry += a_n;
-			std::vector<t_attribute> as(a_n, e_attribute__ENTRY);
+			std::vector<t_attribute> as(a_n, c_attribute__ENTRY);
 			f_on_compose(i, n, a_cs, &as[0], a_n);
 		}
 	} else if (v_states.size() > 1) {
 		state.v_text += a_n;
-		std::vector<t_attribute> as(a_n, e_attribute__TEXT);
+		std::vector<t_attribute> as(a_n, c_attribute__TEXT);
 		f_on_compose(i, n, a_cs, &as[0], a_n);
 	} else {
 		state = t_state();
@@ -95,7 +95,7 @@ void t_engine::f_text_push(char a_ascii)
 		size_t i = state.v_text;
 		v_buffer.push_back(c);
 		++state.v_text;
-		t_attribute a = e_attribute__TEXT;
+		t_attribute a = c_attribute__TEXT;
 		f_on_compose(i, 0, &c, &a, 1);
 	} else {
 //		f_on_forward();
@@ -117,8 +117,8 @@ void t_engine::f_text_pop()
 		state.v_okuri = 0;
 		v_mode = &t_engine::f_mode_kanji;
 		std::vector<t_attribute> as;
-		as.insert(as.end(), state.v_text, e_attribute__TEXT);
-		as.insert(as.end(), state.v_entry, e_attribute__ENTRY);
+		as.insert(as.end(), state.v_text, c_attribute__TEXT);
+		as.insert(as.end(), state.v_entry, c_attribute__ENTRY);
 		f_on_compose(0, 0, &v_buffer[state.v_base], &as[0], as.size());
 		f_on_status();
 	} else {
@@ -147,7 +147,7 @@ void t_engine::f_text_commit()
 			state.v_text = v_buffer.size() - state.v_base;
 			state.v_entry = state.v_okuri = 0;
 			std::vector<t_attribute> as;
-			as.insert(as.end(), state.v_text, e_attribute__TEXT);
+			as.insert(as.end(), state.v_text, c_attribute__TEXT);
 			f_on_compose(0, text, &v_buffer[state.v_base], &as[0], as.size());
 		} else {
 			state = t_state();
@@ -167,7 +167,7 @@ void t_engine::f_entry_push(char a_ascii)
 	wchar_t c = a_ascii;
 	v_buffer.push_back(c);
 	++state.v_entry;
-	t_attribute a = e_attribute__ENTRY;
+	t_attribute a = c_attribute__ENTRY;
 	f_on_compose(i, 0, &c, &a, 1);
 }
 
@@ -195,7 +195,7 @@ void t_engine::f_entry_commit()
 		state.v_text += n;
 		state.v_entry = state.v_okuri = 0;
 		std::vector<t_attribute> as;
-		as.insert(as.end(), n, e_attribute__TEXT);
+		as.insert(as.end(), n, c_attribute__TEXT);
 		f_on_compose(i, n, &v_buffer[state.v_base + i], &as[0], n);
 	} else {
 		state = t_state();
@@ -223,7 +223,7 @@ void t_engine::f_choose()
 		size_t n = state.v_entry;
 		const std::wstring& s = v_candidates[0].v_text;
 		std::vector<t_attribute> as;
-		as.insert(as.end(), s.size(), e_attribute__CANDIDATE);
+		as.insert(as.end(), s.size(), c_attribute__CANDIDATE);
 		f_on_compose(i, n, s.c_str(), &as[0], s.size());
 	}
 	f_on_status();
@@ -231,12 +231,12 @@ void t_engine::f_choose()
 
 void t_engine::f_mode_latin(t_modifier a_modifier, t_key a_key, char a_ascii)
 {
-	if (a_key == e_key__RETURN || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__M) {
+	if (a_key == c_key__RETURN || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__M) {
 		f_text_commit();
-	} else if (a_key == e_key__LINEFEED || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__J) {
+	} else if (a_key == c_key__LINEFEED || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__J) {
 		v_mode = &t_engine::f_mode_roman;
 		f_on_status();
-	} else if (a_key == e_key__BACK_SPACE || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__H) {
+	} else if (a_key == c_key__BACK_SPACE || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__H) {
 		f_text_pop();
 	} else if (std::isprint(a_ascii)) {
 		f_text_push(a_ascii);
@@ -247,17 +247,17 @@ void t_engine::f_mode_latin(t_modifier a_modifier, t_key a_key, char a_ascii)
 
 void t_engine::f_mode_word(t_modifier a_modifier, t_key a_key, char a_ascii)
 {
-	if (a_key == e_key__RETURN || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__M) {
+	if (a_key == c_key__RETURN || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__M) {
 		f_entry_commit();
-	} else if (a_key == e_key__LINEFEED || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__J) {
+	} else if (a_key == c_key__LINEFEED || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__J) {
 		if (v_states.back().v_entry > 0)
 			v_mode = &t_engine::f_mode_kanji;
 		else
 			v_mode = &t_engine::f_mode_roman;
 		f_on_status();
-	} else if (a_key == e_key__BACK_SPACE || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__H) {
+	} else if (a_key == c_key__BACK_SPACE || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__H) {
 		f_entry_pop();
-	} else if (a_key == e_key__SPACE) {
+	} else if (a_key == c_key__SPACE) {
 		if (v_states.back().v_entry > 0) f_choose();
 	} else if (std::isprint(a_ascii)) {
 		f_entry_push(a_ascii);
@@ -266,17 +266,17 @@ void t_engine::f_mode_word(t_modifier a_modifier, t_key a_key, char a_ascii)
 
 void t_engine::f_mode_roman(t_modifier a_modifier, t_key a_key, char a_ascii)
 {
-	if (a_key == e_key__RETURN || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__M) {
+	if (a_key == c_key__RETURN || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__M) {
 		if (v_map != &t_roman_table::v_default) f_roman_reset();
 		f_text_commit();
-	} else if (a_key == e_key__BACK_SPACE || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__H) {
+	} else if (a_key == c_key__BACK_SPACE || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__H) {
 		if (v_map != &t_roman_table::v_default)
 			f_roman_reset();
 		else
 			f_text_pop();
-	} else if (a_key == e_key__LINEFEED || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__J) {
+	} else if (a_key == c_key__LINEFEED || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__J) {
 		if (v_map != &t_roman_table::v_default) f_roman_reset();
-	} else if ((a_modifier & e_modifier__CONTROL) != 0) {
+	} else if ((a_modifier & c_modifier__CONTROL) != 0) {
 		if (v_map != &t_roman_table::v_default) f_roman_reset();
 		if (v_buffer.empty()) f_on_forward();
 	} else if (std::isprint(a_ascii)) {
@@ -317,10 +317,10 @@ void t_engine::f_mode_roman(t_modifier a_modifier, t_key a_key, char a_ascii)
 
 void t_engine::f_mode_kanji(t_modifier a_modifier, t_key a_key, char a_ascii)
 {
-	if (a_key == e_key__RETURN || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__M) {
+	if (a_key == c_key__RETURN || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__M) {
 		if (v_map != &t_roman_table::v_default) f_roman_reset();
 		f_entry_commit();
-	} else if (a_key == e_key__BACK_SPACE || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__H) {
+	} else if (a_key == c_key__BACK_SPACE || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__H) {
 		if (v_map != &t_roman_table::v_default) {
 			f_roman_reset();
 			if (v_buffer.empty()) {
@@ -330,7 +330,7 @@ void t_engine::f_mode_kanji(t_modifier a_modifier, t_key a_key, char a_ascii)
 		} else {
 			f_entry_pop();
 		}
-	} else if ((a_modifier & e_modifier__CONTROL) != 0) {
+	} else if ((a_modifier & c_modifier__CONTROL) != 0) {
 		if (v_map != &t_roman_table::v_default) f_roman_reset();
 	} else if (std::isprint(a_ascii)) {
 		char key = std::tolower(a_ascii);
@@ -371,22 +371,22 @@ void t_engine::f_mode_choose(t_modifier a_modifier, t_key a_key, char a_ascii)
 {
 	t_state& state = v_states.back();
 	size_t n = v_candidates[v_chosen].v_text.size();
-	if (a_key == e_key__BACK_SPACE || (a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__H || a_key == e_key__X && v_chosen <= 0) {
+	if (a_key == c_key__BACK_SPACE || (a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__H || a_key == c_key__X && v_chosen <= 0) {
 		if (state.v_okuri > 0) n += state.v_okuri - 1;
 		v_mode = &t_engine::f_mode_kanji;
 		v_buffer.erase(v_buffer.begin() + state.v_base + state.v_text + state.v_entry, v_buffer.end());
 		state.v_okuri = 0;
 		v_candidates.clear();
 		std::vector<t_attribute> as;
-		as.insert(as.end(), state.v_entry, e_attribute__ENTRY);
+		as.insert(as.end(), state.v_entry, c_attribute__ENTRY);
 		f_on_compose(state.v_text, n, &v_buffer[state.v_base + state.v_text], &as[0], as.size());
 		f_on_status();
 		f_on_candidates();
-	} else if (a_key == e_key__SPACE) {
+	} else if (a_key == c_key__SPACE) {
 		if (++v_chosen < v_candidates.size()) {
 			const std::wstring& s = v_candidates[v_chosen].v_text;
 			std::vector<t_attribute> as;
-			as.insert(as.end(), s.size(), e_attribute__CANDIDATE);
+			as.insert(as.end(), s.size(), c_attribute__CANDIDATE);
 			f_on_compose(state.v_text, n, s.c_str(), &as[0], s.size());
 			if (v_choosing) {
 				f_on_choose();
@@ -404,14 +404,14 @@ void t_engine::f_mode_choose(t_modifier a_modifier, t_key a_key, char a_ascii)
 			f_on_status();
 			f_on_candidates();
 		}
-	} else if (a_key == e_key__X) {
+	} else if (a_key == c_key__X) {
 		--v_chosen;
 		const std::wstring& s = v_candidates[v_chosen].v_text;
 		std::vector<t_attribute> as;
-		as.insert(as.end(), s.size(), e_attribute__CANDIDATE);
+		as.insert(as.end(), s.size(), c_attribute__CANDIDATE);
 		f_on_compose(state.v_text, n, s.c_str(), &as[0], s.size());
 		f_on_choose();
-	} else if (a_key == e_key__RETURN || std::isprint(a_ascii)) {
+	} else if (a_key == c_key__RETURN || std::isprint(a_ascii)) {
 		auto i = v_buffer.begin() + state.v_base + state.v_text;
 		const std::wstring& s = v_candidates[v_chosen].v_text;
 		v_dictionary.f_register(&*i, state.v_entry, state.v_okuri, s.c_str(), s.size());
@@ -427,7 +427,7 @@ void t_engine::f_mode_choose(t_modifier a_modifier, t_key a_key, char a_ascii)
 			state.v_text = v_buffer.size() - state.v_base;
 			state.v_entry = state.v_okuri = 0;
 			std::vector<t_attribute> as;
-			as.insert(as.end(), state.v_text - i, e_attribute__TEXT);
+			as.insert(as.end(), state.v_text - i, c_attribute__TEXT);
 			f_on_compose(i, n, &v_buffer[state.v_base + i], &as[0], as.size());
 		} else {
 			state = t_state();
@@ -436,8 +436,8 @@ void t_engine::f_mode_choose(t_modifier a_modifier, t_key a_key, char a_ascii)
 		}
 		f_on_status();
 		f_on_candidates();
-		if (a_key == e_key__RETURN) return;
-		if ((a_modifier & e_modifier__CONTROL) != 0 && a_key == e_key__M) return;
+		if (a_key == c_key__RETURN) return;
+		if ((a_modifier & c_modifier__CONTROL) != 0 && a_key == c_key__M) return;
 		f_key_pressed(a_modifier, a_key, a_ascii);
 	}
 }

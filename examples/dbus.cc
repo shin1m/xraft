@@ -19,20 +19,20 @@ class t_dbus : public t_frame
 	}
 	virtual void f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
 	{
-		if (a_key == e_key__SPACE) {
+		if (a_key == c_key__SPACE) {
 			dbus::t_message message = v_connection.f_send("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus.Introspectable", "Introspect", DBUS_TYPE_INVALID)();
 			const char* p;
 			message.f_get(DBUS_TYPE_STRING, &p, DBUS_TYPE_INVALID);
 			std::printf("Introspect:\n%s", p);
-		} else if (a_key == e_key__S) {
+		} else if (a_key == c_key__S) {
 			v_reply = v_connection.f_send("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus.Introspectable", "Introspect", DBUS_TYPE_INVALID);
 			std::printf("Sent: Introspect\n");
-		} else if (a_key == e_key__R) {
+		} else if (a_key == c_key__R) {
 			dbus::t_message message = v_reply();
 			const char* p;
 			message.f_get(DBUS_TYPE_STRING, &p, DBUS_TYPE_INVALID);
 			std::printf("Received:\n%s", p);
-		} else if (a_key == e_key__Q) {
+		} else if (a_key == c_key__Q) {
 			f_on_close();
 		}
 		t_extent extent = f_geometry();

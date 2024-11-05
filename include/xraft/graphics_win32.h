@@ -141,22 +141,22 @@ protected:
 public:
 	enum t_function
 	{
-		e_function__CLEAR = R2_BLACK,
-		e_function__AND = R2_MASKPEN,
-		e_function__AND_REVERSE = R2_MASKPENNOT,
-		e_function__COPY = R2_COPYPEN,
-		e_function__AND_INVERTED = R2_MASKNOTPEN,
-		e_function__NOOP = R2_NOP,
-		e_function__XOR = R2_XORPEN,
-		e_function__OR = R2_MERGEPEN,
-		e_function__NOR = R2_NOTMERGEPEN,
-		e_function__EQUIV = R2_NOTXORPEN,
-		e_function__INVERT = R2_NOT,
-		e_function__OR_REVERSE = R2_MERGEPENNOT,
-		e_function__COPY_INVERTED = R2_NOTCOPYPEN,
-		e_function__OR_INVERTED = R2_MERGENOTPEN,
-		e_function__NAND = R2_NOTMASKPEN,
-		e_function__SET = R2_WHITE
+		c_function__CLEAR = R2_BLACK,
+		c_function__AND = R2_MASKPEN,
+		c_function__AND_REVERSE = R2_MASKPENNOT,
+		c_function__COPY = R2_COPYPEN,
+		c_function__AND_INVERTED = R2_MASKNOTPEN,
+		c_function__NOOP = R2_NOP,
+		c_function__XOR = R2_XORPEN,
+		c_function__OR = R2_MERGEPEN,
+		c_function__NOR = R2_NOTMERGEPEN,
+		c_function__EQUIV = R2_NOTXORPEN,
+		c_function__INVERT = R2_NOT,
+		c_function__OR_REVERSE = R2_MERGEPENNOT,
+		c_function__COPY_INVERTED = R2_NOTCOPYPEN,
+		c_function__OR_INVERTED = R2_MERGENOTPEN,
+		c_function__NAND = R2_NOTMASKPEN,
+		c_function__SET = R2_WHITE
 	};
 
 	HDC f_win32_hdc() const

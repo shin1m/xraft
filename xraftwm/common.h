@@ -16,10 +16,10 @@ class t_root;
 
 enum t_side
 {
-	e_side__NONE,
-	e_side__NEAR,
-	e_side__FAR,
-	e_side__BOTH
+	c_side__NONE,
+	c_side__NEAR,
+	c_side__FAR,
+	c_side__BOTH
 };
 
 class t_client : public t_widget

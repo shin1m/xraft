@@ -21,10 +21,10 @@ void t_input_context::f_composition(std::vector<wchar_t>& a_cs, std::vector<t_in
 		switch (as[i] & 0x0f) {
 		case ATTR_TARGET_CONVERTED:
 		case ATTR_TARGET_NOTCONVERTED:
-			a_as[i] = static_cast<t_input_attribute>(e_input_attribute__REVERSE | e_input_attribute__UNDERLINE);
+			a_as[i] = static_cast<t_input_attribute>(c_input_attribute__REVERSE | c_input_attribute__UNDERLINE);
 			break;
 		default:
-			a_as[i] = e_input_attribute__UNDERLINE;
+			a_as[i] = c_input_attribute__UNDERLINE;
 		}
 	}
 	delete[] as;

@@ -111,25 +111,25 @@ void t_window::f_process(XEvent& a_event)
 			t_cross_mode mode;
 			switch (a_event.xcrossing.mode) {
 			case NotifyGrab:
-				mode = e_cross_mode__GRAB;
+				mode = c_cross_mode__GRAB;
 				break;
 			case NotifyUngrab:
-				mode = e_cross_mode__UNGRAB;
+				mode = c_cross_mode__UNGRAB;
 				break;
 			default:
-				mode = e_cross_mode__NORMAL;
+				mode = c_cross_mode__NORMAL;
 			}
 			t_cross_detail detail;
 			switch (a_event.xcrossing.detail) {
 			case NotifyVirtual:
 			case NotifyNonlinearVirtual:
-				detail = e_cross_detail__THROUGH;
+				detail = c_cross_detail__THROUGH;
 				break;
 			case NotifyInferior:
-				detail = e_cross_detail__INNER;
+				detail = c_cross_detail__INNER;
 				break;
 			default:
-				detail = e_cross_detail__OUTER;
+				detail = c_cross_detail__OUTER;
 			}
 			if (a_event.type == EnterNotify)
 				f_on_pointer_enter(static_cast<t_modifier>(a_event.xcrossing.state), a_event.xcrossing.x, a_event.xcrossing.y, mode, detail);

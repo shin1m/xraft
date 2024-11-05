@@ -250,10 +250,10 @@ t_object* t_type_of<xraft::t_side>::f_define(t_library* a_library)
 	return t_base::f_define(a_library, [](auto a_fields)
 	{
 		a_fields
-		(L"NONE"sv, e_side__NONE)
-		(L"NEAR"sv, e_side__NEAR)
-		(L"FAR"sv, e_side__FAR)
-		(L"BOTH"sv, e_side__BOTH)
+		(L"NONE"sv, c_side__NONE)
+		(L"NEAR"sv, c_side__NEAR)
+		(L"FAR"sv, c_side__FAR)
+		(L"BOTH"sv, c_side__BOTH)
 		;
 	});
 }

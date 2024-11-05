@@ -121,12 +121,12 @@ class t_pane : public t_frame
 {
 	enum t_part
 	{
-		e_part__NONE,
-		e_part__BUTTON_UP,
-		e_part__BUTTON_DOWN,
-		e_part__GAP_UP,
-		e_part__GAP_DOWN,
-		e_part__THUMB
+		c_part__NONE,
+		c_part__BUTTON_UP,
+		c_part__BUTTON_DOWN,
+		c_part__GAP_UP,
+		c_part__GAP_DOWN,
+		c_part__THUMB
 	};
 
 	static constexpr unsigned f_border_width()
@@ -144,7 +144,7 @@ class t_pane : public t_frame
 	t_colors v_gap{79, 79, 79};
 	t_color v_text_active{223, 223, 223};
 	t_color v_text_inactive{127, 127, 127};
-	t_part v_grabbing_part = e_part__NONE;
+	t_part v_grabbing_part = c_part__NONE;
 	int v_grabbing_offset;
 
 protected:

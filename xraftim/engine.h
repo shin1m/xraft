@@ -23,11 +23,11 @@ public:
 	};
 	enum t_attribute
 	{
-		e_attribute__ROMAN,
-		e_attribute__TEXT,
-		e_attribute__ENTRY,
-		e_attribute__OKURI,
-		e_attribute__CANDIDATE
+		c_attribute__ROMAN,
+		c_attribute__TEXT,
+		c_attribute__ENTRY,
+		c_attribute__OKURI,
+		c_attribute__CANDIDATE
 	};
 
 private:

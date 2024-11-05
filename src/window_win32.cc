@@ -32,7 +32,7 @@ t_window::~t_window()
 
 void t_window::f_destroy()
 {
-	if (this == f_application()->v_pointed) f_application()->f_pointed__(0, 0, 0, e_cross_mode__NORMAL);
+	if (this == f_application()->v_pointed) f_application()->f_pointed__(0, 0, 0, c_cross_mode__NORMAL);
 	if (this == f_application()->f_focus()) f_application()->f_focus__(0);
 	for (const auto& p : v_children) p->f_destroy();
 	SetWindowLong(f_hwnd(), 0, 0);
@@ -56,37 +56,37 @@ LRESULT t_window::OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 	case WM_LBUTTONDOWN:
 		SetCapture(f_hwnd());
-		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), e_cross_mode__GRAB);
-		f_on_button_press(f_modifier(), e_button__1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), c_cross_mode__GRAB);
+		f_on_button_press(f_modifier(), c_button__1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_LBUTTONUP:
-		f_on_button_release(f_modifier(), e_button__1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		f_on_button_release(f_modifier(), c_button__1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		ReleaseCapture();
 		return 0;
 	case WM_MBUTTONDOWN:
 		SetCapture(f_hwnd());
-		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), e_cross_mode__GRAB);
-		f_on_button_press(f_modifier(), e_button__2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), c_cross_mode__GRAB);
+		f_on_button_press(f_modifier(), c_button__2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_MBUTTONUP:
-		f_on_button_release(f_modifier(), e_button__2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		f_on_button_release(f_modifier(), c_button__2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		ReleaseCapture();
 		return 0;
 	case WM_RBUTTONDOWN:
 		SetCapture(f_hwnd());
-		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), e_cross_mode__GRAB);
-		f_on_button_press(f_modifier(), e_button__3, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), c_cross_mode__GRAB);
+		f_on_button_press(f_modifier(), c_button__3, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_RBUTTONUP:
-		f_on_button_release(f_modifier(), e_button__3, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		f_on_button_release(f_modifier(), c_button__3, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		ReleaseCapture();
 		return 0;
 	case WM_MOUSEMOVE:
-		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), e_cross_mode__NORMAL);
+		f_application()->f_pointed__(this, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), c_cross_mode__NORMAL);
 		f_on_pointer_move(f_modifier(), GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_MOUSELEAVE:
-		if (this == f_application()->v_pointed) f_application()->f_pointed__(0, 0, 0, e_cross_mode__NORMAL);
+		if (this == f_application()->v_pointed) f_application()->f_pointed__(0, 0, 0, c_cross_mode__NORMAL);
 		return 0;
 	case WM_MOUSEWHEEL:
 		v_delta += static_cast<short>(HIWORD(wParam));
@@ -94,7 +94,7 @@ LRESULT t_window::OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			t_modifier modifier = f_modifier();
 			int n = v_delta / WHEEL_DELTA;
 			v_delta -= n * WHEEL_DELTA;
-			t_button button = n > 0 ? e_button__4 : e_button__5;
+			t_button button = n > 0 ? c_button__4 : c_button__5;
 			if (n < 0) n = -n;
 			while (n > 0) {
 				f_on_button_press(modifier, button, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
@@ -104,7 +104,7 @@ LRESULT t_window::OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_CAPTURECHANGED:
-		f_application()->f_pointed__(0, 0, 0, e_cross_mode__UNGRAB);
+		f_application()->f_pointed__(0, 0, 0, c_cross_mode__UNGRAB);
 		return 0;
 	case WM_SETFOCUS:
 		f_on_focus_enter();

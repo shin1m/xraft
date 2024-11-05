@@ -9,9 +9,9 @@ namespace xraft
 
 enum t_input_attribute
 {
-	e_input_attribute__NONE,
-	e_input_attribute__REVERSE,
-	e_input_attribute__UNDERLINE,
+	c_input_attribute__NONE,
+	c_input_attribute__REVERSE,
+	c_input_attribute__UNDERLINE,
 };
 
 }

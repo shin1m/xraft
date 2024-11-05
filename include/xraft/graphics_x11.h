@@ -107,22 +107,22 @@ class t_graphics
 public:
 	enum t_function
 	{
-		e_function__CLEAR = GXclear,
-		e_function__AND = GXand,
-		e_function__AND_REVERSE = GXandReverse,
-		e_function__COPY = GXcopy,
-		e_function__AND_INVERTED = GXandInverted,
-		e_function__NOOP = GXnoop,
-		e_function__XOR = GXxor,
-		e_function__OR = GXor,
-		e_function__NOR = GXnor,
-		e_function__EQUIV = GXequiv,
-		e_function__INVERT = GXinvert,
-		e_function__OR_REVERSE = GXorReverse,
-		e_function__COPY_INVERTED = GXcopyInverted,
-		e_function__OR_INVERTED = GXorInverted,
-		e_function__NAND = GXnand,
-		e_function__SET = GXset
+		c_function__CLEAR = GXclear,
+		c_function__AND = GXand,
+		c_function__AND_REVERSE = GXandReverse,
+		c_function__COPY = GXcopy,
+		c_function__AND_INVERTED = GXandInverted,
+		c_function__NOOP = GXnoop,
+		c_function__XOR = GXxor,
+		c_function__OR = GXor,
+		c_function__NOR = GXnor,
+		c_function__EQUIV = GXequiv,
+		c_function__INVERT = GXinvert,
+		c_function__OR_REVERSE = GXorReverse,
+		c_function__COPY_INVERTED = GXcopyInverted,
+		c_function__OR_INVERTED = GXorInverted,
+		c_function__NAND = GXnand,
+		c_function__SET = GXset
 	};
 
 	t_graphics(const t_pointer<t_drawable>& a_drawable, bool a_include = false) : v_drawable(a_drawable), v_font(f_application()->f_font())

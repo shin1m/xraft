@@ -196,18 +196,18 @@ class t_balls : public t_frame
 	}
 	virtual void f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
 	{
-		if (a_key == e_key__SPACE) {
+		if (a_key == c_key__SPACE) {
 			v_double_bufferred ^= true;
 			f_invalidate_all();
-		} else if (a_key == e_key__Q) {
+		} else if (a_key == c_key__Q) {
 			f_on_close();
 		}
 	}
 	virtual void f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x, int a_y)
 	{
-		if (a_button == e_button__1) {
+		if (a_button == c_button__1) {
 			f_append();
-		} else if (a_button == e_button__3) {
+		} else if (a_button == c_button__3) {
 			v_balls.clear();
 			f_invalidate_all();
 		}

@@ -11,16 +11,16 @@ namespace xraft
 
 enum t_cross_mode
 {
-	e_cross_mode__NORMAL,
-	e_cross_mode__GRAB,
-	e_cross_mode__UNGRAB
+	c_cross_mode__NORMAL,
+	c_cross_mode__GRAB,
+	c_cross_mode__UNGRAB
 };
 
 enum t_cross_detail
 {
-	e_cross_detail__OUTER,
-	e_cross_detail__INNER,
-	e_cross_detail__THROUGH
+	c_cross_detail__OUTER,
+	c_cross_detail__INNER,
+	c_cross_detail__THROUGH
 };
 
 }

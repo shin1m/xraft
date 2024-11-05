@@ -8,152 +8,152 @@
 t_content::t_code t_content::f_code(t_key a_key)
 {
 	switch (a_key) {
-	case e_key__BACK_SPACE:
-		return t_code::e_BACK_SPACE;
-	case e_key__TAB:
-		return t_code::e_TAB;
-	case e_key__F1:
-		return t_code::e_F1;
-	case e_key__F2:
-		return t_code::e_F2;
-	case e_key__F3:
-		return t_code::e_F3;
-	case e_key__F4:
-		return t_code::e_F4;
-	case e_key__F5:
-		return t_code::e_F5;
-	case e_key__F6:
-		return t_code::e_F6;
-	case e_key__F7:
-		return t_code::e_F7;
-	case e_key__F8:
-		return t_code::e_F8;
-	case e_key__F9:
-		return t_code::e_F9;
-	case e_key__F10:
-		return t_code::e_F10;
-	case e_key__F11:
-		return t_code::e_F11;
-	case e_key__F12:
-		return t_code::e_F12;
-	case e_key__F13:
-		return t_code::e_F13;
-	case e_key__F14:
-		return t_code::e_F14;
-	case e_key__F15:
-		return t_code::e_F15;
-	case e_key__F16:
-		return t_code::e_F16;
-	case e_key__F17:
-		return t_code::e_F17;
-	case e_key__F18:
-		return t_code::e_F18;
-	case e_key__F19:
-		return t_code::e_F19;
-	case e_key__F20:
-		return t_code::e_F20;
-	case e_key__F21:
-		return t_code::e_F21;
-	case e_key__F22:
-		return t_code::e_F22;
-	case e_key__F23:
-		return t_code::e_F23;
-	case e_key__F24:
-		return t_code::e_F24;
-	case e_key__DELETE:
-		return t_code::e_DELETE;
-	case e_key__HOME:
-		return t_code::e_HOME;
-	case e_key__LEFT:
-		return t_code::e_LEFT;
-	case e_key__UP:
-		return t_code::e_UP;
-	case e_key__RIGHT:
-		return t_code::e_RIGHT;
-	case e_key__DOWN:
-		return t_code::e_DOWN;
-	case e_key__PRIOR:
-		return t_code::e_PRIOR;
-	case e_key__NEXT:
-		return t_code::e_NEXT;
-	case e_key__END:
-		return t_code::e_END;
-	case e_key__BEGIN:
-		return t_code::e_BEGIN;
-	case e_key__INSERT:
-		return t_code::e_INSERT;
-	case e_key__KP_SPACE:
-		return t_code::e_KP_SPACE;
-	case e_key__KP_TAB:
-		return t_code::e_KP_TAB;
-	case e_key__KP_ENTER:
-		return t_code::e_KP_ENTER;
-	case e_key__KP_F1:
-		return t_code::e_KP_F1;
-	case e_key__KP_F2:
-		return t_code::e_KP_F2;
-	case e_key__KP_F3:
-		return t_code::e_KP_F3;
-	case e_key__KP_F4:
-		return t_code::e_KP_F4;
-	case e_key__KP_HOME:
-		return t_code::e_KP_HOME;
-	case e_key__KP_LEFT:
-		return t_code::e_KP_LEFT;
-	case e_key__KP_UP:
-		return t_code::e_KP_UP;
-	case e_key__KP_RIGHT:
-		return t_code::e_KP_RIGHT;
-	case e_key__KP_DOWN:
-		return t_code::e_KP_DOWN;
-	case e_key__KP_PRIOR:
-		return t_code::e_KP_PRIOR;
-	case e_key__KP_NEXT:
-		return t_code::e_KP_NEXT;
-	case e_key__KP_END:
-		return t_code::e_KP_END;
-	case e_key__KP_BEGIN:
-		return t_code::e_KP_BEGIN;
-	case e_key__KP_INSERT:
-		return t_code::e_KP_INSERT;
-	case e_key__KP_DELETE:
-		return t_code::e_KP_DELETE;
-	case e_key__KP_EQUAL:
-		return t_code::e_KP_EQUAL;
-	case e_key__KP_MULTIPLY:
-		return t_code::e_KP_MULTIPLY;
-	case e_key__KP_ADD:
-		return t_code::e_KP_ADD;
-	case e_key__KP_SEPARATOR:
-		return t_code::e_KP_SEPARATOR;
-	case e_key__KP_SUBTRACT:
-		return t_code::e_KP_SUBTRACT;
-	case e_key__KP_DECIMAL:
-		return t_code::e_KP_DECIMAL;
-	case e_key__KP_DIVIDE:
-		return t_code::e_KP_DIVIDE;
-	case e_key__KP_0:
-		return t_code::e_KP_0;
-	case e_key__KP_1:
-		return t_code::e_KP_1;
-	case e_key__KP_2:
-		return t_code::e_KP_2;
-	case e_key__KP_3:
-		return t_code::e_KP_3;
-	case e_key__KP_4:
-		return t_code::e_KP_4;
-	case e_key__KP_5:
-		return t_code::e_KP_5;
-	case e_key__KP_6:
-		return t_code::e_KP_6;
-	case e_key__KP_7:
-		return t_code::e_KP_7;
-	case e_key__KP_8:
-		return t_code::e_KP_8;
-	case e_key__KP_9:
-		return t_code::e_KP_9;
+	case c_key__BACK_SPACE:
+		return t_code::c_BACK_SPACE;
+	case c_key__TAB:
+		return t_code::c_TAB;
+	case c_key__F1:
+		return t_code::c_F1;
+	case c_key__F2:
+		return t_code::c_F2;
+	case c_key__F3:
+		return t_code::c_F3;
+	case c_key__F4:
+		return t_code::c_F4;
+	case c_key__F5:
+		return t_code::c_F5;
+	case c_key__F6:
+		return t_code::c_F6;
+	case c_key__F7:
+		return t_code::c_F7;
+	case c_key__F8:
+		return t_code::c_F8;
+	case c_key__F9:
+		return t_code::c_F9;
+	case c_key__F10:
+		return t_code::c_F10;
+	case c_key__F11:
+		return t_code::c_F11;
+	case c_key__F12:
+		return t_code::c_F12;
+	case c_key__F13:
+		return t_code::c_F13;
+	case c_key__F14:
+		return t_code::c_F14;
+	case c_key__F15:
+		return t_code::c_F15;
+	case c_key__F16:
+		return t_code::c_F16;
+	case c_key__F17:
+		return t_code::c_F17;
+	case c_key__F18:
+		return t_code::c_F18;
+	case c_key__F19:
+		return t_code::c_F19;
+	case c_key__F20:
+		return t_code::c_F20;
+	case c_key__F21:
+		return t_code::c_F21;
+	case c_key__F22:
+		return t_code::c_F22;
+	case c_key__F23:
+		return t_code::c_F23;
+	case c_key__F24:
+		return t_code::c_F24;
+	case c_key__DELETE:
+		return t_code::c_DELETE;
+	case c_key__HOME:
+		return t_code::c_HOME;
+	case c_key__LEFT:
+		return t_code::c_LEFT;
+	case c_key__UP:
+		return t_code::c_UP;
+	case c_key__RIGHT:
+		return t_code::c_RIGHT;
+	case c_key__DOWN:
+		return t_code::c_DOWN;
+	case c_key__PRIOR:
+		return t_code::c_PRIOR;
+	case c_key__NEXT:
+		return t_code::c_NEXT;
+	case c_key__END:
+		return t_code::c_END;
+	case c_key__BEGIN:
+		return t_code::c_BEGIN;
+	case c_key__INSERT:
+		return t_code::c_INSERT;
+	case c_key__KP_SPACE:
+		return t_code::c_KP_SPACE;
+	case c_key__KP_TAB:
+		return t_code::c_KP_TAB;
+	case c_key__KP_ENTER:
+		return t_code::c_KP_ENTER;
+	case c_key__KP_F1:
+		return t_code::c_KP_F1;
+	case c_key__KP_F2:
+		return t_code::c_KP_F2;
+	case c_key__KP_F3:
+		return t_code::c_KP_F3;
+	case c_key__KP_F4:
+		return t_code::c_KP_F4;
+	case c_key__KP_HOME:
+		return t_code::c_KP_HOME;
+	case c_key__KP_LEFT:
+		return t_code::c_KP_LEFT;
+	case c_key__KP_UP:
+		return t_code::c_KP_UP;
+	case c_key__KP_RIGHT:
+		return t_code::c_KP_RIGHT;
+	case c_key__KP_DOWN:
+		return t_code::c_KP_DOWN;
+	case c_key__KP_PRIOR:
+		return t_code::c_KP_PRIOR;
+	case c_key__KP_NEXT:
+		return t_code::c_KP_NEXT;
+	case c_key__KP_END:
+		return t_code::c_KP_END;
+	case c_key__KP_BEGIN:
+		return t_code::c_KP_BEGIN;
+	case c_key__KP_INSERT:
+		return t_code::c_KP_INSERT;
+	case c_key__KP_DELETE:
+		return t_code::c_KP_DELETE;
+	case c_key__KP_EQUAL:
+		return t_code::c_KP_EQUAL;
+	case c_key__KP_MULTIPLY:
+		return t_code::c_KP_MULTIPLY;
+	case c_key__KP_ADD:
+		return t_code::c_KP_ADD;
+	case c_key__KP_SEPARATOR:
+		return t_code::c_KP_SEPARATOR;
+	case c_key__KP_SUBTRACT:
+		return t_code::c_KP_SUBTRACT;
+	case c_key__KP_DECIMAL:
+		return t_code::c_KP_DECIMAL;
+	case c_key__KP_DIVIDE:
+		return t_code::c_KP_DIVIDE;
+	case c_key__KP_0:
+		return t_code::c_KP_0;
+	case c_key__KP_1:
+		return t_code::c_KP_1;
+	case c_key__KP_2:
+		return t_code::c_KP_2;
+	case c_key__KP_3:
+		return t_code::c_KP_3;
+	case c_key__KP_4:
+		return t_code::c_KP_4;
+	case c_key__KP_5:
+		return t_code::c_KP_5;
+	case c_key__KP_6:
+		return t_code::c_KP_6;
+	case c_key__KP_7:
+		return t_code::c_KP_7;
+	case c_key__KP_8:
+		return t_code::c_KP_8;
+	case c_key__KP_9:
+		return t_code::c_KP_9;
 	default:
-		return t_code::e_NONE;
+		return t_code::c_NONE;
 	}
 }
 
@@ -186,10 +186,10 @@ void t_content::f_send(const wchar_t* a_cs, size_t a_n)
 bool t_content::f_send(t_modifier a_modifier, t_key a_key)
 {
 	t_code code = f_code(a_key);
-	if (code == t_code::e_NONE) return false;
+	if (code == t_code::c_NONE) return false;
 	size_t i = 0;
-	if ((a_modifier & e_modifier__SHIFT) != 0) i |= 1;
-	if ((a_modifier & e_modifier__CONTROL) != 0) i |= 2;
+	if ((a_modifier & c_modifier__SHIFT) != 0) i |= 1;
+	if ((a_modifier & c_modifier__CONTROL) != 0) i |= 2;
 	const char* cs = v_buffer.f_code(code, i);
 	f_send(cs, std::strlen(cs));
 	return true;
@@ -461,10 +461,10 @@ t_rectangle t_content::f_on_input_spot()
 void t_content::f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x, int a_y)
 {
 	switch (a_button) {
-	case e_button__4:
+	case c_button__4:
 		f_position__(v_position - v_unit.v_height * 4);
 		break;
-	case e_button__5:
+	case c_button__5:
 		f_position__(v_position + v_unit.v_height * 4);
 		break;
 	}
@@ -761,7 +761,7 @@ void t_pane::f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x
 	if (a_x < static_cast<int>(extent.v_width) - bar) return;
 	unsigned viewport = v_content->f_geometry().v_height;
 	unsigned content = v_content->f_content();
-	if (v_grabbing_part != e_part__NONE || content <= viewport) return;
+	if (v_grabbing_part != c_part__NONE || content <= viewport) return;
 	int position = v_content->f_position();
 	if (static_cast<int>(extent.v_height) > bar * 2) {
 		int gap_end = extent.v_height - bar;
@@ -772,36 +772,36 @@ void t_pane::f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x
 			int thumb_begin = bar + static_cast<int>(static_cast<double>(gap - thumb) * position / (content - viewport));
 			if (a_y < 0) {
 			} else if (a_y < bar) {
-				v_grabbing_part = e_part__BUTTON_UP;
+				v_grabbing_part = c_part__BUTTON_UP;
 			} else if (a_y < thumb_begin) {
-				v_grabbing_part = e_part__GAP_UP;
+				v_grabbing_part = c_part__GAP_UP;
 			} else if (a_y < thumb_begin + thumb) {
-				v_grabbing_part = e_part__THUMB;
+				v_grabbing_part = c_part__THUMB;
 				v_grabbing_offset = a_y - thumb_begin + bar;
 			} else if (a_y < gap_end) {
-				v_grabbing_part = e_part__GAP_DOWN;
+				v_grabbing_part = c_part__GAP_DOWN;
 			} else if (a_y < static_cast<int>(extent.v_height)) {
-				v_grabbing_part = e_part__BUTTON_DOWN;
+				v_grabbing_part = c_part__BUTTON_DOWN;
 			}
 		} else if (a_y >= 0 && a_y < bar) {
-			v_grabbing_part = e_part__BUTTON_UP;
+			v_grabbing_part = c_part__BUTTON_UP;
 		} else if (a_y >= gap_end && a_y < static_cast<int>(extent.v_height)) {
-			v_grabbing_part = e_part__BUTTON_DOWN;
+			v_grabbing_part = c_part__BUTTON_DOWN;
 		}
 	} else {
-		v_grabbing_part = a_y < static_cast<int>(extent.v_height) / 2 ? e_part__BUTTON_UP : e_part__BUTTON_DOWN;
+		v_grabbing_part = a_y < static_cast<int>(extent.v_height) / 2 ? c_part__BUTTON_UP : c_part__BUTTON_DOWN;
 	}
 	switch (v_grabbing_part) {
-	case e_part__BUTTON_UP:
+	case c_part__BUTTON_UP:
 		v_content->f_position__(position - v_content->f_unit().v_height);
 		break;
-	case e_part__GAP_UP:
+	case c_part__GAP_UP:
 		v_content->f_position__(position - viewport);
 		break;
-	case e_part__GAP_DOWN:
+	case c_part__GAP_DOWN:
 		v_content->f_position__(position + viewport);
 		break;
-	case e_part__BUTTON_DOWN:
+	case c_part__BUTTON_DOWN:
 		v_content->f_position__(position + v_content->f_unit().v_height);
 		break;
 	}
@@ -809,12 +809,12 @@ void t_pane::f_on_button_press(t_modifier a_modifier, t_button a_button, int a_x
 
 void t_pane::f_on_button_release(t_modifier a_modifier, t_button a_button, int a_x, int a_y)
 {
-	v_grabbing_part = e_part__NONE;
+	v_grabbing_part = c_part__NONE;
 }
 
 void t_pane::f_on_pointer_move(t_modifier a_modifier, int a_x, int a_y)
 {
-	if (v_grabbing_part != e_part__THUMB) return;
+	if (v_grabbing_part != c_part__THUMB) return;
 	a_y -= v_grabbing_offset;
 	unsigned content = v_content->f_content();
 	unsigned viewport = v_content->f_geometry().v_height;

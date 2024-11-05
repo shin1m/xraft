@@ -192,10 +192,10 @@ bool t_file::f_seek(const char* a_entry, size_t a_n, bool a_ari)
 
 enum t_token
 {
-	e_token__NONE,
-	e_token__TEXT,
-	e_token__BEGIN,
-	e_token__END
+	c_token__NONE,
+	c_token__TEXT,
+	c_token__BEGIN,
+	c_token__END
 };
 
 template<typename T>
@@ -230,18 +230,18 @@ public:
 template<typename T>
 void t_lexer<T>::f_next()
 {
-	v_token = e_token__NONE;
+	v_token = c_token__NONE;
 	if (v_c != L'/') return;
 	v_c = v_source();
 	if (v_c == WEOF || v_c == L'\n') return;
 	if (v_c == L'[') {
 		v_c = v_source();
-		v_token = e_token__BEGIN;
+		v_token = c_token__BEGIN;
 	} else if (v_c == L']') {
 		v_c = v_source();
-		v_token = e_token__END;
+		v_token = c_token__END;
 	} else {
-		v_token = e_token__TEXT;
+		v_token = c_token__TEXT;
 	}
 	v_text.clear();
 	v_annotation.clear();
@@ -311,7 +311,7 @@ void f_search(const char* a_path, const char* a_entry, size_t a_n, bool a_ari, s
 	if (!file.f_seek(a_entry, a_n, a_ari)) return;
 	t_decoder<t_file> decoder(file, "euc-jp");
 	t_lexer<t_decoder<t_file> > lexer(decoder);
-	while (lexer.f_token() == e_token__TEXT) {
+	while (lexer.f_token() == c_token__TEXT) {
 		f_add(a_candidates, a_map, lexer.f_text(), lexer.f_annotation());
 		lexer.f_next();
 	}
@@ -343,12 +343,12 @@ void t_basic_dictionary::f_load()
 		t_map0& map = v_aris.emplace(std::wstring(cs.begin(), cs.end()), t_map0()).first->second;
 		auto texts = map.emplace(std::wstring(), std::vector<std::wstring>()).first;
 		t_lexer<t_decoder<t_file> > lexer(decoder);
-		while (lexer.f_token() != e_token__NONE) {
-			if (lexer.f_token() == e_token__TEXT)
+		while (lexer.f_token() != c_token__NONE) {
+			if (lexer.f_token() == c_token__TEXT)
 				texts->second.push_back(lexer.f_text());
-			else if (lexer.f_token() == e_token__BEGIN)
+			else if (lexer.f_token() == c_token__BEGIN)
 				texts = map.emplace(lexer.f_text(), std::vector<std::wstring>()).first;
-			else if (lexer.f_token() == e_token__END)
+			else if (lexer.f_token() == c_token__END)
 				texts = map.emplace(std::wstring(), std::vector<std::wstring>()).first;
 			lexer.f_next();
 		}
@@ -364,7 +364,7 @@ void t_basic_dictionary::f_load()
 		if (c != L' ') continue;
 		std::vector<std::wstring>& texts = v_nashis.emplace(std::wstring(cs.begin(), cs.end()), std::vector<std::wstring>()).first->second;
 		t_lexer<t_decoder<t_file> > lexer(decoder);
-		while (lexer.f_token() == e_token__TEXT) {
+		while (lexer.f_token() == c_token__TEXT) {
 			texts.push_back(lexer.f_text());
 			lexer.f_next();
 		}

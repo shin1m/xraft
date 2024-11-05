@@ -90,17 +90,17 @@ class t_cairoc : public t_frame
 	}
 	virtual void f_on_key_press(t_modifier a_modifier, t_key a_key, char a_ascii)
 	{
-		if (a_key == e_key__SPACE) {
+		if (a_key == c_key__SPACE) {
 			t_extent extent = f_geometry();
 			f_invalidate(0, 0, extent.v_width, extent.v_height);
-		} else if (a_key == e_key__I) {
+		} else if (a_key == c_key__I) {
 			cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 256, 256);
 			cairo_t* context = cairo_create(surface);
 			f_paint(context, 256, 256);
 			cairo_destroy(context);
 			cairo_surface_write_to_png(surface, "foo.png");
 			cairo_surface_destroy(surface);
-		} else if (a_key == e_key__Q) {
+		} else if (a_key == c_key__Q) {
 			f_on_close();
 		}
 	}
