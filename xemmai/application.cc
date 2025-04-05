@@ -52,7 +52,7 @@ void t_application::t_post::operator()()
 	delete this;
 }
 
-t_application::t_application(t_library* a_library, xemmai::t_object* a_arguments) : ::xraft::t_application(t_arguments(a_arguments)), t_entry(false), v_library(a_library)
+t_application::t_application(xemmai::t_object* a_arguments) : ::xraft::t_application(t_arguments(a_arguments)), t_entry(false)
 {
 }
 

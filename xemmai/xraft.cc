@@ -37,7 +37,7 @@ void t_proxy::f_dispose()
 
 void t_library::f_main(t_library* a_library, const t_pvalue& a_arguments, const t_pvalue& a_callable)
 {
-	t_application application(a_library, a_arguments);
+	t_application application(a_arguments);
 	auto object = f_engine()->f_allocate(sizeof(::xraft::t_application*));
 	object->f_as<::xraft::t_application*>() = &application;
 	object->f_be(a_library->f_type<::xraft::t_application>());

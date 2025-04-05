@@ -22,20 +22,14 @@ class t_application : public ::xraft::t_application, public t_entry
 		virtual void operator()();
 	};
 
-	t_library* v_library;
-
 protected:
 	virtual void f_wait();
 
 public:
-	t_application(t_library* a_library, xemmai::t_object* a_arguments);
+	t_application(xemmai::t_object* a_arguments);
 	~t_application()
 	{
 		while (v_next != this) v_next->f_dispose();
-	}
-	t_library* f_library() const
-	{
-		return v_library;
 	}
 	void f_post(const t_pvalue& a_callable)
 	{
