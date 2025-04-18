@@ -30,11 +30,11 @@ void t_type_of<xraft::t_timer>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"start"sv,
-			t_member<void(*)(t_timer&, size_t), f_start>(),
-			t_member<void(t_timer::*)(size_t, bool), &t_timer::f_start>()
-		)
-		(L"stop"sv, t_member<void(t_timer::*)(), &t_timer::f_stop>())
+	(L"start"sv,
+		t_member<void(*)(t_timer&, size_t), f_start>(),
+		t_member<void(t_timer::*)(size_t, bool), &t_timer::f_start>()
+	)
+	(L"stop"sv, t_member<void(t_timer::*)(), &t_timer::f_stop>())
 	.f_derive<t_timer, xraft::t_object>();
 }
 

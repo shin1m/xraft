@@ -20,7 +20,7 @@ struct t_library : xemmai::t_library
 	virtual std::vector<std::pair<t_root, t_rvalue>> f_define()
 	{
 		return t_define(this)
-			(L"watch"sv, t_static<void(*)(xemmaix::dbus::t_connection&), f_watch>())
+		(L"watch"sv, t_static<void(*)(xemmaix::dbus::t_connection&), f_watch>())
 		;
 	}
 };

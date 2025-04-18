@@ -31,7 +31,7 @@ void t_type_of<xraft::t_input_context>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"composition"sv, t_member<t_pvalue(*)(t_library*, t_input_context&), f_composition>())
+	(L"composition"sv, t_member<t_pvalue(*)(t_library*, t_input_context&), f_composition>())
 	.f_derive<t_input_context, xraft::t_object>();
 }
 

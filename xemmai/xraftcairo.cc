@@ -51,10 +51,10 @@ void t_library::f_scan(t_scan a_scan)
 std::vector<std::pair<t_root, t_rvalue>> t_library::f_define()
 {
 	return t_define(this)
-		(L"BitmapSurface"sv, t_static<t_pvalue(*)(t_library*, t_bitmap&), f_surface_create<t_bitmap>>())
-		(L"PixmapSurface"sv, t_static<t_pvalue(*)(t_library*, t_pixmap&), f_surface_create<t_pixmap>>())
-		(L"draw_on_window"sv, t_static<void(*)(t_library*, t_window&, const t_pvalue&), f_draw<t_window>>())
-		(L"draw_on_graphics"sv, t_static<void(*)(t_library*, t_graphics&, const t_pvalue&), f_draw<t_graphics>>())
+	(L"BitmapSurface"sv, t_static<t_pvalue(*)(t_library*, t_bitmap&), f_surface_create<t_bitmap>>())
+	(L"PixmapSurface"sv, t_static<t_pvalue(*)(t_library*, t_pixmap&), f_surface_create<t_pixmap>>())
+	(L"draw_on_window"sv, t_static<void(*)(t_library*, t_window&, const t_pvalue&), f_draw<t_window>>())
+	(L"draw_on_graphics"sv, t_static<void(*)(t_library*, t_graphics&, const t_pvalue&), f_draw<t_graphics>>())
 	;
 }
 

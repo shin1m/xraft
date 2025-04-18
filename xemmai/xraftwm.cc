@@ -152,10 +152,10 @@ std::vector<std::pair<xemmai::t_root, t_rvalue>> t_xraftwm::f_define()
 	t_type_of<::xraft::t_client>::f_define(this);
 	t_type_of<::xraft::t_root>::f_define(this);
 	return t_define(this)
-		(L"Side"sv, t_type_of<t_side>::f_define(this))
-		(L"Client"sv, static_cast<xemmai::t_object*>(v_type_client))
-		(L"Root"sv, static_cast<xemmai::t_object*>(v_type_root))
-		(L"root"sv, t_static<::xraft::t_root*(*)(), f_root>())
+	(L"Side"sv, t_type_of<t_side>::f_define(this))
+	(L"Client"sv, static_cast<xemmai::t_object*>(v_type_client))
+	(L"Root"sv, static_cast<xemmai::t_object*>(v_type_root))
+	(L"root"sv, t_static<::xraft::t_root*(*)(), f_root>())
 	;
 }
 
@@ -282,23 +282,23 @@ void t_type_of<xraft::t_client>::f_define(t_library* a_library)
 #define T_WINDOW t_client
 #include "window_define.h"
 #undef T_WINDOW
-		(a_library->v_symbol_on_activate, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_activate>())
-		(a_library->v_symbol_on_deactivate, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_deactivate>())
-		(a_library->v_symbol_on_name, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_name>())
-		(a_library->v_symbol_on_protocols, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_protocols>())
-		(L"borders"sv, t_member<t_pvalue(*)(t_client&), f_borders>())
-		(L"borders__"sv, t_member<void(*)(t_client&, const t_pvalue&), f_borders__>())
-		(L"move"sv, t_member<void(t_client::*)(t_side, int, t_side, int), &t_client::f_move>())
-		(L"show"sv, t_member<void(t_client::*)(), &t_client::f_show>())
-		(L"hide"sv, t_member<void(t_client::*)(), &t_client::f_hide>())
-		(L"name"sv, t_member<std::wstring_view(t_client::*)() const, &t_client::f_name>())
-		(L"delta"sv, t_member<t_extent(t_client::*)() const, &t_client::f_delta>())
-		(L"base"sv, t_member<t_extent(t_client::*)() const, &t_client::f_base>())
-		(L"extent"sv, t_member<t_extent(t_client::*)() const, &t_client::f_extent>())
-		(L"closable"sv, t_member<bool(t_client::*)() const, &t_client::f_closable>())
-		(L"close"sv, t_member<void(t_client::*)(), &t_client::f_close>())
-		(L"shaded"sv, t_member<bool(t_client::*)() const, &t_client::f_shaded>())
-		(L"shaded__"sv, t_member<void(t_client::*)(bool), &t_client::f_shaded__>())
+	(a_library->v_symbol_on_activate, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_activate>())
+	(a_library->v_symbol_on_deactivate, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_deactivate>())
+	(a_library->v_symbol_on_name, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_name>())
+	(a_library->v_symbol_on_protocols, t_member<void(*)(t_client&), xemmaix::xraft::t_client::f_super__on_protocols>())
+	(L"borders"sv, t_member<t_pvalue(*)(t_client&), f_borders>())
+	(L"borders__"sv, t_member<void(*)(t_client&, const t_pvalue&), f_borders__>())
+	(L"move"sv, t_member<void(t_client::*)(t_side, int, t_side, int), &t_client::f_move>())
+	(L"show"sv, t_member<void(t_client::*)(), &t_client::f_show>())
+	(L"hide"sv, t_member<void(t_client::*)(), &t_client::f_hide>())
+	(L"name"sv, t_member<std::wstring_view(t_client::*)() const, &t_client::f_name>())
+	(L"delta"sv, t_member<t_extent(t_client::*)() const, &t_client::f_delta>())
+	(L"base"sv, t_member<t_extent(t_client::*)() const, &t_client::f_base>())
+	(L"extent"sv, t_member<t_extent(t_client::*)() const, &t_client::f_extent>())
+	(L"closable"sv, t_member<bool(t_client::*)() const, &t_client::f_closable>())
+	(L"close"sv, t_member<void(t_client::*)(), &t_client::f_close>())
+	(L"shaded"sv, t_member<bool(t_client::*)() const, &t_client::f_shaded>())
+	(L"shaded__"sv, t_member<void(t_client::*)(bool), &t_client::f_shaded__>())
 	.f_derive<xraft::t_client, xraft::t_widget>();
 }
 
@@ -314,14 +314,14 @@ void t_type_of<xraft::t_root>::f_define(t_library* a_library)
 #define T_WINDOW t_root
 #include "window_define.h"
 #undef T_WINDOW
-		(L"run"sv, t_member<void(xraft::t_root::*)(), &xraft::t_root::f_run>())
-		(L"active"sv, t_member<xraft::t_pointer<t_client>(xraft::t_root::*)() const, &xraft::t_root::f_active>())
-		(L"active__"sv, t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_client>&), &xraft::t_root::f_active__>())
-		(L"background"sv,
-			t_member<void(xraft::t_root::*)(t_pixel), &xraft::t_root::f_background>(),
-			t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_pixmap>&), &xraft::t_root::f_background>()
-		)
-		(L"share_background"sv, t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_pixmap>&), &xraft::t_root::f_share_background>())
+	(L"run"sv, t_member<void(xraft::t_root::*)(), &xraft::t_root::f_run>())
+	(L"active"sv, t_member<xraft::t_pointer<t_client>(xraft::t_root::*)() const, &xraft::t_root::f_active>())
+	(L"active__"sv, t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_client>&), &xraft::t_root::f_active__>())
+	(L"background"sv,
+		t_member<void(xraft::t_root::*)(t_pixel), &xraft::t_root::f_background>(),
+		t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_pixmap>&), &xraft::t_root::f_background>()
+	)
+	(L"share_background"sv, t_member<void(xraft::t_root::*)(const xraft::t_pointer<t_pixmap>&), &xraft::t_root::f_share_background>())
 	.f_derive<xraft::t_root, t_window>();
 }
 

@@ -74,10 +74,10 @@ void t_type_of<xraft::t_opengl_widget>::f_define(t_library* a_library)
 #define T_WINDOW t_opengl_widget
 #include "window_define.h"
 #undef T_WINDOW
-		(a_library->v_symbol_on_create, t_member<void(*)(t_opengl_widget&), xemmaix::xraft::t_opengl_widget::f_super__on_create>())
-		(a_library->v_symbol_on_destroy, t_member<void(*)(t_opengl_widget&), xemmaix::xraft::t_opengl_widget::f_super__on_destroy>())
-		(L"format"sv, t_member<const xraft::t_pointer<t_opengl_format>&(t_opengl_widget::*)() const, &t_opengl_widget::f_format>())
-		(L"created"sv, t_member<bool(t_opengl_widget::*)() const, &t_opengl_widget::f_created>())
+	(a_library->v_symbol_on_create, t_member<void(*)(t_opengl_widget&), xemmaix::xraft::t_opengl_widget::f_super__on_create>())
+	(a_library->v_symbol_on_destroy, t_member<void(*)(t_opengl_widget&), xemmaix::xraft::t_opengl_widget::f_super__on_destroy>())
+	(L"format"sv, t_member<const xraft::t_pointer<t_opengl_format>&(t_opengl_widget::*)() const, &t_opengl_widget::f_format>())
+	(L"created"sv, t_member<bool(t_opengl_widget::*)() const, &t_opengl_widget::f_created>())
 	.f_derive<t_opengl_widget, t_widget>();
 }
 
@@ -91,8 +91,8 @@ void t_type_of<xraft::t_opengl_context>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"make_current"sv, t_member<bool(t_opengl_context::*)(const xraft::t_pointer<t_opengl_widget>&), &t_opengl_context::f_make_current>())
-		(L"flush"sv, t_member<void(t_opengl_context::*)(), &t_opengl_context::f_flush>())
+	(L"make_current"sv, t_member<bool(t_opengl_context::*)(const xraft::t_pointer<t_opengl_widget>&), &t_opengl_context::f_make_current>())
+	(L"flush"sv, t_member<void(t_opengl_context::*)(), &t_opengl_context::f_flush>())
 	.f_derive<t_opengl_context, xraft::t_object>();
 }
 

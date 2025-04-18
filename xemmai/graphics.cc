@@ -9,15 +9,15 @@ void t_type_of<xraft::t_font>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"ascent"sv, t_member<unsigned(t_font::*)() const, &t_font::f_ascent>())
-		(L"descent"sv, t_member<unsigned(t_font::*)() const, &t_font::f_descent>())
-		(L"height"sv, t_member<unsigned(t_font::*)() const, &t_font::f_height>())
-		(L"width"sv,
-			t_member<unsigned(t_font::*)() const, &t_font::f_width>(),
-			t_member<unsigned(*)(t_font&, size_t), f_width>(),
-			t_member<unsigned(*)(t_font&, std::wstring_view), f_width>(),
-			t_member<unsigned(*)(t_font&, std::wstring_view, unsigned), f_width>()
-		)
+	(L"ascent"sv, t_member<unsigned(t_font::*)() const, &t_font::f_ascent>())
+	(L"descent"sv, t_member<unsigned(t_font::*)() const, &t_font::f_descent>())
+	(L"height"sv, t_member<unsigned(t_font::*)() const, &t_font::f_height>())
+	(L"width"sv,
+		t_member<unsigned(t_font::*)() const, &t_font::f_width>(),
+		t_member<unsigned(*)(t_font&, size_t), f_width>(),
+		t_member<unsigned(*)(t_font&, std::wstring_view), f_width>(),
+		t_member<unsigned(*)(t_font&, std::wstring_view, unsigned), f_width>()
+	)
 	.f_derive<t_font, xraft::t_object>();
 }
 
@@ -30,10 +30,10 @@ void t_type_of<xraft::t_color>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"red"sv, t_member<size_t(*)(xraft::t_color&), f_red>())
-		(L"green"sv, t_member<size_t(*)(xraft::t_color&), f_green>())
-		(L"blue"sv, t_member<size_t(*)(xraft::t_color&), f_blue>())
-		(L"pixel"sv, t_member<t_pixel(xraft::t_color::*)() const, &xraft::t_color::f_pixel>())
+	(L"red"sv, t_member<size_t(*)(xraft::t_color&), f_red>())
+	(L"green"sv, t_member<size_t(*)(xraft::t_color&), f_green>())
+	(L"blue"sv, t_member<size_t(*)(xraft::t_color&), f_blue>())
+	(L"pixel"sv, t_member<t_pixel(xraft::t_color::*)() const, &xraft::t_color::f_pixel>())
 	.f_derive<xraft::t_color, xemmai::t_object>();
 }
 
@@ -67,25 +67,25 @@ void t_type_of<xraft::t_graphics>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"region"sv, t_member<const t_region&(t_graphics::*)() const, &t_graphics::f_region>())
-		(L"clip"sv, t_member<void(t_graphics::*)(t_region&), &t_graphics::f_clip>())
-		(L"font"sv, t_member<void(*)(t_graphics&, const xraft::t_pointer<t_font>&), f_font>())
-		(L"color"sv, t_member<void(t_graphics::*)(t_pixel), &t_graphics::f_color>())
-		(L"function"sv, t_member<void(t_graphics::*)(t_graphics::t_function), &t_graphics::f_function>())
-		(L"translate"sv, t_member<void(t_graphics::*)(int, int), &t_graphics::f_translate>())
-		(L"bounds"sv, t_member<t_rectangle(t_graphics::*)() const, &t_graphics::f_bounds>())
-		(L"invalid"sv, t_member<bool(t_graphics::*)(int, int, unsigned, unsigned) const, &t_graphics::f_invalid>())
-		(L"draw"sv,
-			t_member<void(t_graphics::*)(int, int, unsigned, unsigned), &t_graphics::f_draw>(),
-			t_member<void(*)(t_graphics&, const t_pvalue&), f_draw>(),
-			t_member<void(*)(t_graphics&, int, int, std::wstring_view), f_draw>(),
-			t_member<void(*)(t_graphics&, int, int, const xraft::t_pointer<t_pixmap>&, int, int, unsigned, unsigned), f_draw>(),
-			t_member<void(*)(t_graphics&, int, int, const xraft::t_pointer<t_pixmap>&, int, int, unsigned, unsigned, const xraft::t_pointer<t_bitmap>&), f_draw>()
-		)
-		(L"fill"sv,
-			t_member<void(t_graphics::*)(int, int, unsigned, unsigned), &t_graphics::f_fill>(),
-			t_member<void(*)(t_graphics&, const t_pvalue&), f_fill>()
-		)
+	(L"region"sv, t_member<const t_region&(t_graphics::*)() const, &t_graphics::f_region>())
+	(L"clip"sv, t_member<void(t_graphics::*)(t_region&), &t_graphics::f_clip>())
+	(L"font"sv, t_member<void(*)(t_graphics&, const xraft::t_pointer<t_font>&), f_font>())
+	(L"color"sv, t_member<void(t_graphics::*)(t_pixel), &t_graphics::f_color>())
+	(L"function"sv, t_member<void(t_graphics::*)(t_graphics::t_function), &t_graphics::f_function>())
+	(L"translate"sv, t_member<void(t_graphics::*)(int, int), &t_graphics::f_translate>())
+	(L"bounds"sv, t_member<t_rectangle(t_graphics::*)() const, &t_graphics::f_bounds>())
+	(L"invalid"sv, t_member<bool(t_graphics::*)(int, int, unsigned, unsigned) const, &t_graphics::f_invalid>())
+	(L"draw"sv,
+		t_member<void(t_graphics::*)(int, int, unsigned, unsigned), &t_graphics::f_draw>(),
+		t_member<void(*)(t_graphics&, const t_pvalue&), f_draw>(),
+		t_member<void(*)(t_graphics&, int, int, std::wstring_view), f_draw>(),
+		t_member<void(*)(t_graphics&, int, int, const xraft::t_pointer<t_pixmap>&, int, int, unsigned, unsigned), f_draw>(),
+		t_member<void(*)(t_graphics&, int, int, const xraft::t_pointer<t_pixmap>&, int, int, unsigned, unsigned, const xraft::t_pointer<t_bitmap>&), f_draw>()
+	)
+	(L"fill"sv,
+		t_member<void(t_graphics::*)(int, int, unsigned, unsigned), &t_graphics::f_fill>(),
+		t_member<void(*)(t_graphics&, const t_pvalue&), f_fill>()
+	)
 	.f_derive<t_graphics, xemmai::t_object>();
 }
 

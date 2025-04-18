@@ -6,8 +6,8 @@ namespace xemmai
 void t_type_of<xraft::t_object>::f_define(t_library* a_library)
 {
 	t_define{a_library}
-		(L"acquire"sv, t_member<void (*)(xraft::t_object&), f_acquire>())
-		(L"release"sv, t_member<void (*)(xraft::t_object&), f_release>())
+	(L"acquire"sv, t_member<void (*)(xraft::t_object&), f_acquire>())
+	(L"release"sv, t_member<void (*)(xraft::t_object&), f_release>())
 	.f_derive<xraft::t_object, xemmai::t_object>();
 }
 

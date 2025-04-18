@@ -24,10 +24,10 @@ void t_type_of<xraft::t_drawable>::f_define(t_library* a_library)
 {
 	using namespace xraft;
 	t_define{a_library}
-		(L"paint"sv,
-			t_member<void(*)(t_drawable&, const t_pvalue&), f_paint>(),
-			t_member<void(*)(t_drawable&, const t_pvalue&, bool), f_paint>()
-		)
+	(L"paint"sv,
+		t_member<void(*)(t_drawable&, const t_pvalue&), f_paint>(),
+		t_member<void(*)(t_drawable&, const t_pvalue&, bool), f_paint>()
+	)
 	.f_derive<t_drawable, xraft::t_object>();
 }
 
