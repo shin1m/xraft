@@ -11,32 +11,36 @@ struct t_xraftwm : xemmai::t_library
 {
 	t_slot v_module_xraft;
 	xemmaix::xraft::t_library* v_xraft;
-	t_slot v_symbol_on_move;
-	t_slot v_symbol_on_show;
-	t_slot v_symbol_on_hide;
-	t_slot v_symbol_on_paint;
-	t_slot v_symbol_on_focus_enter;
-	t_slot v_symbol_on_focus_leave;
-	t_slot v_symbol_on_key_press;
-	t_slot v_symbol_on_key_release;
-	t_slot v_symbol_on_input_compose;
-	t_slot v_symbol_on_input_commit;
-	t_slot v_symbol_on_input_spot;
-	t_slot v_symbol_on_button_press;
-	t_slot v_symbol_on_button_release;
-	t_slot v_symbol_on_pointer_enter;
-	t_slot v_symbol_on_pointer_leave;
-	t_slot v_symbol_on_pointer_move;
-	t_slot v_symbol_add;
-	t_slot v_symbol_remove;
-	t_slot v_symbol_on_activate;
-	t_slot v_symbol_on_deactivate;
-	t_slot v_symbol_on_name;
-	t_slot v_symbol_on_protocols;
-	t_slot v_symbol_on_client;
-	t_slot_of<t_type> v_type_side;
-	t_slot_of<t_type> v_type_client;
-	t_slot_of<t_type> v_type_root;
+#define XEMMAIX__XRAFTWM__SYMBOLS(_)\
+	_(on_move)\
+	_(on_show)\
+	_(on_hide)\
+	_(on_paint)\
+	_(on_focus_enter)\
+	_(on_focus_leave)\
+	_(on_key_press)\
+	_(on_key_release)\
+	_(on_input_compose)\
+	_(on_input_commit)\
+	_(on_input_spot)\
+	_(on_button_press)\
+	_(on_button_release)\
+	_(on_pointer_enter)\
+	_(on_pointer_leave)\
+	_(on_pointer_move)\
+	_(add)\
+	_(remove)\
+	_(on_activate)\
+	_(on_deactivate)\
+	_(on_name)\
+	_(on_protocols)\
+	_(on_client)
+	XEMMAIX__XRAFTWM__SYMBOLS(XEMMAI__SYMBOL__DECLARE)
+#define XEMMAIX__XRAFTWM__TYPES(_)\
+	_(side)\
+	_(client)\
+	_##_AS(::xraft::t_root, root)
+	XEMMAIX__XRAFTWM__TYPES(XEMMAI__TYPE__DECLARE)
 
 	t_xraftwm(xemmai::t_library::t_handle* a_handle, const t_pvalue& a_xraft) : xemmai::t_library(a_handle), v_module_xraft(a_xraft), v_xraft(&v_module_xraft->f_as<t_module>().v_body->f_as<xemmaix::xraft::t_library>())
 	{
@@ -47,9 +51,9 @@ struct t_xraftwm : xemmai::t_library
 
 XEMMAI__LIBRARY__BASE(t_xraftwm, t_global, f_global())
 XEMMAI__LIBRARY__BASE(t_xraftwm, xemmaix::xraft::t_library, v_xraft)
-XEMMAI__LIBRARY__TYPE(t_xraftwm, side)
-XEMMAI__LIBRARY__TYPE(t_xraftwm, client)
-XEMMAI__LIBRARY__TYPE_AS(t_xraftwm, ::xraft::t_root, root)
+#define XEMMAI__TYPE__LIBRARY t_xraftwm
+XEMMAIX__XRAFTWM__TYPES(XEMMAI__TYPE__DEFINE)
+#undef XEMMAI__TYPE__LIBRARY
 
 }
 
@@ -96,59 +100,13 @@ namespace xemmaix::xraft
 void t_xraftwm::f_scan(t_scan a_scan)
 {
 	a_scan(v_module_xraft);
-	a_scan(v_symbol_on_move);
-	a_scan(v_symbol_on_show);
-	a_scan(v_symbol_on_hide);
-	a_scan(v_symbol_on_paint);
-	a_scan(v_symbol_on_focus_enter);
-	a_scan(v_symbol_on_focus_leave);
-	a_scan(v_symbol_on_key_press);
-	a_scan(v_symbol_on_key_release);
-	a_scan(v_symbol_on_input_compose);
-	a_scan(v_symbol_on_input_commit);
-	a_scan(v_symbol_on_input_spot);
-	a_scan(v_symbol_on_button_press);
-	a_scan(v_symbol_on_button_release);
-	a_scan(v_symbol_on_pointer_enter);
-	a_scan(v_symbol_on_pointer_leave);
-	a_scan(v_symbol_on_pointer_move);
-	a_scan(v_symbol_add);
-	a_scan(v_symbol_remove);
-	a_scan(v_symbol_on_activate);
-	a_scan(v_symbol_on_deactivate);
-	a_scan(v_symbol_on_name);
-	a_scan(v_symbol_on_protocols);
-	a_scan(v_symbol_on_client);
-	a_scan(v_type_side);
-	a_scan(v_type_client);
-	a_scan(v_type_root);
+	XEMMAIX__XRAFTWM__SYMBOLS(XEMMAI__SYMBOL__SCAN)
+	XEMMAIX__XRAFTWM__TYPES(XEMMAI__TYPE__SCAN)
 }
 
 std::vector<std::pair<xemmai::t_root, t_rvalue>> t_xraftwm::f_define()
 {
-	v_symbol_on_move = t_symbol::f_instantiate(L"on_move"sv);
-	v_symbol_on_show = t_symbol::f_instantiate(L"on_show"sv);
-	v_symbol_on_hide = t_symbol::f_instantiate(L"on_hide"sv);
-	v_symbol_on_paint = t_symbol::f_instantiate(L"on_paint"sv);
-	v_symbol_on_focus_enter = t_symbol::f_instantiate(L"on_focus_enter"sv);
-	v_symbol_on_focus_leave = t_symbol::f_instantiate(L"on_focus_leave"sv);
-	v_symbol_on_key_press = t_symbol::f_instantiate(L"on_key_press"sv);
-	v_symbol_on_key_release = t_symbol::f_instantiate(L"on_key_release"sv);
-	v_symbol_on_input_compose = t_symbol::f_instantiate(L"on_input_compose"sv);
-	v_symbol_on_input_commit = t_symbol::f_instantiate(L"on_input_commit"sv);
-	v_symbol_on_input_spot = t_symbol::f_instantiate(L"on_input_spot"sv);
-	v_symbol_on_button_press = t_symbol::f_instantiate(L"on_button_press"sv);
-	v_symbol_on_button_release = t_symbol::f_instantiate(L"on_button_release"sv);
-	v_symbol_on_pointer_enter = t_symbol::f_instantiate(L"on_pointer_enter"sv);
-	v_symbol_on_pointer_leave = t_symbol::f_instantiate(L"on_pointer_leave"sv);
-	v_symbol_on_pointer_move = t_symbol::f_instantiate(L"on_pointer_move"sv);
-	v_symbol_add = t_symbol::f_instantiate(L"add"sv);
-	v_symbol_remove = t_symbol::f_instantiate(L"remove"sv);
-	v_symbol_on_activate = t_symbol::f_instantiate(L"on_activate"sv);
-	v_symbol_on_deactivate = t_symbol::f_instantiate(L"on_deactivate"sv);
-	v_symbol_on_name = t_symbol::f_instantiate(L"on_name"sv);
-	v_symbol_on_protocols = t_symbol::f_instantiate(L"on_protocols"sv);
-	v_symbol_on_client = t_symbol::f_instantiate(L"on_client"sv);
+	XEMMAIX__XRAFTWM__SYMBOLS(XEMMAI__SYMBOL__INSTANTIATE)
 	t_type_of<::xraft::t_client>::f_define(this);
 	t_type_of<::xraft::t_root>::f_define(this);
 	return t_define(this)

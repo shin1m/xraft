@@ -97,59 +97,63 @@ struct t_wrapper
 struct t_library : xemmai::t_library
 {
 	std::mutex v_mutex;
-	t_slot v_symbol_on_move;
-	t_slot v_symbol_on_show;
-	t_slot v_symbol_on_hide;
-	t_slot v_symbol_on_paint;
-	t_slot v_symbol_on_focus_enter;
-	t_slot v_symbol_on_focus_leave;
-	t_slot v_symbol_on_key_press;
-	t_slot v_symbol_on_key_release;
-	t_slot v_symbol_on_input_compose;
-	t_slot v_symbol_on_input_commit;
-	t_slot v_symbol_on_input_spot;
-	t_slot v_symbol_on_button_press;
-	t_slot v_symbol_on_button_release;
-	t_slot v_symbol_on_pointer_enter;
-	t_slot v_symbol_on_pointer_leave;
-	t_slot v_symbol_on_pointer_move;
-	t_slot v_symbol_add;
-	t_slot v_symbol_remove;
-	t_slot v_symbol_on_activate;
-	t_slot v_symbol_on_deactivate;
-	t_slot v_symbol_on_close;
-	t_slot v_symbol_on_create;
-	t_slot v_symbol_on_destroy;
+#define XEMMAIX__XRAFT__SYMBOLS(_)\
+	_(on_move)\
+	_(on_show)\
+	_(on_hide)\
+	_(on_paint)\
+	_(on_focus_enter)\
+	_(on_focus_leave)\
+	_(on_key_press)\
+	_(on_key_release)\
+	_(on_input_compose)\
+	_(on_input_commit)\
+	_(on_input_spot)\
+	_(on_button_press)\
+	_(on_button_release)\
+	_(on_pointer_enter)\
+	_(on_pointer_leave)\
+	_(on_pointer_move)\
+	_(add)\
+	_(remove)\
+	_(on_activate)\
+	_(on_deactivate)\
+	_(on_close)\
+	_(on_create)\
+	_(on_destroy)
+	XEMMAIX__XRAFT__SYMBOLS(XEMMAI__SYMBOL__DECLARE)
 
 private:
-	t_slot_of<t_type> v_type_application;
-	t_slot_of<t_type> v_type_point;
-	t_slot_of<t_type> v_type_extent;
-	t_slot_of<t_type> v_type_rectangle;
-	t_slot_of<t_type> v_type_object;
-	t_slot_of<t_type> v_type_font;
-	t_slot_of<t_type> v_type_color;
-	t_slot_of<t_type> v_type_graphics;
-	t_slot_of<t_type> v_type_graphics__function;
-	t_slot_of<t_type> v_type_input_attribute;
-	t_slot_of<t_type> v_type_input_context;
-	t_slot_of<t_type> v_type_drawable;
-	t_slot_of<t_type> v_type_bitmap;
-	t_slot_of<t_type> v_type_pixmap;
-	t_slot_of<t_type> v_type_region;
-	t_slot_of<t_type> v_type_key;
-	t_slot_of<t_type> v_type_modifier;
-	t_slot_of<t_type> v_type_button;
-	t_slot_of<t_type> v_type_timer;
-	t_slot_of<t_type> v_type_cross_mode;
-	t_slot_of<t_type> v_type_cross_detail;
-	t_slot_of<t_type> v_type_window;
-	t_slot_of<t_type> v_type_widget;
-	t_slot_of<t_type> v_type_shell;
-	t_slot_of<t_type> v_type_frame;
-	t_slot_of<t_type> v_type_opengl_format;
-	t_slot_of<t_type> v_type_opengl_widget;
-	t_slot_of<t_type> v_type_opengl_context;
+#define XEMMAIX__XRAFT__TYPES(_)\
+	_(application)\
+	_(point)\
+	_(extent)\
+	_(rectangle)\
+	_##_AS(::xraft::t_object, object)\
+	_(font)\
+	_##_AS(::xraft::t_color, color)\
+	_(graphics)\
+	_##_AS(t_graphics::t_function, graphics__function)\
+	_(input_attribute)\
+	_(input_context)\
+	_(drawable)\
+	_(bitmap)\
+	_(pixmap)\
+	_(region)\
+	_(key)\
+	_(modifier)\
+	_(button)\
+	_(timer)\
+	_(cross_mode)\
+	_(cross_detail)\
+	_(window)\
+	_(widget)\
+	_(shell)\
+	_(frame)\
+	_(opengl_format)\
+	_(opengl_widget)\
+	_(opengl_context)
+	XEMMAIX__XRAFT__TYPES(XEMMAI__TYPE__DECLARE)
 	xemmai::t_object* v_application;
 
 	static void f_main(t_library* a_library, const t_pvalue& a_arguments, const t_pvalue& a_callable);
@@ -164,34 +168,9 @@ public:
 };
 
 XEMMAI__LIBRARY__BASE(t_library, t_global, f_global())
-XEMMAI__LIBRARY__TYPE(t_library, application)
-XEMMAI__LIBRARY__TYPE(t_library, point)
-XEMMAI__LIBRARY__TYPE(t_library, extent)
-XEMMAI__LIBRARY__TYPE(t_library, rectangle)
-XEMMAI__LIBRARY__TYPE_AS(t_library, ::xraft::t_object, object)
-XEMMAI__LIBRARY__TYPE(t_library, font)
-XEMMAI__LIBRARY__TYPE_AS(t_library, ::xraft::t_color, color)
-XEMMAI__LIBRARY__TYPE(t_library, graphics)
-XEMMAI__LIBRARY__TYPE_AS(t_library, t_graphics::t_function, graphics__function)
-XEMMAI__LIBRARY__TYPE(t_library, input_attribute)
-XEMMAI__LIBRARY__TYPE(t_library, input_context)
-XEMMAI__LIBRARY__TYPE(t_library, drawable)
-XEMMAI__LIBRARY__TYPE(t_library, bitmap)
-XEMMAI__LIBRARY__TYPE(t_library, pixmap)
-XEMMAI__LIBRARY__TYPE(t_library, region)
-XEMMAI__LIBRARY__TYPE(t_library, key)
-XEMMAI__LIBRARY__TYPE(t_library, modifier)
-XEMMAI__LIBRARY__TYPE(t_library, button)
-XEMMAI__LIBRARY__TYPE(t_library, timer)
-XEMMAI__LIBRARY__TYPE(t_library, cross_mode)
-XEMMAI__LIBRARY__TYPE(t_library, cross_detail)
-XEMMAI__LIBRARY__TYPE(t_library, window)
-XEMMAI__LIBRARY__TYPE(t_library, widget)
-XEMMAI__LIBRARY__TYPE(t_library, shell)
-XEMMAI__LIBRARY__TYPE(t_library, frame)
-XEMMAI__LIBRARY__TYPE(t_library, opengl_format)
-XEMMAI__LIBRARY__TYPE(t_library, opengl_widget)
-XEMMAI__LIBRARY__TYPE(t_library, opengl_context)
+#define XEMMAI__TYPE__LIBRARY t_library
+XEMMAIX__XRAFT__TYPES(XEMMAI__TYPE__DEFINE)
+#undef XEMMAI__TYPE__LIBRARY
 
 template<typename T, typename T_base = t_type>
 struct t_bears_pointer : t_bears<T, T_base>
