@@ -47,12 +47,9 @@ class t_proxy : public t_user, public t_entry
 	size_t v_n = 0;
 
 	template<typename T>
-	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(f_engine()->f_allocate(xemmai::t_object::f_align_for_fields(sizeof(T*)) + sizeof(t_svalue) * a_class->v_instance_fields))
+	t_proxy(t_type* a_class, T* a_p) : v_application(f_application()), v_object(a_class->f_new<T*>(a_p))
 	{
 		a_p->f_user__(this);
-		v_object->f_as<T*>() = a_p;
-		std::uninitialized_default_construct_n(v_object->f_fields(sizeof(T*)), a_class->v_instance_fields);
-		v_object->f_be(a_class);
 	}
 	XRAFT__XEMMAI__EXPORT virtual void f_destroy();
 
