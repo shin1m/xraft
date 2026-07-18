@@ -40,8 +40,7 @@ void t_library::f_main(t_library* a_library, const t_pvalue& a_arguments, const 
 	t_application application(a_arguments);
 	auto object = f_engine()->f_allocate(sizeof(::xraft::t_application*));
 	object->f_as<::xraft::t_application*>() = &application;
-	object->f_be(a_library->f_type<::xraft::t_application>());
-	a_library->v_application = object;
+	a_library->v_application = object->f_be(a_library->f_type<::xraft::t_application>());
 	try {
 		a_callable(object);
 		a_library->v_application = nullptr;
