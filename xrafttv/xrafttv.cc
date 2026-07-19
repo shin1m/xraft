@@ -52,7 +52,7 @@ void t_text_model::f_replace(size_t a_p, size_t a_n, t_scoped&& a_segments, std:
 	auto extension = f_extension<t_extension>(f_self(this)->f_type()->v_module);
 	t_scoped p = a_segments.f_invoke(extension->v_symbol_size);
 	f_check<size_t>(p, L"size");
-	size_t n = f_as<size_t>(p);
+	auto n = f_as<size_t>(p);
 	std::vector<t_segment> ss(n);
 	size_t m = 0;
 	for (size_t i = 0; i < n; ++i) {
